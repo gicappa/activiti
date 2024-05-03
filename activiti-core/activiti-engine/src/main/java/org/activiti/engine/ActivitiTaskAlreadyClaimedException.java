@@ -15,6 +15,8 @@
  */
 package org.activiti.engine;
 
+import java.io.Serial;
+
 /**
  * This exception is thrown when you try to claim a task that is already claimed by someone else.
  *
@@ -23,13 +25,14 @@ package org.activiti.engine;
  */
 public class ActivitiTaskAlreadyClaimedException extends ActivitiException {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   /** the id of the task that is already claimed */
-  private String taskId;
+  private final String taskId;
 
   /** the assignee of the task that is already claimed */
-  private String taskAssignee;
+  private final String taskAssignee;
 
   public ActivitiTaskAlreadyClaimedException(String taskId, String taskAssignee) {
     super("Task '" + taskId + "' is already claimed by someone else.");

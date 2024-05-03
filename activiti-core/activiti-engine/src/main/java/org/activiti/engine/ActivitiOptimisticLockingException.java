@@ -16,6 +16,8 @@
 
 package org.activiti.engine;
 
+import java.io.Serial;
+
 /**
  * Exception that is thrown when an optimistic locking occurs in the datastore caused by concurrent access of the same data entry.
  *
@@ -24,6 +26,7 @@ package org.activiti.engine;
  */
 public class ActivitiOptimisticLockingException extends ActivitiException {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   public ActivitiOptimisticLockingException(String message) {

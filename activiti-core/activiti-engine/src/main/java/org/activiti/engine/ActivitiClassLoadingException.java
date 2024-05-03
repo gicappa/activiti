@@ -15,11 +15,14 @@
  */
 package org.activiti.engine;
 
+import java.io.Serial;
+
 /**
  * Runtime exception indicating the requested class was not found or an error occurred while loading the class.
  */
 public class ActivitiClassLoadingException extends ActivitiException {
 
+  @Serial
   private static final long serialVersionUID = 1L;
   protected String className;
 

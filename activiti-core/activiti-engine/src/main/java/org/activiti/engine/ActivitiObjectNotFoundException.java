@@ -17,6 +17,8 @@
 
 package org.activiti.engine;
 
+import java.io.Serial;
+
 /**
  * An exception indicating that the object that is required or actioned on does not exist.
  *
@@ -24,6 +26,7 @@ package org.activiti.engine;
  */
 public class ActivitiObjectNotFoundException extends ActivitiException {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   private Class<?> objectClass;

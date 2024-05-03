@@ -58,8 +58,8 @@ import org.activiti.engine.api.internal.Internal;
 public @interface Deployment {
 
   /** Specify resources that make up the process definition. */
-  public String[] resources() default {};
+  String[] resources() default {};
 
   /** Specify tenantId to deploy*/
-    public String tenantId() default "";
+    String tenantId() default "";
 }

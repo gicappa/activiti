@@ -141,24 +141,12 @@ public abstract class ActivitiTestCase extends TestCase {
     super.tearDown();
   }
 
-  public static void closeProcessEngines() {
-    TestHelper.closeProcessEngines();
-  }
-
   public void setCurrentTime(Date currentTime) {
     processEngineConfiguration.getClock().setCurrentTime(currentTime);
   }
 
   public String getConfigurationResource() {
     return configurationResource;
-  }
-
-  public void setConfigurationResource(String configurationResource) {
-    this.configurationResource = configurationResource;
-  }
-
-  public ActivitiMockSupport getMockSupport() {
-    return mockSupport;
   }
 
   public ActivitiMockSupport mockSupport() {

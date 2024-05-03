@@ -25,8 +25,7 @@ import org.activiti.engine.TaskService;
 
 /** Exposes twitter-like feeds for tasks and process instances.
  *
- * @see {@link TaskService#getTaskEvents(String)
-
+ * @see {@link TaskService#getTaskEvents(String)}
  */
 public interface Event extends Serializable {
 
@@ -51,7 +50,7 @@ public interface Event extends Serializable {
   String ACTION_DELETE_GROUP_LINK = "DeleteGroupLink";
 
   /**
-   * An user comment was added with the short version of the comment as message.
+   * A user comment was added with the short version of the comment as message.
    */
   String ACTION_ADD_COMMENT = "AddComment";
 

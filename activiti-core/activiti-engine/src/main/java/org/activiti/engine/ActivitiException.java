@@ -16,6 +16,8 @@
 
 package org.activiti.engine;
 
+import java.io.Serial;
+
 /**
  * Runtime exception that is the superclass of all Activiti exceptions.
  *
@@ -23,6 +25,7 @@ package org.activiti.engine;
  */
 public class ActivitiException extends RuntimeException {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   public ActivitiException(String message, Throwable cause) {

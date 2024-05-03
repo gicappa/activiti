@@ -17,6 +17,8 @@
 
 package org.activiti.engine;
 
+import java.io.Serial;
+
 /**
  * An exception indicating that an illegal argument has been supplied in an Activiti API-call, an illegal value was configured in the engine's configuration or an illegal value has been supplied or an
  * illegal value is used in a process-definition.
@@ -24,6 +26,7 @@ package org.activiti.engine;
  */
 public class ActivitiIllegalArgumentException extends ActivitiException {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   public ActivitiIllegalArgumentException(String message) {

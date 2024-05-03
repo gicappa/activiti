@@ -16,6 +16,8 @@
 
 package org.activiti.engine;
 
+import java.io.Serial;
+
 /**
  * Exception that is thrown when the Activiti engine discovers a mismatch between the database schema version and the engine version.
  *
@@ -25,6 +27,7 @@ package org.activiti.engine;
  */
 public class ActivitiWrongDbException extends ActivitiException {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   String libraryVersion;

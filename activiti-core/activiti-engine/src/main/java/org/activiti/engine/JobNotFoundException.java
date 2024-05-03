@@ -15,6 +15,7 @@
  */
 package org.activiti.engine;
 
+import java.io.Serial;
 import org.activiti.engine.runtime.Job;
 
 /**
@@ -24,10 +25,11 @@ import org.activiti.engine.runtime.Job;
  */
 public class JobNotFoundException extends ActivitiObjectNotFoundException {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   /** the id of the job */
-  private String jobId;
+  private final String jobId;
 
   public JobNotFoundException(String jobId) {
     super("No job found with id '" + jobId + "'.", Job.class);

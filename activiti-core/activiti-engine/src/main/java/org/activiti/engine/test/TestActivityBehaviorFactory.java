@@ -124,14 +124,6 @@ public class TestActivityBehaviorFactory extends AbstractBehaviorFactory impleme
     this.wrappedActivityBehaviorFactory = wrappedActivityBehaviorFactory;
   }
 
-  public ActivityBehaviorFactory getWrappedActivityBehaviorFactory() {
-    return wrappedActivityBehaviorFactory;
-  }
-
-  public void setWrappedActivityBehaviorFactory(ActivityBehaviorFactory wrappedActivityBehaviorFactory) {
-    this.wrappedActivityBehaviorFactory = wrappedActivityBehaviorFactory;
-  }
-
   @Override
   public NoneStartEventActivityBehavior createNoneStartEventActivityBehavior(StartEvent startEvent) {
     return wrappedActivityBehaviorFactory.createNoneStartEventActivityBehavior(startEvent);
@@ -174,7 +166,7 @@ public class TestActivityBehaviorFactory extends AbstractBehaviorFactory impleme
   }
 
   private ClassDelegate createNoOpServiceTask(ServiceTask serviceTask) {
-    List<FieldDeclaration> fieldDeclarations = new ArrayList<FieldDeclaration>();
+    var fieldDeclarations = new ArrayList<FieldDeclaration>();
     fieldDeclarations.add(new FieldDeclaration("name", Expression.class.getName(), new FixedValue(serviceTask.getImplementation())));
     return new ClassDelegate(NoOpServiceTask.class, fieldDeclarations);
   }
