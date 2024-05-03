@@ -16,12 +16,16 @@
 
 package org.activiti.engine.impl;
 
+
+import static org.activiti.engine.impl.AbstractNativeQuery.ResultType.LIST;
+import static org.activiti.engine.impl.AbstractNativeQuery.ResultType.LIST_PAGE;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.impl.context.Context;
 import org.activiti.engine.impl.interceptor.Command;
@@ -32,13 +36,14 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * Abstract superclass for all native query types.
- *
  */
-public abstract class AbstractNativeQuery<T extends NativeQuery<?, ?>, U> implements Command<Object>, NativeQuery<T, U>, Serializable {
+public abstract class AbstractNativeQuery<T extends NativeQuery<?, ?>, U> implements
+  Command<Object>, NativeQuery<T, U>, Serializable {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
-  private static enum ResultType {
+  protected enum ResultType {
     LIST, LIST_PAGE, SINGLE_RESULT, COUNT
   }
 
@@ -47,9 +52,9 @@ public abstract class AbstractNativeQuery<T extends NativeQuery<?, ?>, U> implem
 
   protected int maxResults = Integer.MAX_VALUE;
   protected int firstResult;
-  protected ResultType resultType;
+  private ResultType resultType;
 
-  private Map<String, Object> parameters = new HashMap<String, Object>();
+  private final Map<String, Object> parameters = new HashMap<>();
   private String sqlStatement;
 
   protected AbstractNativeQuery(CommandExecutor commandExecutor) {
@@ -88,7 +93,7 @@ public abstract class AbstractNativeQuery<T extends NativeQuery<?, ?>, U> implem
 
   @SuppressWarnings("unchecked")
   public List<U> list() {
-    this.resultType = ResultType.LIST;
+    this.resultType = LIST;
     if (commandExecutor != null) {
       return (List<U>) commandExecutor.execute(this);
     }
@@ -115,61 +120,82 @@ public abstract class AbstractNativeQuery<T extends NativeQuery<?, ?>, U> implem
   }
 
   public Object execute(CommandContext commandContext) {
-    if (resultType == ResultType.LIST) {
+    if (resultType == LIST) {
       return executeList(commandContext, getParameterMap(), 0, Integer.MAX_VALUE);
-    } else if (resultType == ResultType.LIST_PAGE) {
+    }
+
+    if (resultType == LIST_PAGE) {
+
       Map<String, Object> parameterMap = getParameterMap();
       parameterMap.put("resultType", "LIST_PAGE");
       parameterMap.put("firstResult", firstResult);
       parameterMap.put("maxResults", maxResults);
-      if (StringUtils.isNotBlank(Objects.toString(parameterMap.get("orderBy")))) {
-        parameterMap.put("orderByColumns", "RES." + parameterMap.get("orderBy"));
-      } else {
-        parameterMap.put("orderByColumns", "RES.ID_ asc");
-      }
+      parameterMap.put("orderByColumns", extracted(parameterMap));
 
       int firstRow = firstResult + 1;
       parameterMap.put("firstRow", firstRow);
-      int lastRow = 0;
+
+      int lastRow;
       if (maxResults == Integer.MAX_VALUE) {
         lastRow = maxResults;
       } else {
         lastRow = firstResult + maxResults + 1;
       }
+
       parameterMap.put("lastRow", lastRow);
       return executeList(commandContext, parameterMap, firstResult, maxResults);
-    } else if (resultType == ResultType.SINGLE_RESULT) {
-      return executeSingleResult(commandContext);
-    } else {
-      return executeCount(commandContext, getParameterMap());
     }
+
+    if (resultType == ResultType.SINGLE_RESULT) {
+      return executeSingleResult(commandContext);
+    }
+
+    return executeCount(commandContext, getParameterMap());
+
   }
 
-  public abstract long executeCount(CommandContext commandContext, Map<String, Object> parameterMap);
+  private String extracted(Map<String, Object> parameterMap) {
+    if (StringUtils.isBlank(Objects.toString(parameterMap.get("orderBy")))) {
+      return "RES.ID_ asc";
+    }
+
+    return "RES." + parameterMap.get("orderBy");
+  }
+
+  public abstract long executeCount(CommandContext commandContext,
+    Map<String, Object> parameterMap);
 
   /**
    * Executes the actual query to retrieve the list of results.
    *
-   * @param maxResults
-   * @param firstResult
-   *
-   * @param page
-   *          used if the results must be paged. If null, no paging will be applied.
+   * @param commandContext the command context
+   * @param parameterMap   the map of parameters
+   * @param firstResult    the index of the first result
+   * @param maxResults     the maximum number of results
+   * @return the list of results
    */
-  public abstract List<U> executeList(CommandContext commandContext, Map<String, Object> parameterMap, int firstResult, int maxResults);
+  public abstract List<U> executeList(
+    CommandContext commandContext,
+    Map<String, Object> parameterMap,
+    int firstResult,
+    int maxResults);
 
   public U executeSingleResult(CommandContext commandContext) {
     List<U> results = executeList(commandContext, getParameterMap(), 0, Integer.MAX_VALUE);
-    if (results.size() == 1) {
-      return results.get(0);
-    } else if (results.size() > 1) {
+
+    if (results.isEmpty()) {
+      return null;
+    }
+
+    if (results.size() != 1) {
       throw new ActivitiException("Query return " + results.size() + " results instead of max 1");
     }
-    return null;
+
+    return results.getFirst();
   }
 
   private Map<String, Object> getParameterMap() {
-    HashMap<String, Object> parameterMap = new HashMap<String, Object>();
+    var parameterMap = new HashMap<String, Object>();
     parameterMap.put("sql", sqlStatement);
     parameterMap.putAll(parameters);
     return parameterMap;
