@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
  */
 public class RetryInterceptor extends AbstractCommandInterceptor {
 
-  private static Logger log = LoggerFactory.getLogger(RetryInterceptor.class);
+  private static final Logger log = LoggerFactory.getLogger(RetryInterceptor.class);
 
   protected int numOfRetries = 3;
   protected int waitTimeInMs = 50;

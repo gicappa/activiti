@@ -20,8 +20,6 @@ import org.activiti.engine.api.internal.Internal;
 
 /**
  * The command executor for internal usage.
- *
-
  */
 @Internal
 public interface CommandExecutor {

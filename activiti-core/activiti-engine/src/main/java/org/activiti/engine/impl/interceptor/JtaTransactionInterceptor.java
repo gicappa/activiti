@@ -26,13 +26,14 @@ import jakarta.transaction.Status;
 import jakarta.transaction.SystemException;
 import jakarta.transaction.Transaction;
 import jakarta.transaction.TransactionManager;
+import java.io.Serial;
 import java.lang.reflect.UndeclaredThrowableException;
 import org.activiti.engine.impl.cfg.TransactionPropagation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
-
+ *
  */
 public class JtaTransactionInterceptor extends AbstractCommandInterceptor {
 
@@ -65,15 +66,13 @@ public class JtaTransactionInterceptor extends AbstractCommandInterceptor {
       T result;
       try {
         result = next.execute(config, command);
-      } catch (RuntimeException ex) {
+      } catch (RuntimeException | Error ex) {
         doRollback(isNew, ex);
         throw ex;
-      } catch (Error err) {
-        doRollback(isNew, err);
-        throw err;
       } catch (Exception ex) {
         doRollback(isNew, ex);
-        throw new UndeclaredThrowableException(ex, "TransactionCallback threw undeclared checked exception");
+        throw new UndeclaredThrowableException(ex,
+          "TransactionCallback threw undeclared checked exception");
       }
       if (isNew) {
         doCommit();
@@ -87,9 +86,7 @@ public class JtaTransactionInterceptor extends AbstractCommandInterceptor {
   private void doBegin() {
     try {
       transactionManager.begin();
-    } catch (NotSupportedException e) {
-      throw new TransactionException("Unable to begin transaction", e);
-    } catch (SystemException e) {
+    } catch (NotSupportedException | SystemException e) {
       throw new TransactionException("Unable to begin transaction", e);
     }
   }
@@ -114,9 +111,7 @@ public class JtaTransactionInterceptor extends AbstractCommandInterceptor {
     if (tx != null) {
       try {
         transactionManager.resume(tx);
-      } catch (SystemException e) {
-        throw new TransactionException("Unable to resume transaction", e);
-      } catch (InvalidTransactionException e) {
+      } catch (SystemException | InvalidTransactionException e) {
         throw new TransactionException("Unable to resume transaction", e);
       }
     }
@@ -125,18 +120,10 @@ public class JtaTransactionInterceptor extends AbstractCommandInterceptor {
   private void doCommit() {
     try {
       transactionManager.commit();
-    } catch (HeuristicMixedException e) {
+    } catch (HeuristicMixedException | HeuristicRollbackException | RollbackException |
+             SystemException e) {
       throw new TransactionException("Unable to commit transaction", e);
-    } catch (HeuristicRollbackException e) {
-      throw new TransactionException("Unable to commit transaction", e);
-    } catch (RollbackException e) {
-      throw new TransactionException("Unable to commit transaction", e);
-    } catch (SystemException e) {
-      throw new TransactionException("Unable to commit transaction", e);
-    } catch (RuntimeException e) {
-      doRollback(true, e);
-      throw e;
-    } catch (Error e) {
+    } catch (RuntimeException | Error e) {
       doRollback(true, e);
       throw e;
     }
@@ -152,36 +139,23 @@ public class JtaTransactionInterceptor extends AbstractCommandInterceptor {
       }
     } catch (SystemException e) {
       LOGGER.debug("Error when rolling back transaction", e);
-    } catch (RuntimeException e) {
-      rollbackEx = e;
-      throw e;
-    } catch (Error e) {
+    } catch (RuntimeException | Error e) {
       rollbackEx = e;
       throw e;
     } finally {
       if (rollbackEx != null && originalException != null) {
-        LOGGER.error("Error when rolling back transaction, original exception was:", originalException);
+        LOGGER.error("Error when rolling back transaction, original exception was:",
+          originalException);
       }
     }
   }
 
   private static class TransactionException extends RuntimeException {
-
+    @Serial
     private static final long serialVersionUID = 1L;
 
-    private TransactionException() {
-    }
-
-    private TransactionException(String s) {
-      super(s);
-    }
-
-    private TransactionException(String s, Throwable throwable) {
-      super(s, throwable);
-    }
-
-    private TransactionException(Throwable throwable) {
-      super(throwable);
+    public TransactionException(String message, Throwable cause) {
+      super(message, cause);
     }
   }
 }

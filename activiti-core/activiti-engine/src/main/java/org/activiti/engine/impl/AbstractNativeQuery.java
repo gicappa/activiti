@@ -18,7 +18,9 @@ package org.activiti.engine.impl;
 
 
 import static org.activiti.engine.impl.AbstractNativeQuery.ResultType.LIST;
+import static org.activiti.engine.impl.AbstractNativeQuery.ResultType.COUNT;
 import static org.activiti.engine.impl.AbstractNativeQuery.ResultType.LIST_PAGE;
+import static org.activiti.engine.impl.AbstractNativeQuery.ResultType.SINGLE_RESULT;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -84,7 +86,7 @@ public abstract class AbstractNativeQuery<T extends NativeQuery<?, ?>, U> implem
 
   @SuppressWarnings("unchecked")
   public U singleResult() {
-    this.resultType = ResultType.SINGLE_RESULT;
+    this.resultType = SINGLE_RESULT;
     if (commandExecutor != null) {
       return (U) commandExecutor.execute(this);
     }
@@ -94,9 +96,11 @@ public abstract class AbstractNativeQuery<T extends NativeQuery<?, ?>, U> implem
   @SuppressWarnings("unchecked")
   public List<U> list() {
     this.resultType = LIST;
+
     if (commandExecutor != null) {
       return (List<U>) commandExecutor.execute(this);
     }
+
     return executeList(Context.getCommandContext(), getParameterMap(), 0, Integer.MAX_VALUE);
   }
 
@@ -104,15 +108,17 @@ public abstract class AbstractNativeQuery<T extends NativeQuery<?, ?>, U> implem
   public List<U> listPage(int firstResult, int maxResults) {
     this.firstResult = firstResult;
     this.maxResults = maxResults;
-    this.resultType = ResultType.LIST_PAGE;
+    this.resultType = LIST_PAGE;
+
     if (commandExecutor != null) {
       return (List<U>) commandExecutor.execute(this);
     }
+
     return executeList(Context.getCommandContext(), getParameterMap(), firstResult, maxResults);
   }
 
   public long count() {
-    this.resultType = ResultType.COUNT;
+    this.resultType = COUNT;
     if (commandExecutor != null) {
       return (Long) commandExecutor.execute(this);
     }

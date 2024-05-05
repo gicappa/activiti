@@ -45,7 +45,7 @@ public interface TaskService {
 
   /**
    * Creates a new task that is not related to any process instance.
-   *
+   * <p>
    * The returned task is transient and must be saved with {@link #saveTask(Task)} 'manually'.
    */
   Task newTask();
@@ -57,8 +57,7 @@ public interface TaskService {
    * Saves the given task to the persistent data store. If the task is already present in the persistent store, it is updated. After a new task has been saved, the task instance passed into this
    * method is updated with the id of the newly created task.
    *
-   * @param task
-   *          the task, cannot be null.
+   * @param task the task, cannot be null.
    */
   Task saveTask(Task task);
 

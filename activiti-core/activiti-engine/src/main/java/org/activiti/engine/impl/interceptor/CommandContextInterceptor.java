@@ -83,19 +83,8 @@ public class CommandContextInterceptor extends AbstractCommandInterceptor {
     return null;
   }
 
-  public CommandContextFactory getCommandContextFactory() {
-    return commandContextFactory;
-  }
-
-  public void setCommandContextFactory(CommandContextFactory commandContextFactory) {
-    this.commandContextFactory = commandContextFactory;
-  }
-
   public ProcessEngineConfigurationImpl getProcessEngineConfiguration() {
     return processEngineConfiguration;
   }
 
-  public void setProcessEngineContext(ProcessEngineConfigurationImpl processEngineContext) {
-    this.processEngineConfiguration = processEngineContext;
-  }
 }

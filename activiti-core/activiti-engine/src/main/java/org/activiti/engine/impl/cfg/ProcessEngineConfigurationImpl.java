@@ -16,6 +16,8 @@
 
 package org.activiti.engine.impl.cfg;
 
+import static org.activiti.engine.impl.cfg.DelegateExpressionFieldInjectionMode.MIXED;
+
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -772,18 +774,20 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
   protected FailedJobCommandFactory failedJobCommandFactory;
 
   /**
-   * Set this to true if you want to have extra checks on the BPMN xml that is parsed. See http://www.jorambarrez.be/blog/2013/02/19/uploading-a-funny-xml -can-bring-down-your-server/
-   *
-   * Unfortunately, this feature is not available on some platforms (JDK 6, JBoss), hence the reason why it is disabled by default. If your platform allows the use of StaxSource during XML parsing, do
-   * enable it.
+   * Set this to true if you want to have extra checks on the BPMN xml that is parsed.
+   * Unfortunately, this feature is not available on some platforms (JDK 6, JBoss),
+   * hence the reason why it is disabled by default. If your platform allows the use
+   * of StaxSource during XML parsing, do enable it.
    */
   protected boolean enableSafeBpmnXml;
 
   /**
-   * The following settings will determine the amount of entities loaded at once when the engine needs to load multiple entities (eg. when suspending a process definition with all its process
-   * instances).
-   *
-   * The default setting is quite low, as not to surprise anyone with sudden memory spikes. Change it to something higher if the environment Activiti runs in allows it.
+   * The following settings will determine the amount of entities loaded at once when
+   * the engine needs to load multiple entities (e.g. when suspending a process
+   * definition with all its process instances).
+   * <p>
+   * The default setting is quite low, as not to surprise anyone with sudden memory
+   * spikes. Change it to something higher if the environment Activiti runs in allows it.
    */
   protected int batchSizeProcessInstances = 25;
   protected int batchSizeTasks = 25;
@@ -806,7 +810,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
    *
    * @since 5.21
    */
-  protected DelegateExpressionFieldInjectionMode delegateExpressionFieldInjectionMode = DelegateExpressionFieldInjectionMode.MIXED;
+  protected DelegateExpressionFieldInjectionMode delegateExpressionFieldInjectionMode = MIXED;
 
   /**
   *  Define a max length for storing String variable types in the database.
@@ -816,7 +820,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
 
   /**
    * If set to true, enables bulk insert (grouping sql inserts together).
-   * Default true. For some databases (eg DB2 on Zos: https://activiti.atlassian.net/browse/ACT-4042) needs to be set to false
+   * Default true. For some databases (eg DB2 on Zos) needs to be set to false
    */
   protected boolean isBulkInsertEnabled = true;
 
@@ -829,17 +833,18 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
    */
   protected int maxNrOfStatementsInBulkInsert = 100;
 
-  public int DEFAULT_MAX_NR_OF_STATEMENTS_BULK_INSERT_SQL_SERVER = 70; // currently Execution has most params (28). 2000 / 28 = 71.
+  // currently Execution has most params (28). 2000 / 28 = 71.
+  public int DEFAULT_MAX_NR_OF_STATEMENTS_BULK_INSERT_SQL_SERVER = 70;
 
   protected ObjectMapper objectMapper = new ObjectMapper();
 
   /**
    * Flag that can be set to configure or nota relational database is used.
    * This is useful for custom implementations that do not use relational databases at all.
-   *
+   * <p>
    * If true (default), the {@link ProcessEngineConfiguration#getDatabaseSchemaUpdate()} value will be used to determine
    * what needs to happen wrt the database schema.
-   *
+   * <p>
    * If false, no validation or schema creation will be done. That means that the database schema must have been
    * created 'manually' before but the engine does not validate whether the schema is correct.
    * The {@link ProcessEngineConfiguration#getDatabaseSchemaUpdate()} value will not be used.
@@ -862,7 +867,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
   @Override
   public ProcessEngine buildProcessEngine() {
     init();
-    ProcessEngineImpl processEngine = new ProcessEngineImpl(this);
+    var processEngine = new ProcessEngineImpl(this);
     postProcessEngineInitialisation();
 
     return processEngine;
@@ -981,10 +986,10 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
   }
 
   public Collection<? extends CommandInterceptor> getDefaultCommandInterceptors() {
-    List<CommandInterceptor> interceptors = new ArrayList<CommandInterceptor>();
+    var interceptors = new ArrayList<CommandInterceptor>();
     interceptors.add(new LogInterceptor());
 
-    CommandInterceptor transactionInterceptor = createTransactionInterceptor();
+    var transactionInterceptor = createTransactionInterceptor();
     if (transactionInterceptor != null) {
       interceptors.add(transactionInterceptor);
     }

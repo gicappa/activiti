@@ -19,9 +19,6 @@ package org.activiti.engine.impl.interceptor;
 
 import org.activiti.engine.impl.cfg.TransactionContext;
 
-/**
-
- */
 public class TransactionCommandContextCloseListener implements CommandContextCloseListener {
 
   protected TransactionContext transactionContext;

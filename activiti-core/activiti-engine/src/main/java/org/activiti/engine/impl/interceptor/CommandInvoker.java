@@ -22,7 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
-
+ *
  */
 public class CommandInvoker extends AbstractCommandInterceptor {
 
@@ -57,30 +57,30 @@ public class CommandInvoker extends AbstractCommandInterceptor {
 
   protected void executeOperations(final CommandContext commandContext) {
     while (!commandContext.getAgenda().isEmpty()) {
-      Runnable runnable = commandContext.getAgenda().getNextOperation();
+      var runnable = commandContext.getAgenda().getNextOperation();
       executeOperation(runnable);
     }
   }
 
   public void executeOperation(Runnable runnable) {
-    if (runnable instanceof AbstractOperation) {
-      AbstractOperation operation = (AbstractOperation) runnable;
+    if (runnable instanceof AbstractOperation operation) {
 
-      // Execute the operation if the operation has no execution (i.e. it's an operation not working on a process instance)
-      // or the operation has an execution and it is not ended
-      if (operation.getExecution() == null || !operation.getExecution().isEnded()) {
-
-        if (logger.isDebugEnabled()) {
-          logger.debug("Executing operation {} ", operation.getClass());
-        }
-
-        runnable.run();
-
+      if (isExecutingOrIsEnded(operation)) {
+        return;
       }
 
-    } else {
-      runnable.run();
+      if (logger.isDebugEnabled()) {
+        logger.debug("Executing operation {} ", operation.getClass());
+      }
     }
+    runnable.run();
+  }
+
+  // Execute the operation if the operation has no execution
+  // (i.e. it's an operation not working on a process instance)
+  // or the operation has an execution and it is not ended
+  private boolean isExecutingOrIsEnded(AbstractOperation operation) {
+    return !(operation.getExecution() == null || !operation.getExecution().isEnded());
   }
 
   @Override
@@ -90,7 +90,8 @@ public class CommandInvoker extends AbstractCommandInterceptor {
 
   @Override
   public void setNext(CommandInterceptor next) {
-    throw new UnsupportedOperationException("CommandInvoker must be the last interceptor in the chain");
+    throw new UnsupportedOperationException(
+      "CommandInvoker must be the last interceptor in the chain");
   }
 
 }

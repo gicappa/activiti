@@ -22,7 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
-
+ *
  */
 public class DebugCommandInvoker extends CommandInvoker {
 
@@ -30,17 +30,23 @@ public class DebugCommandInvoker extends CommandInvoker {
 
   @Override
   public void executeOperation(Runnable runnable) {
-    if (runnable instanceof AbstractOperation) {
-      AbstractOperation operation = (AbstractOperation) runnable;
+    if (runnable instanceof AbstractOperation operation) {
 
       if (operation.getExecution() != null) {
-        logger.info("Execution tree while executing operation {} :", operation.getClass());
-        logger.info("{}", System.lineSeparator() +  ExecutionTreeUtil.buildExecutionTree(operation.getExecution()));
+        log(operation);
       }
-
     }
 
     super.executeOperation(runnable);
+  }
+
+  private static void log(AbstractOperation operation) {
+    logger.info("Execution tree while executing operation {} :", operation.getClass());
+    logger.info("{}", tree(operation));
+  }
+
+  private static String tree(AbstractOperation operation) {
+    return System.lineSeparator() + ExecutionTreeUtil.buildExecutionTree(operation.getExecution());
   }
 
 }

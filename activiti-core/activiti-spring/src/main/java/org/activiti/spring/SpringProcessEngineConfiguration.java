@@ -17,7 +17,9 @@
 
 package org.activiti.spring;
 
-import org.activiti.api.runtime.shared.identity.UserGroupManager;
+import java.util.ArrayList;
+import java.util.Collection;
+import javax.sql.DataSource;
 import org.activiti.core.common.spring.project.ApplicationUpgradeContextService;
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.ProcessEngine;
@@ -28,7 +30,12 @@ import org.activiti.engine.impl.cfg.StandaloneProcessEngineConfiguration;
 import org.activiti.engine.impl.interceptor.CommandConfig;
 import org.activiti.engine.impl.interceptor.CommandInterceptor;
 import org.activiti.engine.impl.variable.EntityManagerSession;
-import org.activiti.spring.autodeployment.*;
+import org.activiti.spring.autodeployment.AutoDeploymentStrategy;
+import org.activiti.spring.autodeployment.DefaultAutoDeploymentStrategy;
+import org.activiti.spring.autodeployment.FailOnNoProcessAutoDeploymentStrategy;
+import org.activiti.spring.autodeployment.NeverFailAutoDeploymentStrategy;
+import org.activiti.spring.autodeployment.ResourceParentFolderAutoDeploymentStrategy;
+import org.activiti.spring.autodeployment.SingleResourceAutoDeploymentStrategy;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -36,66 +43,67 @@ import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.Collection;
+public class SpringProcessEngineConfiguration
+  extends ProcessEngineConfigurationImpl implements ApplicationContextAware {
 
-public class SpringProcessEngineConfiguration extends ProcessEngineConfigurationImpl implements ApplicationContextAware {
+  protected PlatformTransactionManager transactionManager;
+  protected String deploymentName = "SpringAutoDeployment";
+  protected Resource[] deploymentResources = new Resource[0];
+  protected String deploymentMode = "default";
+  protected ApplicationContext applicationContext;
+  protected Integer transactionSynchronizationAdapterOrder = null;
+  private final Collection<AutoDeploymentStrategy> deploymentStrategies = new ArrayList<>();
+  private final DefaultAutoDeploymentStrategy defaultAutoDeploymentStrategy;
 
-    protected PlatformTransactionManager transactionManager;
-    protected String deploymentName = "SpringAutoDeployment";
-    protected Resource[] deploymentResources = new Resource[0];
-    protected String deploymentMode = "default";
-    protected ApplicationContext applicationContext;
-    protected Integer transactionSynchronizationAdapterOrder = null;
-    private Collection<AutoDeploymentStrategy> deploymentStrategies = new ArrayList<>();
-    private DefaultAutoDeploymentStrategy defaultAutoDeploymentStrategy;
-
-    public SpringProcessEngineConfiguration() {
-        this(null);
-    }
-
-    public SpringProcessEngineConfiguration(ApplicationUpgradeContextService applicationUpgradeContextService) {
-        this.transactionsExternallyManaged = true;
-        defaultAutoDeploymentStrategy = new DefaultAutoDeploymentStrategy(applicationUpgradeContextService);
-        deploymentStrategies.add(defaultAutoDeploymentStrategy);
-        deploymentStrategies.add(new SingleResourceAutoDeploymentStrategy(applicationUpgradeContextService));
-        deploymentStrategies.add(new ResourceParentFolderAutoDeploymentStrategy(applicationUpgradeContextService));
-        deploymentStrategies.add(new FailOnNoProcessAutoDeploymentStrategy(applicationUpgradeContextService));
-        deploymentStrategies.add(new NeverFailAutoDeploymentStrategy(applicationUpgradeContextService));
-        if(applicationUpgradeContextService!= null) {
-            this.isRollbackDeployment = applicationUpgradeContextService.isRollbackDeployment();
-        }
-    }
-
-    @Override
-    public ProcessEngine buildProcessEngine() {
-        ProcessEngine processEngine = super.buildProcessEngine();
-        ProcessEngines.setInitialized(true);
-        autoDeployResources(processEngine);
-        return processEngine;
-    }
-
-  @Override
-  public UserGroupManager getUserGroupManager() {
-    return userGroupManager;
+  public SpringProcessEngineConfiguration() {
+    this(null);
   }
 
-  public void setTransactionSynchronizationAdapterOrder(Integer transactionSynchronizationAdapterOrder) {
-    this.transactionSynchronizationAdapterOrder = transactionSynchronizationAdapterOrder;
+  public SpringProcessEngineConfiguration(
+    ApplicationUpgradeContextService applicationUpgradeContextService) {
+    transactionsExternallyManaged = true;
+    defaultAutoDeploymentStrategy = new DefaultAutoDeploymentStrategy(
+      applicationUpgradeContextService);
+    deploymentStrategies.add(defaultAutoDeploymentStrategy);
+    deploymentStrategies.add(
+      new SingleResourceAutoDeploymentStrategy(applicationUpgradeContextService));
+    deploymentStrategies.add(
+      new ResourceParentFolderAutoDeploymentStrategy(applicationUpgradeContextService));
+    deploymentStrategies.add(
+      new FailOnNoProcessAutoDeploymentStrategy(applicationUpgradeContextService));
+    deploymentStrategies.add(new NeverFailAutoDeploymentStrategy(applicationUpgradeContextService));
+    if (applicationUpgradeContextService != null) {
+      this.isRollbackDeployment = applicationUpgradeContextService.isRollbackDeployment();
+    }
+  }
+
+  @Override
+  public ProcessEngine buildProcessEngine() {
+    var processEngine = super.buildProcessEngine();
+    ProcessEngines.setInitialized(true);
+    autoDeployResources(processEngine);
+    return processEngine;
+  }
+
+  public void setTransactionSynchronizationAdapterOrder(Integer value) {
+    this.transactionSynchronizationAdapterOrder = value;
   }
 
   @Override
   public void initDefaultCommandConfig() {
+
     if (defaultCommandConfig == null) {
       defaultCommandConfig = new CommandConfig().setContextReusePossible(true);
     }
+
   }
 
   @Override
   public CommandInterceptor createTransactionInterceptor() {
     if (transactionManager == null) {
-      throw new ActivitiException("transactionManager is required property for SpringProcessEngineConfiguration, use " + StandaloneProcessEngineConfiguration.class.getName() + " otherwise");
+      throw new ActivitiException(
+        "transactionManager is required property for SpringProcessEngineConfiguration, use "
+          + StandaloneProcessEngineConfiguration.class.getName() + " otherwise");
     }
 
     return new SpringTransactionInterceptor(transactionManager);
@@ -104,21 +112,28 @@ public class SpringProcessEngineConfiguration extends ProcessEngineConfiguration
   @Override
   public void initTransactionContextFactory() {
     if (transactionContextFactory == null && transactionManager != null) {
-      transactionContextFactory = new SpringTransactionContextFactory(transactionManager, transactionSynchronizationAdapterOrder);
+      transactionContextFactory = new SpringTransactionContextFactory(transactionManager,
+        transactionSynchronizationAdapterOrder);
     }
   }
 
   @Override
   public void initJpa() {
     super.initJpa();
+
     if (jpaEntityManagerFactory != null) {
-      sessionFactories.put(EntityManagerSession.class, new SpringEntityManagerSessionFactory(jpaEntityManagerFactory, jpaHandleTransaction, jpaCloseEntityManager));
+      sessionFactories.put(EntityManagerSession.class,
+        new SpringEntityManagerSessionFactory(jpaEntityManagerFactory, jpaHandleTransaction,
+          jpaCloseEntityManager));
     }
+
   }
 
   protected void autoDeployResources(ProcessEngine processEngine) {
-      final AutoDeploymentStrategy strategy = getAutoDeploymentStrategy(deploymentMode);
-      strategy.deployResources(deploymentName, deploymentResources, processEngine.getRepositoryService());
+    final var strategy = getAutoDeploymentStrategy(deploymentMode);
+
+    strategy.deployResources(deploymentName, deploymentResources,
+      processEngine.getRepositoryService());
   }
 
   @Override
@@ -174,22 +189,23 @@ public class SpringProcessEngineConfiguration extends ProcessEngineConfiguration
   }
 
   /**
-   * Gets the {@link AutoDeploymentStrategy} for the provided mode. This method may be overridden to implement custom deployment strategies if required, but implementors should take care not to return
+   * Gets the {@link AutoDeploymentStrategy} for the provided mode. This method may be overridden to
+   * implement custom deployment strategies if required, but implementors should take care not to
+   * return
    * <code>null</code>.
    *
-   * @param mode
-   *          the mode to get the strategy for
+   * @param mode the mode to get the strategy for
    * @return the deployment strategy to use for the mode. Never <code>null</code>
    */
   protected AutoDeploymentStrategy getAutoDeploymentStrategy(final String mode) {
-      AutoDeploymentStrategy result = defaultAutoDeploymentStrategy;
-      for (final AutoDeploymentStrategy strategy : deploymentStrategies) {
-          if (strategy.handlesMode(mode)) {
-              result = strategy;
-              break;
-          }
+    AutoDeploymentStrategy result = defaultAutoDeploymentStrategy;
+    for (final AutoDeploymentStrategy strategy : deploymentStrategies) {
+      if (strategy.handlesMode(mode)) {
+        result = strategy;
+        break;
       }
-      return result;
+    }
+    return result;
   }
 
 }

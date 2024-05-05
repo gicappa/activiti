@@ -76,7 +76,7 @@ public class ProcessInstanceBuilderImpl implements ProcessInstanceBuilder {
 
   public ProcessInstanceBuilder variables(Map<String, Object> variables) {
     if (this.variables == null) {
-      this.variables = new HashMap<String, Object>();
+      this.variables = new HashMap<>();
     }
     if (variables != null) {
       for (String variableName : variables.keySet()) {
@@ -108,7 +108,7 @@ public class ProcessInstanceBuilderImpl implements ProcessInstanceBuilder {
 
   public ProcessInstanceBuilder transientVariable(String variableName, Object value) {
     if (this.transientVariables == null) {
-      this.transientVariables = new HashMap<String, Object>();
+      this.transientVariables = new HashMap<>();
     }
     this.transientVariables.put(variableName, value);
     return this;

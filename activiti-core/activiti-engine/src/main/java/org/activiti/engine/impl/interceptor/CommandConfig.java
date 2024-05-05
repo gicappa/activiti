@@ -15,14 +15,16 @@
  */
 package org.activiti.engine.impl.interceptor;
 
+import static org.activiti.engine.impl.cfg.TransactionPropagation.NOT_SUPPORTED;
+import static org.activiti.engine.impl.cfg.TransactionPropagation.REQUIRED;
+import static org.activiti.engine.impl.cfg.TransactionPropagation.REQUIRES_NEW;
+
 import org.activiti.engine.impl.cfg.TransactionPropagation;
 
 /**
  * Configuration settings for the command interceptor chain.
- *
+ * <p>
  * Instances of this class are immutable, and thus thread- and share-safe.
- *
-
  */
 public class CommandConfig {
 
@@ -31,12 +33,12 @@ public class CommandConfig {
 
   public CommandConfig() {
     this.contextReusePossible = true;
-    this.propagation = TransactionPropagation.REQUIRED;
+    this.propagation = REQUIRED;
   }
 
   public CommandConfig(boolean contextReusePossible) {
     this.contextReusePossible = contextReusePossible;
-    this.propagation = TransactionPropagation.REQUIRED;
+    this.propagation = REQUIRED;
   }
 
   public CommandConfig(boolean contextReusePossible, TransactionPropagation transactionPropagation) {
@@ -64,22 +66,22 @@ public class CommandConfig {
   }
 
   public CommandConfig transactionRequired() {
-    CommandConfig config = new CommandConfig(this);
-    config.propagation = TransactionPropagation.REQUIRED;
+    var config = new CommandConfig(this);
+    config.propagation = REQUIRED;
     return config;
   }
 
   public CommandConfig transactionRequiresNew() {
-    CommandConfig config = new CommandConfig();
+    var config = new CommandConfig();
     config.contextReusePossible = false;
-    config.propagation = TransactionPropagation.REQUIRES_NEW;
+    config.propagation = REQUIRES_NEW;
     return config;
   }
 
   public CommandConfig transactionNotSupported() {
-    CommandConfig config = new CommandConfig();
+    var config = new CommandConfig();
     config.contextReusePossible = false;
-    config.propagation = TransactionPropagation.NOT_SUPPORTED;
+    config.propagation = NOT_SUPPORTED;
     return config;
   }
 }

@@ -17,6 +17,7 @@
 
 package org.activiti.spring;
 
+import java.util.List;
 import org.activiti.core.el.CustomFunctionProvider;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
@@ -27,23 +28,15 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import java.util.List;
-
-/**
-
-
-
-
-
- */
-public class ProcessEngineFactoryBean implements FactoryBean<ProcessEngine>, DisposableBean, ApplicationContextAware {
+public class ProcessEngineFactoryBean implements
+  FactoryBean<ProcessEngine>, DisposableBean, ApplicationContextAware {
 
   protected ProcessEngineConfigurationImpl processEngineConfiguration;
 
   protected ApplicationContext applicationContext;
   protected ProcessEngine processEngine;
 
-  public void destroy() throws Exception {
+  public void destroy() {
     if (processEngine != null) {
       processEngine.close();
     }
@@ -53,7 +46,7 @@ public class ProcessEngineFactoryBean implements FactoryBean<ProcessEngine>, Dis
     this.applicationContext = applicationContext;
   }
 
-  public ProcessEngine getObject() throws Exception {
+  public ProcessEngine getObject() {
     configureExpressionManager();
     configureExternallyManagedTransactions();
 
@@ -67,7 +60,8 @@ public class ProcessEngineFactoryBean implements FactoryBean<ProcessEngine>, Dis
 
   protected void configureExpressionManager() {
     if (processEngineConfiguration.getExpressionManager() == null && applicationContext != null) {
-      SpringExpressionManager expressionManager = new SpringExpressionManager(applicationContext, processEngineConfiguration.getBeans());
+      SpringExpressionManager expressionManager = new SpringExpressionManager(applicationContext,
+        processEngineConfiguration.getBeans());
       List<CustomFunctionProvider> customFunctionProviders = processEngineConfiguration.getCustomFunctionProviders();
       if (customFunctionProviders != null) {
         expressionManager.setCustomFunctionProviders(customFunctionProviders);
@@ -97,7 +91,8 @@ public class ProcessEngineFactoryBean implements FactoryBean<ProcessEngine>, Dis
     return processEngineConfiguration;
   }
 
-  public void setProcessEngineConfiguration(ProcessEngineConfigurationImpl processEngineConfiguration) {
+  public void setProcessEngineConfiguration(
+    ProcessEngineConfigurationImpl processEngineConfiguration) {
     this.processEngineConfiguration = processEngineConfiguration;
   }
 }
