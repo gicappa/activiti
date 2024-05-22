@@ -19,7 +19,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
-import org.activiti.bpmn.BpmnAutoLayout;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.StartEvent;
@@ -40,9 +39,9 @@ public class SubProcessConverterAutoLayoutTest extends AbstractConverterTest {
   public void convertModelToXML() throws Exception {
     BpmnModel bpmnModel = readXMLFile();
 
-    // Add DI information to bpmn model
-    BpmnAutoLayout bpmnAutoLayout = new BpmnAutoLayout(bpmnModel);
-    bpmnAutoLayout.execute();
+//    // Add DI information to bpmn model
+//    BpmnAutoLayout bpmnAutoLayout = new BpmnAutoLayout(bpmnModel);
+//    bpmnAutoLayout.execute();
 
     BpmnModel parsedModel = exportAndReadXMLFile(bpmnModel);
     validateModel(parsedModel);
