@@ -22,14 +22,13 @@ import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.validation.validator.ValidatorSet;
 
 /**
- * Validates a process definition against the rules of the Activiti engine to be executable
- *
-
+ * Validates a process definition against the rules of the Activiti
+ * engine to be executable
  */
 public interface ProcessValidator {
 
   /**
-   * Validates the provided {@link BpmnModel} and returns a list of all {@link ValidationError} occurences found.
+   * Validates the provided {@link BpmnModel} and returns a list of all {@link ValidationError} occurrences found.
    */
   List<ValidationError> validate(BpmnModel bpmnModel);
 

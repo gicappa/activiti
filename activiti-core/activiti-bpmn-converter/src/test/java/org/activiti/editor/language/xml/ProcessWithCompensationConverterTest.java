@@ -38,15 +38,10 @@ public class ProcessWithCompensationConverterTest {
 
     BpmnXMLConverter bpmnXMLConverter = new BpmnXMLConverter();
 
-    BpmnModel bpmnModel1 = bpmnXMLConverter.convertToBpmnModel(new InputStreamProvider() {
+    BpmnModel bpmnModel1 = bpmnXMLConverter.convertToBpmnModel(
+      () -> inputStream, false, false);
 
-      @Override
-      public InputStream getInputStream() {
-        return inputStream;
-      }
-    }, false, false);
-
-    if (bpmnModel1.getLocationMap().size() == 0) {
+    if (bpmnModel1.getLocationMap().isEmpty()) {
       BpmnAutoLayout bpmnLayout = new BpmnAutoLayout(bpmnModel1);
       bpmnLayout.execute();
     }
