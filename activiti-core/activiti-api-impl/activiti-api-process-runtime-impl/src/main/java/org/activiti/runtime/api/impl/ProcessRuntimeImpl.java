@@ -514,17 +514,14 @@ public class ProcessRuntimeImpl implements ProcessRuntime {
     var businessKey = messagePayload.getBusinessKey();
     var variables = messagePayload.getVariables();
 
-    processVariablesValidator.checkStartMessagePayloadVariables(
-      messagePayload, null);
+    processVariablesValidator.checkStartMessagePayloadVariables(messagePayload, null);
 
     var internalProcessInstance = runtimeService.startProcessInstanceByMessage(
       messageName,
       businessKey,
       variables);
 
-    var processInstance = processInstanceConverter.from(internalProcessInstance);
-
-    return processInstance;
+    return processInstanceConverter.from(internalProcessInstance);
   }
 
   private void checkUserCanWritePermissionOnProcessDefinition(String processDefinitionKey) {

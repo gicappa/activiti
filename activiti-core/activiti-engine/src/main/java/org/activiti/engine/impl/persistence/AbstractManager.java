@@ -13,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package org.activiti.engine.impl.persistence;
 
 import org.activiti.engine.delegate.event.ActivitiEventDispatcher;
@@ -50,10 +48,6 @@ import org.activiti.engine.impl.persistence.entity.TimerJobEntityManager;
 import org.activiti.engine.impl.persistence.entity.VariableInstanceEntityManager;
 import org.activiti.engine.runtime.Clock;
 
-/**
-
-
- */
 public abstract class AbstractManager {
 
   protected ProcessEngineConfigurationImpl processEngineConfiguration;
@@ -63,7 +57,6 @@ public abstract class AbstractManager {
   }
 
   // Command scoped
-
   protected CommandContext getCommandContext() {
     return Context.getCommandContext();
   }
@@ -73,7 +66,6 @@ public abstract class AbstractManager {
   }
 
   // Engine scoped
-
   protected ProcessEngineConfigurationImpl getProcessEngineConfiguration() {
     return processEngineConfiguration;
   }

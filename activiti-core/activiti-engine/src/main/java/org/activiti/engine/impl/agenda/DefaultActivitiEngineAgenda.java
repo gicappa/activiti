@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.activiti.engine.impl.agenda;
 
 import java.util.LinkedList;
@@ -24,16 +23,11 @@ import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-/**
-
-
- */
 public class DefaultActivitiEngineAgenda implements ActivitiEngineAgenda {
 
     private static final Logger logger = LoggerFactory.getLogger(DefaultActivitiEngineAgenda.class);
 
-    protected LinkedList<Runnable> operations = new LinkedList<Runnable>();
+    protected LinkedList<Runnable> operations = new LinkedList<>();
     protected CommandContext commandContext;
 
     public DefaultActivitiEngineAgenda(CommandContext commandContext) {
@@ -57,8 +51,9 @@ public class DefaultActivitiEngineAgenda implements ActivitiEngineAgenda {
     public void planOperation(Runnable operation) {
         operations.add(operation);
 
-        if (operation instanceof AbstractOperation) {
-            ExecutionEntity execution = ((AbstractOperation) operation).getExecution();
+        if (operation instanceof AbstractOperation op) {
+            var execution = op.getExecution();
+
             if (execution != null) {
                 commandContext.addInvolvedExecution(execution);
             }
