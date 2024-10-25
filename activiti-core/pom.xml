@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.activiti</groupId>
     <artifactId>activiti-parent</artifactId>
-    <version>8.5.0-SNAPSHOT</version>
+    <version>8.7.0-SNAPSHOT</version>
   </parent>
   <artifactId>activiti-core</artifactId>
   <packaging>pom</packaging>
@@ -14,18 +14,20 @@
     <batik.version>1.17</batik.version>
     <commons-email.version>1.5</commons-email.version>
     <commons-io.version>2.14.0</commons-io.version>
+    <commons-text.version>1.12.0</commons-text.version>
     <jakarta-enterprise-concurrent.version>1.1.2</jakarta-enterprise-concurrent.version>
     <java-uuid-generator.version>4.0.1</java-uuid-generator.version>
     <javaGeom.version>0.11.1</javaGeom.version>
     <jgraphx.version>4.2.2</jgraphx.version>
     <joda-time.version>2.12.0</joda-time.version>
-    <json-unit.version>2.35.0</json-unit.version>
+    <json-unit.version>3.2.7</json-unit.version>
     <mybatis.version>3.5.10</mybatis.version>
     <subethasmtp-wiser.version>1.2</subethasmtp-wiser.version>
     <xmlgraphics-commons.version>2.9</xmlgraphics-commons.version>
     <nashorn-core.version>15.4</nashorn-core.version>
     <groovy.version>3.0.19</groovy.version>
     <simple-jndi.version>0.23.0</simple-jndi.version>
+    <zjsonpatch.version>0.4.16</zjsonpatch.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -57,6 +59,11 @@
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>${commons-io.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-text</artifactId>
+        <version>${commons-text.version}</version>
       </dependency>
       <dependency>
         <groupId>org.mybatis</groupId>
@@ -212,6 +219,11 @@
       <artifactId>activiti-core-common-dependencies</artifactId>
       <version>${project.version}</version>
       <type>pom</type>
+    </dependency>
+    <dependency>
+      <groupId>com.flipkart.zjsonpatch</groupId>
+      <artifactId>zjsonpatch</artifactId>
+      <version>${zjsonpatch.version}</version>
     </dependency>
   </dependencies>
   <modules>

@@ -26,7 +26,9 @@ import org.activiti.engine.ActivitiEngineAgenda;
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.ActivitiOptimisticLockingException;
 import org.activiti.engine.ActivitiTaskAlreadyClaimedException;
+import org.activiti.engine.ApplicationStatusHolder;
 import org.activiti.engine.JobNotFoundException;
+import org.activiti.engine.delegate.BpmnError;
 import org.activiti.engine.delegate.event.ActivitiEventDispatcher;
 import org.activiti.engine.impl.asyncexecutor.JobManager;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
@@ -140,6 +142,7 @@ public class CommandContext {
       // Catch exceptions during session closing
       exception(exception);
     }
+
 
     if (exception != null) {
       rethrowExceptionIfNeeded();

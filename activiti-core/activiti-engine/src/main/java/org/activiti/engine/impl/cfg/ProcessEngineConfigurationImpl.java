@@ -1106,6 +1106,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
   public static final String DATABASE_TYPE_ORACLE = "oracle";
   public static final String DATABASE_TYPE_POSTGRES = "postgres";
   public static final String DATABASE_TYPE_MSSQL = "mssql";
+  public static final String DATABASE_TYPE_MARIADB = "mariadb";
   public static final String DATABASE_TYPE_DB2 = "db2";
 
   public static Properties getDefaultDatabaseTypeMappings() {
@@ -1812,16 +1813,14 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
             supportedTypes.append(" ").append(type.getCanonicalName()).append(" ");
           }
           throw new ActivitiException(
-            "The default BPMN parse handlers should only support one type, but "
-              + defaultBpmnParseHandler.getClass() + " supports " + supportedTypes.toString()
-              + ". This is likely a programmatic error");
+            STR."The default BPMN parse handlers should only support one type, but \{defaultBpmnParseHandler.getClass()} supports \{supportedTypes.toString()}. This is likely a programmatic error");
         } else {
           Class<?> handledType = defaultBpmnParseHandler.getHandledTypes().iterator().next();
           if (customParseHandlerMap.containsKey(handledType)) {
-            BpmnParseHandler newBpmnParseHandler = customParseHandlerMap.get(handledType);
+            var newBpmnParseHandler = customParseHandlerMap.get(handledType);
             log.info(
-              "Replacing default BpmnParseHandler " + defaultBpmnParseHandler.getClass().getName()
-                + " with " + newBpmnParseHandler.getClass().getName());
+              STR."Replacing default BpmnParseHandler \{defaultBpmnParseHandler.getClass()
+                .getName()} with \{newBpmnParseHandler.getClass().getName()}");
             bpmnParserHandlers.set(i, newBpmnParseHandler);
           }
         }
