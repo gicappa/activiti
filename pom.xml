@@ -539,6 +539,7 @@ limitations under the License.
           <optimize>true</optimize>
           <compilerArgs>
             <arg>-parameters</arg>
+            <arg>--enable-preview</arg>
           </compilerArgs>
         </configuration>
       </plugin>

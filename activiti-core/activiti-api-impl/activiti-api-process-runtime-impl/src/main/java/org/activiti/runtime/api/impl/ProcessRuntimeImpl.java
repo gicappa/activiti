@@ -15,6 +15,8 @@
  */
 package org.activiti.runtime.api.impl;
 
+import static org.activiti.core.common.spring.security.policies.SecurityPolicyAccess.READ;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -194,7 +196,9 @@ public class ProcessRuntimeImpl implements ProcessRuntime {
 
   @Override
   public Page<ProcessDefinition> processDefinitions(Pageable pageable, List<String> include) {
-    return processDefinitions(pageable, ProcessPayloadBuilder.processDefinitions().build(),
+    return processDefinitions(
+      pageable,
+      ProcessPayloadBuilder.processDefinitions().build(),
       include);
   }
 
@@ -208,11 +212,12 @@ public class ProcessRuntimeImpl implements ProcessRuntime {
   public Page<ProcessDefinition> processDefinitions(Pageable pageable,
     GetProcessDefinitionsPayload getProcessDefinitionsPayload,
     List<String> include) {
+
     if (getProcessDefinitionsPayload == null) {
       throw new IllegalStateException("payload cannot be null");
     }
-    GetProcessDefinitionsPayload securityKeysInPayload = securityPoliciesManager.restrictProcessDefQuery(
-      SecurityPolicyAccess.READ);
+    var securityKeysInPayload = securityPoliciesManager.restrictProcessDefQuery(
+      READ);
     // If the security policies keys are not empty it means that I will need to use them to filter results,
     //   else ignore and use the user provided ones.
     if (!securityKeysInPayload.getProcessDefinitionKeys().isEmpty()) {
@@ -220,7 +225,7 @@ public class ProcessRuntimeImpl implements ProcessRuntime {
         securityKeysInPayload.getProcessDefinitionKeys());
     }
 
-    ProcessDefinitionQuery processDefinitionQuery = createProcessDefinitionQueryWithAccessCheck()
+    var processDefinitionQuery = createProcessDefinitionQueryWithAccessCheck()
       .latestVersion()
       .deploymentIds(latestDeploymentIds());
 
@@ -240,8 +245,7 @@ public class ProcessRuntimeImpl implements ProcessRuntime {
 
     if (!canReadProcessInstance(internalProcessInstance)) {
       throw new ActivitiObjectNotFoundException(
-        "You cannot read the process instance with Id:'" + processInstanceId
-          + "' due to security policies violation");
+        STR."You cannot read the process instance with Id:'\{processInstanceId}' due to security policies violation");
     }
     return processInstanceConverter.from(internalProcessInstance);
   }
@@ -253,27 +257,32 @@ public class ProcessRuntimeImpl implements ProcessRuntime {
   }
 
   @Override
-  public Page<ProcessInstance> processInstances(Pageable pageable,
+  public Page<ProcessInstance> processInstances(
+    Pageable pageable,
     GetProcessInstancesPayload getProcessInstancesPayload) {
+
     if (getProcessInstancesPayload == null) {
       throw new IllegalStateException("payload cannot be null");
     }
-    GetProcessInstancesPayload securityKeysInPayload = securityPoliciesManager.restrictProcessInstQuery(
-      SecurityPolicyAccess.READ);
+
+    var securityKeysInPayload =
+      securityPoliciesManager.restrictProcessInstQuery(READ);
 
     org.activiti.engine.runtime.ProcessInstanceQuery internalQuery = runtimeService.createProcessInstanceQuery();
 
-    String currentUserId = securityManager.getAuthenticatedUserId();
+    var currentUserId = securityManager.getAuthenticatedUserId();
     internalQuery.involvedUser(currentUserId);
 
     if (!securityKeysInPayload.getProcessDefinitionKeys().isEmpty()) {
       getProcessInstancesPayload.setProcessDefinitionKeys(
         securityKeysInPayload.getProcessDefinitionKeys());
     }
+
     if (getProcessInstancesPayload.getProcessDefinitionKeys() != null
       && !getProcessInstancesPayload.getProcessDefinitionKeys().isEmpty()) {
       internalQuery.processDefinitionKeys(getProcessInstancesPayload.getProcessDefinitionKeys());
     }
+
     if (getProcessInstancesPayload.getBusinessKey() != null &&
       !getProcessInstancesPayload.getBusinessKey().isEmpty()) {
       internalQuery.processInstanceBusinessKey(getProcessInstancesPayload.getBusinessKey());
@@ -316,13 +325,12 @@ public class ProcessRuntimeImpl implements ProcessRuntime {
 
     if (internalProcessInstance == null) {
       throw new NotFoundException(
-        "Unable to find process instance for the given id:'" + processInstanceId + "'");
+        STR."Unable to find process instance for the given id:'\{processInstanceId}'");
     }
 
     if (!canWriteProcessInstance(internalProcessInstance)) {
       throw new ActivitiObjectNotFoundException(
-        "You cannot start the process instance with Id:'" + processInstanceId
-          + "' due to security policies violation");
+        STR."You cannot start the process instance with Id:'\{processInstanceId}' due to security policies violation");
     }
     processVariablesValidator.checkStartProcessPayloadVariables(startProcessPayload,
       internalProcessInstance.getProcessDefinitionId());
@@ -508,18 +516,22 @@ public class ProcessRuntimeImpl implements ProcessRuntime {
     eventPublisher.publishEvent(messagePayload);
   }
 
+
+  /**
+   * Start a process instance by message
+   *
+   * @param messagePayload the message payload
+   * @return the process instance
+   */
   @Override
   public ProcessInstance start(StartMessagePayload messagePayload) {
-    var messageName = messagePayload.getName();
-    var businessKey = messagePayload.getBusinessKey();
-    var variables = messagePayload.getVariables();
 
     processVariablesValidator.checkStartMessagePayloadVariables(messagePayload, null);
 
     var internalProcessInstance = runtimeService.startProcessInstanceByMessage(
-      messageName,
-      businessKey,
-      variables);
+      messagePayload.getName(),
+      messagePayload.getBusinessKey(),
+      messagePayload.getVariables());
 
     return processInstanceConverter.from(internalProcessInstance);
   }
@@ -528,7 +540,7 @@ public class ProcessRuntimeImpl implements ProcessRuntime {
 
     if (!securityPoliciesManager.canWrite(processDefinitionKey)) {
       throw new ActivitiForbiddenException(
-        "Operation not permitted for " + processDefinitionKey + " due security policy violation");
+        STR."Operation not permitted for \{processDefinitionKey} due security policy violation");
     }
   }
 
@@ -537,8 +549,7 @@ public class ProcessRuntimeImpl implements ProcessRuntime {
 
     if (!canWriteProcessInstance(processInstance)) {
       throw new ActivitiForbiddenException(
-        "Operation not permitted for on process instance " + processInstance.getProcessInstanceId()
-          + " due security policy violation");
+        STR."Operation not permitted for on process instance \{processInstance.getProcessInstanceId()} due security policy violation");
     }
   }
 

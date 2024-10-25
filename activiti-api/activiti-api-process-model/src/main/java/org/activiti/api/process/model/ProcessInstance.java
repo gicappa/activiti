@@ -19,6 +19,9 @@ import java.util.Date;
 
 import org.activiti.api.model.shared.model.ApplicationElement;
 
+/**
+ * TODO: This is a placeholder for the ProcessInstance model
+ */
 public interface ProcessInstance extends ApplicationElement {
 
     enum ProcessInstanceStatus {

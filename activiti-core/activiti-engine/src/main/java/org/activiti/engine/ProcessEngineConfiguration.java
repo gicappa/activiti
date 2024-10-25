@@ -56,7 +56,7 @@ import org.activiti.engine.runtime.Clock;
  * </p>
  *
  * <p>
- * The second option is great for testing: {@link #createStandalonInMemeProcessEngineConfiguration()}
+ * The second option is great for testing: {@link #createStandaloneInMemProcessEngineConfiguration()}
  *
  * <pre>
  * ProcessEngine processEngine = ProcessEngineConfiguration.createStandaloneInMemProcessEngineConfiguration().buildProcessEngine();
@@ -179,7 +179,7 @@ public abstract class ProcessEngineConfiguration {
 
   /**
    * In some situations you want to set the schema to use for table checks / generation if the database metadata doesn't return that correctly, see https://jira.codehaus.org/browse/ACT-1220,
-   * https://jira.codehaus.org/browse/ACT-1062
+   * <a href="https://jira.codehaus.org/browse/ACT-1062">...</a>
    */
   protected String databaseSchema;
 
@@ -198,7 +198,7 @@ public abstract class ProcessEngineConfiguration {
   protected ClassLoader classLoader;
   /**
    * Either use Class.forName or ClassLoader.loadClass for class loading.
-   * See http://forums.activiti.org/content/reflectutilloadclass-and-custom- classloader
+   * See <a href="http://forums.activiti.org/content/reflectutilloadclass-and-custom-">...</a> classloader
    */
   protected boolean useClassForNameClassLoading = true;
   protected ProcessEngineLifecycleListener processEngineLifecycleListener;
@@ -449,10 +449,6 @@ public abstract class ProcessEngineConfiguration {
   public ProcessEngineConfiguration setJdbcPassword(String jdbcPassword) {
     this.jdbcPassword = jdbcPassword;
     return this;
-  }
-
-  public boolean isTransactionsExternallyManaged() {
-    return transactionsExternallyManaged;
   }
 
   public ProcessEngineConfiguration setTransactionsExternallyManaged(boolean transactionsExternallyManaged) {
