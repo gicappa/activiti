@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2020 Alfresco Software, Ltd.
+ * Copyright ${project.inceptionYear}-2020 ${project.organization.name}.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -245,7 +245,8 @@ public class ProcessRuntimeImpl implements ProcessRuntime {
 
     if (!canReadProcessInstance(internalProcessInstance)) {
       throw new ActivitiObjectNotFoundException(
-        STR."You cannot read the process instance with Id:'\{processInstanceId}' due to security policies violation");
+        "You cannot read the process instance with Id:'" + processInstanceId
+          + "' due to security policies violation");
     }
     return processInstanceConverter.from(internalProcessInstance);
   }
@@ -325,12 +326,13 @@ public class ProcessRuntimeImpl implements ProcessRuntime {
 
     if (internalProcessInstance == null) {
       throw new NotFoundException(
-        STR."Unable to find process instance for the given id:'\{processInstanceId}'");
+        "Unable to find process instance for the given id:'" + processInstanceId + "'");
     }
 
     if (!canWriteProcessInstance(internalProcessInstance)) {
       throw new ActivitiObjectNotFoundException(
-        STR."You cannot start the process instance with Id:'\{processInstanceId}' due to security policies violation");
+        "You cannot start the process instance with Id:'" + processInstanceId
+          + "' due to security policies violation");
     }
     processVariablesValidator.checkStartProcessPayloadVariables(startProcessPayload,
       internalProcessInstance.getProcessDefinitionId());
@@ -540,7 +542,7 @@ public class ProcessRuntimeImpl implements ProcessRuntime {
 
     if (!securityPoliciesManager.canWrite(processDefinitionKey)) {
       throw new ActivitiForbiddenException(
-        STR."Operation not permitted for \{processDefinitionKey} due security policy violation");
+        "Operation not permitted for " + processDefinitionKey + " due security policy violation");
     }
   }
 
@@ -549,7 +551,8 @@ public class ProcessRuntimeImpl implements ProcessRuntime {
 
     if (!canWriteProcessInstance(processInstance)) {
       throw new ActivitiForbiddenException(
-        STR."Operation not permitted for on process instance \{processInstance.getProcessInstanceId()} due security policy violation");
+        "Operation not permitted for on process instance " + processInstance.getProcessInstanceId()
+          + " due security policy violation");
     }
   }
 

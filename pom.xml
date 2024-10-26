@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.activiti</groupId>
   <artifactId>activiti-parent</artifactId>
@@ -10,145 +10,6 @@
   <name>Activiti :: Parent</name>
   <description>${project.name}</description>
   <url>https://www.activiti.org</url>
-  <inceptionYear>2010</inceptionYear>
-  <organization>
-    <name>Alfresco Software, Ltd</name>
-    <url>https://www.alfresco.com</url>
-  </organization>
-  <licenses>
-    <license>
-      <name>Apache License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
-    </license>
-  </licenses>
-  <developers>
-    <developer>
-      <id>almerico</id>
-      <name>Oleksandr Merkulov</name>
-      <organization>IntroPro Ventures</organization>
-      <organizationUrl>http://introproventures.com</organizationUrl>
-    </developer>
-    <developer>
-      <id>balsarori</id>
-      <name>Bassam Al-Sarori</name>
-      <organization>${project.organization.name}</organization>
-      <organizationUrl>${project.organization.url}</organizationUrl>
-    </developer>
-    <developer>
-      <id>daisuke-yoshimoto</id>
-      <name>Daisuke Yoshimoto</name>
-      <organization>${project.organization.name}</organization>
-      <organizationUrl>${project.organization.url}</organizationUrl>
-    </developer>
-    <developer>
-      <id>erdemedeiros</id>
-      <name>Elias De Medeiros</name>
-      <organization>${project.organization.name}</organization>
-      <organizationUrl>${project.organization.url}</organizationUrl>
-    </developer>
-    <developer>
-      <id>eromano</id>
-      <name>Eugenio Romano</name>
-      <organization>${project.organization.name}</organization>
-      <organizationUrl>${project.organization.url}</organizationUrl>
-    </developer>
-    <developer>
-      <id>ffazzini</id>
-      <name>Francesco Fazzini</name>
-      <organization>${project.organization.name}</organization>
-      <organizationUrl>${project.organization.url}</organizationUrl>
-    </developer>
-    <developer>
-      <id>igdianov</id>
-      <name>Igor Dianov</name>
-      <organization>IntroPro Ventures</organization>
-      <organizationUrl>http://introproventures.com</organizationUrl>
-    </developer>
-    <developer>
-      <id>jesty</id>
-      <name>Davide Cerbo</name>
-      <organization>${project.organization.name}</organization>
-      <organizationUrl>${project.organization.url}</organizationUrl>
-    </developer>
-    <developer>
-      <id>magemello</id>
-      <name>Mario Romano</name>
-      <organization>${project.organization.name}</organization>
-      <organizationUrl>${project.organization.url}</organizationUrl>
-    </developer>
-    <developer>
-      <id>mauriziovitale</id>
-      <name>Maurizio Vitale</name>
-      <organization>${project.organization.name}</organization>
-      <organizationUrl>${project.organization.url}</organizationUrl>
-    </developer>
-    <developer>
-      <id>miguelruizdev</id>
-      <name>Miguel Ruiz</name>
-      <organization>${project.organization.name}</organization>
-      <organizationUrl>${project.organization.url}</organizationUrl>
-    </developer>
-    <developer>
-      <id>mmartinadanx</id>
-      <name>Miguel Ángel Martín</name>
-      <organization>Ixxus</organization>
-      <organizationUrl>http://www.ixxus.com</organizationUrl>
-    </developer>
-    <developer>
-      <id>mteodori</id>
-      <name>Marcello Teodori</name>
-      <organization>${project.organization.name}</organization>
-      <organizationUrl>${project.organization.url}</organizationUrl>
-    </developer>
-    <developer>
-      <id>nazarethjim</id>
-      <name>Nazareth Jimenez Vela</name>
-      <organization>Ixxus</organization>
-      <organizationUrl>http://www.ixxus.com</organizationUrl>
-    </developer>
-    <developer>
-      <id>pmartinezga</id>
-      <name>Pablo Martinez Garcia</name>
-      <organization>Ixxus</organization>
-      <organizationUrl>http://www.ixxus.com</organizationUrl>
-    </developer>
-    <developer>
-      <id>popovicsandras</id>
-      <name>András Popovics</name>
-      <organization>${project.organization.name}</organization>
-      <organizationUrl>${project.organization.url}</organizationUrl>
-    </developer>
-    <developer>
-      <id>robfrank</id>
-      <name>Roberto Franchini</name>
-      <organization>${project.organization.name}</organization>
-      <organizationUrl>${project.organization.url}</organizationUrl>
-    </developer>
-    <developer>
-      <id>zoltanpalfi</id>
-      <name>Zoltan Palfi</name>
-      <organization>${project.organization.name}</organization>
-      <organizationUrl>${project.organization.url}</organizationUrl>
-    </developer>
-    <developer>
-      <id>CTI777</id>
-      <name>Illia Goncharov</name>
-      <organization>IntroPro Ventures</organization>
-      <organizationUrl>http://introproventures.com</organizationUrl>
-    </developer>
-    <developer>
-      <id>EquinoxBlack</id>
-      <name>Rodion Savchuk</name>
-      <organization>${project.organization.name}</organization>
-      <organizationUrl>${project.organization.url}</organizationUrl>
-    </developer>
-    <developer>
-      <id>VitoAlbano</id>
-      <name>Vito Albano</name>
-      <organization>${project.organization.name}</organization>
-      <organizationUrl>${project.organization.url}</organizationUrl>
-    </developer>
-  </developers>
   <modules>
     <module>activiti-dependency-check</module>
     <module>activiti-api</module>
@@ -157,24 +18,6 @@
     <module>activiti-dependencies</module>
     <module>activiti-examples</module>
   </modules>
-  <scm>
-    <url>http://github.com/${project.scm.organization}/${project.scm.repository}</url>
-    <connection>
-      scm:git:git://github.com/${project.scm.organization}/${project.scm.repository}.git
-    </connection>
-    <developerConnection>
-      scm:git:ssh://git@github.com/${project.scm.organization}/${project.scm.repository}.git
-    </developerConnection>
-    <tag>HEAD</tag>
-  </scm>
-  <issueManagement>
-    <system>GitHub</system>
-    <url>https://github.com/${project.scm.organization}/Activiti/issues</url>
-  </issueManagement>
-  <ciManagement>
-    <system>Travis</system>
-    <url>https://travis-ci.com/${project.scm.organization}/${project.scm.repository}</url>
-  </ciManagement>
   <distributionManagement>
     <site>
       <id>${project.scm.repository}-site</id>
@@ -188,7 +31,7 @@
     <project.scm.organization>Activiti</project.scm.organization>
     <project.scm.repository>Activiti</project.scm.repository>
     <project.year>2020</project.year>
-
+    <inceptionYear>2010</inceptionYear>
     <java.release>${java.version}</java.release>
     <java.version>21</java.version>
     <maven.compiler.release>${java.release}</maven.compiler.release>
@@ -201,12 +44,13 @@
     <dependency-check-maven.version>8.4.3</dependency-check-maven.version>
     <exec-maven-plugin.version>3.1.0</exec-maven-plugin.version>
     <extra-enforcer-rules.version>1.6.1</extra-enforcer-rules.version>
-    <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
+    <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
     <license-maven-plugin.version>4.3</license-maven-plugin.version>
-    <third-party-license-maven-plugin.version>2.0.1.alfresco-2</third-party-license-maven-plugin.version>
+    <third-party-license-maven-plugin.version>2.0.1.alfresco-2
+    </third-party-license-maven-plugin.version>
     <maven-checkstyle-plugin.version>3.3.1</maven-checkstyle-plugin.version>
     <maven-clean-plugin.version>3.3.2</maven-clean-plugin.version>
-    <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
+    <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
     <maven-deploy-plugin.version>3.0.0</maven-deploy-plugin.version>
     <maven-enforcer-plugin.version>3.1.0</maven-enforcer-plugin.version>
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
@@ -221,17 +65,28 @@
     <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
     <maven-site-plugin.version>3.12.1</maven-site-plugin.version>
     <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-    <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+    <maven-surefire-plugin.version>3.2.2</maven-surefire-plugin.version>
     <spring-boot.version>3.3.4</spring-boot.version>
     <h2.version>2.2.224</h2.version>
     <jakarta.el-api.version>5.0.1</jakarta.el-api.version>
     <versions-maven-plugin.version>2.16.1</versions-maven-plugin.version>
+    <junit.jupiter.version>5.11.3</junit.jupiter.version>
+    <assertj-bom.version>3.24.2</assertj-bom.version>
 
     <!-- configuration properties for tests -->
     <generated-assertions-folder>
       ${project.build.directory}/generated-test-sources/assertions
     </generated-assertions-folder>
     <generated-assertions-package>org.activiti.test</generated-assertions-package>
+    <mockito.version>5.14.2</mockito.version>
+
+    <argLine>
+      -Xmx1500m
+      -XX:MaxMetaspaceSize=1500m
+      -Dnet.bytebuddy.experimental=true
+      -XX:+EnableDynamicAgentLoading
+    </argLine>
+
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -330,11 +185,18 @@ limitations under the License.
               <configuration>
                 <failOnMissing>true</failOnMissing>
                 <excludedScopes>provided,test</excludedScopes>
-                <excludedGroups>^(org\.alfresco|com\.alfresco|org\.activiti|org\.gytheio).*</excludedGroups>
+                <excludedGroups>^(org\.alfresco|com\.alfresco|org\.activiti|org\.gytheio).*
+                </excludedGroups>
                 <failIfWarning>true</failIfWarning>
-                <includedLicenses>https://raw.githubusercontent.com/Alfresco/third-party-license-overrides/master/includedLicensesPlusNashorn.txt</includedLicenses>
-                <licenseMergesUrl>https://raw.githubusercontent.com/Alfresco/third-party-license-overrides/master/licenseMerges.txt</licenseMergesUrl>
-                <overrideUrl>https://raw.githubusercontent.com/Alfresco/third-party-license-overrides/master/override-THIRD-PARTY.properties</overrideUrl>
+                <includedLicenses>
+                  https://raw.githubusercontent.com/Alfresco/third-party-license-overrides/master/includedLicensesPlusNashorn.txt
+                </includedLicenses>
+                <licenseMergesUrl>
+                  https://raw.githubusercontent.com/Alfresco/third-party-license-overrides/master/licenseMerges.txt
+                </licenseMergesUrl>
+                <overrideUrl>
+                  https://raw.githubusercontent.com/Alfresco/third-party-license-overrides/master/override-THIRD-PARTY.properties
+                </overrideUrl>
               </configuration>
             </execution>
           </executions>
@@ -391,19 +253,19 @@ limitations under the License.
                       <module name="RedundantImport"/>
                       <module name="AvoidStarImport">
                         <property name="excludes"
-                                  value="org.junit.Assert,org.assertj.core.api.Assertions,org.mockito.Mockito"/>
+                          value="org.junit.Assert,org.assertj.core.api.Assertions,org.mockito.Mockito"/>
                         <property name="allowClassImports" value="false"/>
                         <property name="allowStaticMemberImports" value="false"/>
                       </module>
                       <module name="CustomImportOrder">
                         <property name="customImportOrderRules"
-                                  value="STANDARD_JAVA_PACKAGE###THIRD_PARTY_PACKAGE###STATIC"/>
+                          value="STANDARD_JAVA_PACKAGE###THIRD_PARTY_PACKAGE###STATIC"/>
                         <property name="sortImportsInGroupAlphabetically" value="true"/>
                         <property name="separateLineBetweenGroups" value="true"/>
                       </module>
                       <module name="NeedBraces">
                         <property name="tokens"
-                                  value="LITERAL_IF, LITERAL_ELSE, LITERAL_FOR, LITERAL_WHILE, LITERAL_DO"/>
+                          value="LITERAL_IF, LITERAL_ELSE, LITERAL_FOR, LITERAL_WHILE, LITERAL_DO"/>
                       </module>
                       <module name="EqualsHashCode"/>
                     </module>
@@ -546,8 +408,10 @@ limitations under the License.
           <showWarnings>true</showWarnings>
           <optimize>true</optimize>
           <compilerArgs>
+            <arg>-verbose</arg>
+            <arg>-Xlint:all,-options,-path</arg>
             <arg>-parameters</arg>
-            <arg>--enable-preview</arg>
+<!--            <arg>&#45;&#45;enable-preview</arg>-->
           </compilerArgs>
         </configuration>
       </plugin>
@@ -601,7 +465,7 @@ limitations under the License.
             </goals>
             <configuration>
               <rules>
-                <banDuplicatePomDependencyVersions />
+                <banDuplicatePomDependencyVersions/>
               </rules>
             </configuration>
           </execution>
@@ -793,6 +657,9 @@ limitations under the License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
+            <configuration>
+              <argLine>@{argLine}</argLine>
+            </configuration>
             <executions>
               <execution>
                 <id>integration-test</id>
@@ -862,49 +729,6 @@ limitations under the License.
           <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
         </repository>
       </distributionManagement>
-    </profile>
-    <!-- profile to make eclipse happy -->
-    <profile>
-      <id>m2eclipse</id>
-      <activation>
-        <property>
-          <name>m2e.version</name>
-        </property>
-      </activation>
-      <build>
-        <pluginManagement>
-          <plugins>
-            <plugin>
-              <groupId>org.eclipse.m2e</groupId>
-              <artifactId>lifecycle-mapping</artifactId>
-              <version>1.0.0</version>
-              <configuration>
-                <lifecycleMappingMetadata>
-                  <pluginExecutions>
-                    <pluginExecution>
-                      <pluginExecutionFilter>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <versionRange>[${exec-maven-plugin.version},)</versionRange>
-                        <goals>
-                          <goal>java</goal>
-                          <goal>exec</goal>
-                        </goals>
-                      </pluginExecutionFilter>
-                      <action>
-                        <execute>
-                          <runOnIncremental>true</runOnIncremental>
-                          <runOnConfiguration>true</runOnConfiguration>
-                        </execute>
-                      </action>
-                    </pluginExecution>
-                  </pluginExecutions>
-                </lifecycleMappingMetadata>
-              </configuration>
-            </plugin>
-          </plugins>
-        </pluginManagement>
-      </build>
     </profile>
     <!-- profile to check dependencies for vulnerabilities -->
     <profile>

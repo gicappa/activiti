@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2020 Alfresco Software, Ltd.
+ * Copyright ${project.inceptionYear}-2020 ${project.organization.name}.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.activiti.engine;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Method;
@@ -29,7 +27,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import org.activiti.engine.impl.ProcessEngineInfoImpl;
-import org.activiti.engine.impl.util.IoUtil;
 import org.activiti.engine.impl.util.ReflectUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,16 +36,16 @@ import org.slf4j.LoggerFactory;
  * {@link ProcessEngine}s will be registered with this class. <br> The activiti-webapp-init webapp
  * will call the {@link #init()} method when the webapp is deployed, and it will call the
  * {@link #destroy()} method when the webapp is destroyed, using a context-listener (
- * <code>org.activiti.impl.servlet.listener.ProcessEnginesServletContextListener</code> ). That way,
- * all applications can just use the {getProcessEngines()} to obtain pre-initialized and
- * cached process engines. <br>
+ * <code>org.activiti.impl.servlet.listener.ProcessEnginesServletContextListener</code> ). That
+ * way, all applications can just use the {getProcessEngines()} to obtain pre-initialized and cached
+ * process engines. <br>
  * <br>
  * Please note that there is <b>no lazy initialization</b> of process engines, so make sure the
  * context-listener is configured or {@link ProcessEngine}s are already created so they were
  * registered on this class.<br>
  * <br>
  * The {@link #init()} method will try to build one {@link ProcessEngine} for each activiti.cfg.xml
- * file found on the classpath. If you have more then one, make sure you specify different
+ * file found on the classpath. If you have more than one, make sure you specify different
  * process.engine.name values.
  */
 public abstract class ProcessEngines {
@@ -81,8 +78,9 @@ public abstract class ProcessEngines {
         resources = classLoader.getResources("activiti.cfg.xml");
       } catch (IOException e) {
         throw new ActivitiIllegalArgumentException(
-          "problem retrieving activiti.cfg.xml resources on the classpath: " + System.getProperty(
-            "java.class.path"), e);
+          "problem retrieving activiti.cfg.xml resources on the classpath: %s".formatted(
+            System.getProperty(
+              "java.class.path")), e);
       }
 
       // Remove duplicated configuration URL's using set. Some
@@ -101,8 +99,9 @@ public abstract class ProcessEngines {
         resources = classLoader.getResources("activiti-context.xml");
       } catch (IOException e) {
         throw new ActivitiIllegalArgumentException(
-          "problem retrieving activiti-context.xml resources on the classpath: "
-            + System.getProperty("java.class.path"), e);
+          "problem retrieving activiti-context.xml resources on the classpath: %s".formatted(
+            System.getProperty(
+              "java.class.path")), e);
       }
       while (resources.hasMoreElements()) {
         URL resource = resources.nextElement();
@@ -133,8 +132,9 @@ public abstract class ProcessEngines {
 
     } catch (Exception e) {
       throw new ActivitiException(
-        "couldn't initialize process engine from spring configuration resource "
-          + resource.toString() + ": " + e.getMessage(), e);
+        "couldn't initialize process engine from spring configuration resource %s: %s".formatted(
+          resource.toString(), e.getMessage()),
+        e);
     }
   }
 
@@ -155,58 +155,69 @@ public abstract class ProcessEngines {
   }
 
   private static ProcessEngineInfo initProcessEngineFromResource(URL resourceUrl) {
-    ProcessEngineInfo processEngineInfo = processEngineInfosByResourceUrl.get(
-      resourceUrl.toString());
+
+    var processEngineInfo = processEngineInfosByResourceUrl.get(resourceUrl.toString());
+
     // if there is an existing process engine info
     if (processEngineInfo != null) {
       // remove that process engine from the member fields
       processEngineInfos.remove(processEngineInfo);
+
       if (processEngineInfo.getException() == null) {
-        String processEngineName = processEngineInfo.getName();
+        var processEngineName = processEngineInfo.getName();
         processEngines.remove(processEngineName);
         processEngineInfosByName.remove(processEngineName);
       }
       processEngineInfosByResourceUrl.remove(processEngineInfo.getResourceUrl());
     }
 
-    String resourceUrlString = resourceUrl.toString();
+    var resourceUrlString = resourceUrl.toString();
+
     try {
+
       log.info("initializing process engine for resource {}", resourceUrl);
-      ProcessEngine processEngine = buildProcessEngine(resourceUrl);
-      String processEngineName = processEngine.getName();
+
+      var processEngine = buildProcessEngine(resourceUrl);
+      var processEngineName = processEngine.getName();
+
       log.info("initialised process engine {}", processEngineName);
+
       processEngineInfo = new ProcessEngineInfoImpl(processEngineName, resourceUrlString, null);
+
       processEngines.put(processEngineName, processEngine);
       processEngineInfosByName.put(processEngineName, processEngineInfo);
+
     } catch (Throwable e) {
       log.error("Exception while initializing process engine: {}", e.getMessage(), e);
       processEngineInfo = new ProcessEngineInfoImpl(null, resourceUrlString, getExceptionString(e));
     }
+
     processEngineInfosByResourceUrl.put(resourceUrlString, processEngineInfo);
     processEngineInfos.add(processEngineInfo);
+
     return processEngineInfo;
   }
 
   private static String getExceptionString(Throwable e) {
-    StringWriter sw = new StringWriter();
-    PrintWriter pw = new PrintWriter(sw);
+    var sw = new StringWriter();
+    var pw = new PrintWriter(sw);
+
     e.printStackTrace(pw);
+
     return sw.toString();
   }
 
   private static ProcessEngine buildProcessEngine(URL resource) {
-    InputStream inputStream = null;
-    try {
-      inputStream = resource.openStream();
-      ProcessEngineConfiguration processEngineConfiguration = ProcessEngineConfiguration.createProcessEngineConfigurationFromInputStream(
-        inputStream);
+    try (var inputStream = resource.openStream()) {
+
+      var processEngineConfiguration =
+        ProcessEngineConfiguration.createProcessEngineConfigurationFromInputStream(inputStream);
+
       return processEngineConfiguration.buildProcessEngine();
 
     } catch (IOException e) {
-      throw new ActivitiIllegalArgumentException("couldn't open resource stream: " + e.getMessage(),
-        e);
-    } finally {
-      IoUtil.closeSilently(inputStream);
+      throw new ActivitiIllegalArgumentException(
+        "couldn't open resource stream: %s".formatted(e.getMessage()), e);
     }
   }
 

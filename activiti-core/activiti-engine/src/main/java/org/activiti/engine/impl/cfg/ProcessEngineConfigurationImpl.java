@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2020 Alfresco Software, Ltd.
+ * Copyright ${project.inceptionYear}-2020 ${project.organization.name}.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.activiti.engine.impl.cfg;
 
 import static org.activiti.engine.impl.cfg.DelegateExpressionFieldInjectionMode.MIXED;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -39,12 +41,10 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import javax.xml.namespace.QName;
-
 import org.activiti.api.runtime.shared.identity.UserGroupManager;
 import org.activiti.core.el.CustomFunctionProvider;
 import org.activiti.engine.ActivitiException;
@@ -333,10 +333,6 @@ import org.apache.ibatis.transaction.managed.ManagedTransactionFactory;
 import org.apache.ibatis.type.JdbcType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
@@ -1001,7 +997,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
 
   public CommandInterceptor initInterceptorChain(List<CommandInterceptor> chain) {
     if (chain == null || chain.isEmpty()) {
-      throw new ActivitiException(STR."invalid command interceptor chain configuration: \{chain}");
+      throw new ActivitiException("invalid command interceptor chain configuration: " + chain);
     }
 
     for (int i = 0; i < chain.size() - 1; i++) {
@@ -1063,7 +1059,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
 
     } catch (NamingException e) {
       throw new ActivitiException(
-        STR."couldn't lookup datasource from \{dataSourceJndiName}: \{e.getMessage()}", e);
+        "couldn't lookup datasource from " + dataSourceJndiName + ": " + e.getMessage(), e);
     }
 
   }
@@ -1129,7 +1125,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
 
       if (databaseType == null) {
         throw new ActivitiException(
-          STR."couldn't deduct database type from database product name '\{databaseProductName}'");
+          "couldn't deduct database type from database product name '" + databaseProductName + "'");
       }
 
       log.debug("using database type: {}", databaseType);
@@ -1175,13 +1171,13 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
 
     } catch (Exception e) {
       throw new ActivitiException(
-        STR."Error while building ibatis SqlSessionFactory: \{e.getMessage()}", e);
+        "Error while building ibatis SqlSessionFactory: " + e.getMessage(), e);
     }
   }
 
   private InputStream loadDbPropertiesFromFile() {
     return getResourceAsStream(
-      STR."org/activiti/db/properties/\{databaseType}.properties");
+      "org/activiti/db/properties/" + databaseType + ".properties");
   }
 
   private Properties getDbProperties() {
@@ -1206,7 +1202,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
       return "";
     }
 
-    return STR." escape '\{databaseWildcardEscapeCharacter}'";
+    return " escape '" + databaseWildcardEscapeCharacter + "'";
   }
 
   public Configuration initMybatisConfiguration(
@@ -1813,14 +1809,15 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
             supportedTypes.append(" ").append(type.getCanonicalName()).append(" ");
           }
           throw new ActivitiException(
-            STR."The default BPMN parse handlers should only support one type, but \{defaultBpmnParseHandler.getClass()} supports \{supportedTypes.toString()}. This is likely a programmatic error");
+            "The default BPMN parse handlers should only support one type, but %s supports %s. This is likely a programmatic error".formatted(
+              defaultBpmnParseHandler.getClass(), supportedTypes.toString()));
         } else {
           Class<?> handledType = defaultBpmnParseHandler.getHandledTypes().iterator().next();
           if (customParseHandlerMap.containsKey(handledType)) {
             var newBpmnParseHandler = customParseHandlerMap.get(handledType);
             log.info(
-              STR."Replacing default BpmnParseHandler \{defaultBpmnParseHandler.getClass()
-                .getName()} with \{newBpmnParseHandler.getClass().getName()}");
+              "Replacing default BpmnParseHandler {} with {}", defaultBpmnParseHandler.getClass()
+                .getName(), newBpmnParseHandler.getClass().getName());
             bpmnParserHandlers.set(i, newBpmnParseHandler);
           }
         }

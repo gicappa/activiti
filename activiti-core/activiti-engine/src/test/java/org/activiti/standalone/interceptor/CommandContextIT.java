@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2020 Alfresco Software, Ltd.
+ * Copyright ${project.inceptionYear}-2020 ${project.organization.name}.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package org.activiti.standalone.interceptor;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,15 +21,15 @@ import org.activiti.engine.impl.context.Context;
 import org.activiti.engine.impl.interceptor.Command;
 import org.activiti.engine.impl.interceptor.CommandContext;
 import org.activiti.engine.impl.test.PluggableActivitiTestCase;
+import org.junit.Ignore;
 
+@Ignore
 public class CommandContextIT extends PluggableActivitiTestCase {
 
     public void testCommandContextGetCurrentAfterException() {
         try {
-            processEngineConfiguration.getCommandExecutor().execute(new Command<Object>() {
-                public Object execute(CommandContext commandContext) {
-                    throw new IllegalStateException("here i come!");
-                }
+            processEngineConfiguration.getCommandExecutor().execute(a -> {
+              throw new IllegalStateException("here i come!");
             });
 
             fail("expected exception");

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2020 Alfresco Software, Ltd.
+ * Copyright ${project.inceptionYear}-2020 ${project.organization.name}.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.activiti.engine.impl.interceptor;
 
 import java.util.ArrayList;
@@ -26,9 +25,7 @@ import org.activiti.engine.ActivitiEngineAgenda;
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.ActivitiOptimisticLockingException;
 import org.activiti.engine.ActivitiTaskAlreadyClaimedException;
-import org.activiti.engine.ApplicationStatusHolder;
 import org.activiti.engine.JobNotFoundException;
-import org.activiti.engine.delegate.BpmnError;
 import org.activiti.engine.delegate.event.ActivitiEventDispatcher;
 import org.activiti.engine.impl.asyncexecutor.JobManager;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
@@ -143,7 +140,6 @@ public class CommandContext {
       exception(exception);
     }
 
-
     if (exception != null) {
       rethrowExceptionIfNeeded();
     }
@@ -157,7 +153,7 @@ public class CommandContext {
       log.info("Error while closing command context", exception);
     } else if (exception instanceof ActivitiOptimisticLockingException) {
       // reduce log level, as normally we're not interested in logging this exception
-      log.debug("Optimistic locking exception : " + exception);
+      log.debug("Optimistic locking exception", exception);
     } else {
       log.error("Error while closing command context", exception);
     }
@@ -169,7 +165,7 @@ public class CommandContext {
     } else if (exception instanceof RuntimeException) {
       throw (RuntimeException) exception;
     } else {
-      throw new ActivitiException("exception while executing command " + command, exception);
+      throw new ActivitiException("exception while executing command %s".formatted(command), exception);
     }
   }
 
@@ -195,7 +191,6 @@ public class CommandContext {
       exception(exception);
     }
   }
-
 
   protected void executeCloseListenersAfterSessionFlushed() {
     if (closeListeners == null) {
@@ -289,25 +284,21 @@ public class CommandContext {
     return null;
   }
 
-  @SuppressWarnings("unchecked")
-  public <T> T getGenericAttribute(String key) {
-    if (attributes != null) {
-      return (T) getAttribute(key);
-    }
-    return null;
-  }
 
   @SuppressWarnings({"unchecked"})
   public <T> T getSession(Class<T> sessionClass) {
-    Session session = sessions.get(sessionClass);
+    var session = sessions.get(sessionClass);
+
     if (session == null) {
-      SessionFactory sessionFactory = sessionFactories.get(sessionClass);
+      var sessionFactory = sessionFactories.get(sessionClass);
+
       if (sessionFactory == null) {
-        throw new ActivitiException("no session factory configured for " + sessionClass.getName());
+        throw new ActivitiException(
+          "no session factory configured for %s".formatted(sessionClass.getName()));
       }
       session = sessionFactory.openSession(this);
-      sessions.put(sessionClass,
-        session);
+
+      sessions.put(sessionClass, session);
     }
 
     return (T) session;
@@ -447,7 +438,7 @@ public class CommandContext {
   }
 
   public boolean hasInvolvedExecutions() {
-    return involvedExecutions.size() > 0;
+    return !involvedExecutions.isEmpty();
   }
 
   public Collection<ExecutionEntity> getInvolvedExecutions() {
