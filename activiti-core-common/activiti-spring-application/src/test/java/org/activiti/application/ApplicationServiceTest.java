@@ -33,7 +33,6 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-@Disabled // GK
 @ExtendWith(MockitoExtension.class)
 public class ApplicationServiceTest {
 

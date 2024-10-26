@@ -33,7 +33,6 @@ import org.slf4j.LoggerFactory;
 
 public class CommandContextTest {
 
-
   @Before
   public void resetStatusToRunning() throws Exception {
     setStaticValue(ApplicationStatusHolder.class.getDeclaredField("running"), true);
@@ -47,7 +46,6 @@ public class CommandContextTest {
 
     assertLogLevel(appender, Level.ERROR);
   }
-
 
   @Ignore // GK
   @Test

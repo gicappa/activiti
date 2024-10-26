@@ -30,7 +30,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.support.ResourcePatternResolver;
 
-@Disabled // GK
 @ExtendWith(MockitoExtension.class)
 public class ConnectorDefinitionServiceTest {
 

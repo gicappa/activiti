@@ -408,7 +408,7 @@ limitations under the License.
           <showWarnings>true</showWarnings>
           <optimize>true</optimize>
           <compilerArgs>
-            <arg>-verbose</arg>
+<!--            <arg>-verbose</arg>-->
             <arg>-Xlint:all,-options,-path</arg>
             <arg>-parameters</arg>
 <!--            <arg>&#45;&#45;enable-preview</arg>-->

@@ -33,7 +33,6 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-@Disabled // GK
 @ExtendWith(MockitoExtension.class)
 public class ApplicationDiscoveryTest {
 
