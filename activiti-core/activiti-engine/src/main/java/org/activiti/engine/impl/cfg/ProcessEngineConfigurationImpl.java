@@ -41,8 +41,6 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 import javax.xml.namespace.QName;
 import org.activiti.api.runtime.shared.identity.UserGroupManager;
@@ -358,7 +356,6 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
   private IntegrationContextService integrationContextService;
 
   // COMMAND EXECUTORS ////////////////////////////////////////////////////////
-
   protected CommandConfig defaultCommandConfig;
   protected CommandConfig schemaCommandConfig;
   protected CommandInterceptor commandInvoker;
@@ -377,7 +374,6 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
   protected CommandExecutor commandExecutor;
 
   // DATA MANAGERS /////////////////////////////////////////////////////////////
-
   protected AttachmentDataManager attachmentDataManager;
   protected ByteArrayDataManager byteArrayDataManager;
   protected CommentDataManager commentDataManager;
@@ -438,11 +434,9 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
     new EventSubscriptionPayloadMappingProvider() {
     };
   // History Manager
-
   protected HistoryManager historyManager;
 
   // Job Manager
-
   protected JobManager jobManager;
 
   // SESSION FACTORIES /////////////////////////////////////////////////////////
@@ -497,13 +491,13 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
   protected int asyncExecutorNumberOfRetries = 3;
 
   /**
-   * The minimal number of threads that are kept alive in the threadpool for job execution. Default
+   * The minimal number of threads that are kept alive in the thread-pool for job execution. Default
    * value = 2. (This property is only applicable when using the {@link DefaultAsyncJobExecutor}).
    */
   protected int asyncExecutorCorePoolSize = 2;
 
   /**
-   * The maximum number of threads that are created in the threadpool for job execution. Default
+   * The maximum number of threads that are created in the thread-pool for job execution. Default
    * value = 10. (This property is only applicable when using the {@link DefaultAsyncJobExecutor}).
    */
   protected int asyncExecutorMaxPoolSize = 10;
@@ -527,7 +521,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
 
   /**
    * The queue onto which jobs will be placed before they are actually executed. Threads form the
-   * async executor threadpool will take work from this queue.
+   * async executor thread-pool will take work from this queue.
    * <p>
    * By default, null. If null, an {@link ArrayBlockingQueue} will be created of size
    * {@link #asyncExecutorThreadPoolQueueSize}.
@@ -540,7 +534,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
   protected BlockingQueue<Runnable> asyncExecutorThreadPoolQueue;
 
   /**
-   * The time (in seconds) that is waited to gracefully shut down the threadpool used for job
+   * The time (in seconds) that is waited to gracefully shut down the thread-pool used for job
    * execution when the shutdown on the executor (or process engine) is requested. Default value =
    * 60.
    * <p>
@@ -641,7 +635,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
    * <p>
    * A job is deemed expired if the lock time is before the current date.
    * <p>
-   * By default one minute.
+   * By default, one minute.
    */
   protected int asyncExecutorResetExpiredJobsInterval = 60 * 1000;
 
@@ -804,12 +798,9 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
    * is being put into one bulk insert, or make it higher if your database can cope with it and
    * there are inserts with a huge amount of data.
    * <p>
-   * By default: 100 (75 for mssql server as it has a hard limit of 2000 parameters in a statement)
+   * By default, 100 (75 for mssql server as it has a hard limit of 2000 parameters in a statement)
    */
   protected int maxNrOfStatementsInBulkInsert = 100;
-
-  // currently Execution has most params (28). 2000 / 28 = 71.
-  public int DEFAULT_MAX_NR_OF_STATEMENTS_BULK_INSERT_SQL_SERVER = 70;
 
   protected ObjectMapper objectMapper = new ObjectMapper();
 
@@ -841,7 +832,9 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
   @Override
   public ProcessEngine buildProcessEngine() {
     init();
+
     var processEngine = new ProcessEngineImpl(this);
+
     postProcessEngineInitialisation();
 
     return processEngine;
@@ -997,7 +990,8 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
 
   public CommandInterceptor initInterceptorChain(List<CommandInterceptor> chain) {
     if (chain == null || chain.isEmpty()) {
-      throw new ActivitiException("invalid command interceptor chain configuration: " + chain);
+      throw new ActivitiException(
+        "invalid command interceptor chain configuration: %s".formatted(chain));
     }
 
     for (int i = 0; i < chain.size() - 1; i++) {
@@ -1031,37 +1025,26 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
   // ///////////////////////////////////////////////////////////////
 
   public void initDataSource() {
-    try {
-      if (dataSource != null) {
-        return;
-      }
-
-      if (dataSourceJndiName == null) {
-        if (jdbcUrl != null) {
-          if ((jdbcDriver == null) || (jdbcUsername == null)) {
-            throw new ActivitiException(
-              "DataSource or JDBC properties have to be specified in a process engine configuration");
-          }
-
-          log.debug("initializing datasource to db: {}", jdbcUrl);
-
-          dataSource = getPooledDataSource();
-        }
-      } else {
-        dataSource = (DataSource) new InitialContext().lookup(dataSourceJndiName);
-      }
-
-      if (dataSource instanceof PooledDataSource) {
-        // ACT-233: connection pool of Ibatis is not properly
-        // initialized if this is not called!
-        ((PooledDataSource) dataSource).forceCloseAll();
-      }
-
-    } catch (NamingException e) {
-      throw new ActivitiException(
-        "couldn't lookup datasource from " + dataSourceJndiName + ": " + e.getMessage(), e);
+    if (dataSource != null) {
+      return;
     }
 
+    if (jdbcUrl != null) {
+      if ((jdbcDriver == null) || (jdbcUsername == null)) {
+        throw new ActivitiException(
+          "DataSource or JDBC properties have to be specified in a process engine configuration");
+      }
+
+      log.debug("initializing datasource to db: {}", jdbcUrl);
+
+      dataSource = getPooledDataSource();
+    }
+
+    if (dataSource != null) {
+      // ACT-233: connection pool of Ibatis is not properly
+      // initialized if this is not called!
+      ((PooledDataSource) dataSource).forceCloseAll();
+    }
   }
 
   private PooledDataSource getPooledDataSource() {
@@ -1071,26 +1054,38 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
     if (jdbcMaxActiveConnections > 0) {
       pooledDataSource.setPoolMaximumActiveConnections(jdbcMaxActiveConnections);
     }
+
     if (jdbcMaxIdleConnections > 0) {
       pooledDataSource.setPoolMaximumIdleConnections(jdbcMaxIdleConnections);
     }
+
     if (jdbcMaxCheckoutTime > 0) {
       pooledDataSource.setPoolMaximumCheckoutTime(jdbcMaxCheckoutTime);
     }
+
     if (jdbcMaxWaitTime > 0) {
       pooledDataSource.setPoolTimeToWait(jdbcMaxWaitTime);
     }
+
     if (jdbcPingEnabled) {
+
       pooledDataSource.setPoolPingEnabled(true);
+
       if (jdbcPingQuery != null) {
         pooledDataSource.setPoolPingQuery(jdbcPingQuery);
       }
+
       pooledDataSource.setPoolPingConnectionsNotUsedFor(jdbcPingConnectionNotUsedFor);
+
     }
+
     if (jdbcDefaultTransactionIsolationLevel > 0) {
+
       pooledDataSource.setDefaultTransactionIsolationLevel(
         jdbcDefaultTransactionIsolationLevel);
+
     }
+
     return pooledDataSource;
   }
 
@@ -1098,12 +1093,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
 
   public static final String DATABASE_TYPE_H2 = "h2";
   public static final String DATABASE_TYPE_HSQL = "hsql";
-  public static final String DATABASE_TYPE_MYSQL = "mysql";
-  public static final String DATABASE_TYPE_ORACLE = "oracle";
   public static final String DATABASE_TYPE_POSTGRES = "postgres";
-  public static final String DATABASE_TYPE_MSSQL = "mssql";
-  public static final String DATABASE_TYPE_MARIADB = "mariadb";
-  public static final String DATABASE_TYPE_DB2 = "db2";
 
   public static Properties getDefaultDatabaseTypeMappings() {
     Properties databaseTypeMappings = new Properties();
@@ -1125,7 +1115,8 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
 
       if (databaseType == null) {
         throw new ActivitiException(
-          "couldn't deduct database type from database product name '" + databaseProductName + "'");
+          "couldn't deduct database type from database product name '%s'".formatted(
+            databaseProductName));
       }
 
       log.debug("using database type: {}", databaseType);
@@ -1171,13 +1162,13 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
 
     } catch (Exception e) {
       throw new ActivitiException(
-        "Error while building ibatis SqlSessionFactory: " + e.getMessage(), e);
+        "Error while building ibatis SqlSessionFactory: %s".formatted(e.getMessage()), e);
     }
   }
 
   private InputStream loadDbPropertiesFromFile() {
     return getResourceAsStream(
-      "org/activiti/db/properties/" + databaseType + ".properties");
+      "org/activiti/db/properties/%s.properties".formatted(databaseType));
   }
 
   private Properties getDbProperties() {
@@ -1202,7 +1193,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
       return "";
     }
 
-    return " escape '" + databaseWildcardEscapeCharacter + "'";
+    return " escape '%s'".formatted(databaseWildcardEscapeCharacter);
   }
 
   public Configuration initMybatisConfiguration(
@@ -1758,7 +1749,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
   public List<BpmnParseHandler> getDefaultBpmnParseHandlers() {
 
     // Alphabetic list of default parse handler classes
-    List<BpmnParseHandler> bpmnParserHandlers = new ArrayList<BpmnParseHandler>();
+    var bpmnParserHandlers = new ArrayList<BpmnParseHandler>();
     bpmnParserHandlers.add(new BoundaryEventParseHandler());
     bpmnParserHandlers.add(new BusinessRuleParseHandler());
     bpmnParserHandlers.add(new CallActivityParseHandler());
@@ -1802,9 +1793,9 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
 
       for (int i = 0; i < bpmnParserHandlers.size(); i++) {
         // All the default handlers support only one type
-        BpmnParseHandler defaultBpmnParseHandler = bpmnParserHandlers.get(i);
+        var defaultBpmnParseHandler = bpmnParserHandlers.get(i);
         if (defaultBpmnParseHandler.getHandledTypes().size() != 1) {
-          StringBuilder supportedTypes = new StringBuilder();
+          var supportedTypes = new StringBuilder();
           for (Class<?> type : defaultBpmnParseHandler.getHandledTypes()) {
             supportedTypes.append(" ").append(type.getCanonicalName()).append(" ");
           }

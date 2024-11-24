@@ -21,11 +21,12 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.api.internal.Internal;
 import org.activiti.engine.history.HistoricData;
 
-/** User comments that form discussions around tasks.
+/** User comments that form discussions about tasks.
  *
- * @see {@link TaskService#getTaskComments(String)
+ * @see TaskService#getTaskComments(String)
  *
- * @deprecated this interface and its implementations are going to be removed in future iterations
+ * @deprecated this interface and its implementations
+ * are going to be removed in future iterations
  * Comments doesn't belong to the Process/Task Runtime
  */
 @Internal

@@ -25,10 +25,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-
-
 /**
-
+ * Default implementation of the {@link DynamicBpmnService}.
  */
 public class DynamicBpmnServiceImpl extends ServiceImpl implements DynamicBpmnService, DynamicBpmnConstants {
 
@@ -170,11 +168,19 @@ public class DynamicBpmnServiceImpl extends ServiceImpl implements DynamicBpmnSe
     return infoNode;
   }
 
-  public void changeUserTaskCandidateUser(String id, String candidateUser, boolean overwriteOtherChangedEntries, ObjectNode infoNode) {
+  public void changeUserTaskCandidateUser(
+    String id,
+    String candidateUser,
+    boolean overwriteOtherChangedEntries,
+    ObjectNode infoNode) {
+
     ArrayNode valuesNode = null;
+
     if (overwriteOtherChangedEntries) {
       valuesNode = processEngineConfiguration.getObjectMapper().createArrayNode();
+
     } else {
+
       if (doesElementPropertyExist(id, USER_TASK_CANDIDATE_USERS, infoNode)) {
         valuesNode = (ArrayNode) infoNode.get(BPMN_NODE).get(id).get(USER_TASK_CANDIDATE_USERS);
       }
@@ -185,16 +191,26 @@ public class DynamicBpmnServiceImpl extends ServiceImpl implements DynamicBpmnSe
     }
 
     valuesNode.add(candidateUser);
+
     setElementProperty(id, USER_TASK_CANDIDATE_USERS, valuesNode, infoNode);
   }
 
-  public ObjectNode changeUserTaskCandidateGroup(String id, String candidateGroup, boolean overwriteOtherChangedEntries) {
-    ObjectNode infoNode = processEngineConfiguration.getObjectMapper().createObjectNode();
+  public ObjectNode changeUserTaskCandidateGroup(
+    String id,
+    String candidateGroup,
+    boolean overwriteOtherChangedEntries) {
+
+    var infoNode = processEngineConfiguration.getObjectMapper().createObjectNode();
     changeUserTaskCandidateGroup(id, candidateGroup, overwriteOtherChangedEntries, infoNode);
     return infoNode;
   }
 
-  public void changeUserTaskCandidateGroup(String id, String candidateGroup, boolean overwriteOtherChangedEntries, ObjectNode infoNode) {
+  public void changeUserTaskCandidateGroup(
+    String id,
+    String candidateGroup,
+    boolean overwriteOtherChangedEntries,
+    ObjectNode infoNode) {
+
     ArrayNode valuesNode = null;
     if (overwriteOtherChangedEntries) {
       valuesNode = processEngineConfiguration.getObjectMapper().createArrayNode();

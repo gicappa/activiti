@@ -15,6 +15,7 @@
  */
 package org.activiti.engine.impl.persistence.entity;
 
+import java.io.Serial;
 import org.activiti.engine.api.internal.Internal;
 
 import java.io.Serializable;
@@ -30,9 +31,10 @@ import java.util.regex.Pattern;
 @Deprecated
 public class CommentEntityImpl extends AbstractEntityNoRevision implements CommentEntity, Serializable {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
-  // If comments would be removable, revision needs to be added!
+  // If comments is removable, revision needs to be added!
 
   protected String type;
   protected String userId;
@@ -63,7 +65,7 @@ public class CommentEntityImpl extends AbstractEntityNoRevision implements Comme
   public static Pattern MESSAGE_PARTS_MARKER_REGEX = Pattern.compile("_\\|_");
 
   public void setMessage(String[] messageParts) {
-    StringBuilder stringBuilder = new StringBuilder();
+    var stringBuilder = new StringBuilder();
     for (String part : messageParts) {
       if (part != null) {
         stringBuilder.append(part.replace(MESSAGE_PARTS_MARKER, " | "));
