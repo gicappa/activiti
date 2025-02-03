@@ -17,6 +17,7 @@ package org.activiti.engine.impl.repository;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
@@ -47,6 +48,7 @@ import org.springframework.core.io.Resource;
  */
 public class DeploymentBuilderImpl implements DeploymentBuilder, Serializable {
 
+  @Serial
   private static final long serialVersionUID = 1L;
   protected static final String DEFAULT_ENCODING = "UTF-8";
 

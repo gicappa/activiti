@@ -23,8 +23,8 @@ import org.activiti.engine.repository.ProcessDefinition;
 
 public class ProcessDefinitionRetriever {
 
-    private String tenantId;
-    private DeploymentManager deploymentCache;
+    private final String tenantId;
+    private final DeploymentManager deploymentCache;
 
     public ProcessDefinitionRetriever(String tenantId, DeploymentManager deploymentCache){
         this.tenantId = tenantId;
