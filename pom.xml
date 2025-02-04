@@ -581,6 +581,12 @@ limitations under the License.
           </execution>
         </executions>
       </plugin>
+      <!-- Plugin OpenRewrite -->
+      <plugin>
+        <groupId>org.openrewrite.maven</groupId>
+        <artifactId>rewrite-maven-plugin</artifactId>
+        <version>6.0.5</version>
+      </plugin>
     </plugins>
   </build>
   <reporting>
