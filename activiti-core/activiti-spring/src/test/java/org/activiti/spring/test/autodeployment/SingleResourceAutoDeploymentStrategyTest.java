@@ -21,6 +21,7 @@ import java.util.zip.ZipInputStream;
 import org.activiti.spring.autodeployment.SingleResourceAutoDeploymentStrategy;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.core.io.Resource;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,8 +35,9 @@ public class SingleResourceAutoDeploymentStrategyTest extends AbstractAutoDeploy
 
     private SingleResourceAutoDeploymentStrategy deploymentStrategy;
 
-    @Before
-    public void before() throws Exception {
+  @Before
+  @BeforeEach
+  public void before() throws Exception {
         super.before();
         deploymentStrategy = new SingleResourceAutoDeploymentStrategy(applicationUpgradeContextServiceMock);
         assertThat(deploymentStrategy).isNotNull();

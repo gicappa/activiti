@@ -24,6 +24,7 @@ import java.util.zip.ZipInputStream;
 import org.activiti.spring.autodeployment.DefaultAutoDeploymentStrategy;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.core.io.Resource;
 
 import static org.mockito.ArgumentMatchers.eq;
@@ -37,8 +38,9 @@ public class DefaultAutoDeploymentStrategyTest extends AbstractAutoDeploymentStr
 
     private DefaultAutoDeploymentStrategy deploymentStrategy;
 
-    @Before
-    public void before() throws Exception {
+  @Before
+  @BeforeEach
+  public void before() throws Exception {
         super.before();
         deploymentStrategy = new DefaultAutoDeploymentStrategy(applicationUpgradeContextServiceMock);
     }
