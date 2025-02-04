@@ -66,6 +66,7 @@ public class ConformanceBasicProcessInformationTest {
     @Test
     public void shouldBeAbleToStartProcess() {
         securityUtil.logInAs("user1");
+
         //when
         ProcessInstance processInstance = processRuntime.start(ProcessPayloadBuilder
                 .start()

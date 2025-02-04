@@ -60,11 +60,6 @@
       </dependency>
       <dependency>
         <groupId>org.activiti</groupId>
-        <artifactId>activiti-spring-app-process</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.activiti</groupId>
         <artifactId>activiti-spring-process-extensions</artifactId>
         <version>${project.version}</version>
       </dependency>

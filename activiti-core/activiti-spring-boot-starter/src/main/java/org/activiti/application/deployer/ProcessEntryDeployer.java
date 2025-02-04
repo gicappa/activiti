@@ -15,29 +15,29 @@
  */
 package org.activiti.application.deployer;
 
-import java.util.List;
+import static org.activiti.application.discovery.ProcessEntryDiscovery.PROCESSES;
 
 import org.activiti.application.ApplicationContent;
 import org.activiti.application.FileContent;
-import org.activiti.application.discovery.ProcessEntryDiscovery;
 import org.activiti.engine.RepositoryService;
-import org.activiti.engine.repository.DeploymentBuilder;
 
 public class ProcessEntryDeployer implements ApplicationEntryDeployer {
 
-    private RepositoryService repositoryService;
+  private final RepositoryService repositoryService;
 
-    public ProcessEntryDeployer(RepositoryService repositoryService) {
-        this.repositoryService = repositoryService;
-    }
+  public ProcessEntryDeployer(RepositoryService repositoryService) {
+    this.repositoryService = repositoryService;
+  }
 
-    @Override
-    public void deployEntries(ApplicationContent application) {
-        List<FileContent> processContents = application.getFileContents(ProcessEntryDiscovery.PROCESSES);
-        DeploymentBuilder deploymentBuilder = repositoryService.createDeployment().enableDuplicateFiltering().name("ApplicationAutoDeployment");
-        for (FileContent processContent : processContents) {
-            deploymentBuilder.addBytes(processContent.getName(), processContent.getContent());
-        }
-        deploymentBuilder.deploy();
+  @Override
+  public void deployEntries(ApplicationContent application) {
+    var processContents = application.getFileContents(PROCESSES);
+    var deploymentBuilder = repositoryService
+      .createDeployment().enableDuplicateFiltering().name("ApplicationAutoDeployment");
+
+    for (FileContent processContent : processContents) {
+      deploymentBuilder.addBytes(processContent.getName(), processContent.getContent());
     }
+    deploymentBuilder.deploy();
+  }
 }
