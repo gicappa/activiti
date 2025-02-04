@@ -57,7 +57,7 @@ public class VarArgsTest {
             expression,
             String.class
         );
-        assertEquals(e.getValue(context), "Hey Joe"); // --> Hey Joe
+      assertEquals("Hey Joe", e.getValue(context)); // --> Hey Joe
     }
 
     @Test

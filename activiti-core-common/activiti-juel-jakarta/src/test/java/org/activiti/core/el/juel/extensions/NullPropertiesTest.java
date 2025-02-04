@@ -55,8 +55,8 @@ public class NullPropertiesTest {
         map.put(null, "foo");
         context.getELResolver().setValue(context, null, "map", map);
 
-        // let's go...
-        assertEquals(e.getValue(context), "foo"); // --> "foo"
+      // let's go...
+      assertEquals("foo", e.getValue(context)); // --> "foo"
     }
 
     @Test

@@ -56,7 +56,7 @@ public class MethodInvocationsTest {
                 "${'foo'.matches('foo|bar')}",
                 boolean.class
             );
-        assertEquals(e.getValue(context), true); // --> true
+      assertEquals(true, e.getValue(context)); // --> true
 
         e =
             f.createValueExpression(
@@ -64,7 +64,7 @@ public class MethodInvocationsTest {
                 "${'bar'.toUpperCase()}",
                 String.class
             );
-        assertEquals(e.getValue(context), "BAR"); // --> BAR
+      assertEquals("BAR", e.getValue(context)); // --> BAR
 
         e =
             f.createValueExpression(
@@ -72,7 +72,7 @@ public class MethodInvocationsTest {
                 "${'foobar '.trim().length()}",
                 int.class
             );
-        assertEquals((Integer) e.getValue(context), 6); // --> 6
+      assertEquals(6, (Integer) e.getValue(context)); // --> 6
     }
 
     @Test

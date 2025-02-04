@@ -15,11 +15,7 @@
  */
 package org.activiti.core.el.juel;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 import jakarta.el.ELException;
 import org.activiti.core.el.juel.misc.TypeConverter;
@@ -40,28 +36,13 @@ public class ObjectValueExpressionTest extends TestCase {
 
     @Test
     public void testEqualsObject() {
-        assertTrue(
-            new ObjectValueExpression(converter, "foo", Object.class)
-                .equals(
-                    new ObjectValueExpression(converter, "foo", Object.class)
-                )
-        );
-        assertTrue(
-            new ObjectValueExpression(
-                converter,
-                new String("foo"),
-                Object.class
-            )
-                .equals(
-                    new ObjectValueExpression(converter, "foo", Object.class)
-                )
-        );
-        assertFalse(
-            new ObjectValueExpression(converter, "foo", Object.class)
-                .equals(
-                    new ObjectValueExpression(converter, "bar", Object.class)
-                )
-        );
+      assertEquals(new ObjectValueExpression(converter, "foo", Object.class), new ObjectValueExpression(converter, "foo", Object.class));
+      assertEquals(new ObjectValueExpression(
+                  converter,
+                  new String("foo"),
+                  Object.class
+      ), new ObjectValueExpression(converter, "foo", Object.class));
+      assertNotEquals(new ObjectValueExpression(converter, "foo", Object.class), new ObjectValueExpression(converter, "bar", Object.class));
     }
 
     @Test

@@ -240,7 +240,7 @@ public class AstIdentifierTest extends TestCase {
 
         tree = parse("${var_long_1}");
         bindings = tree.bind(null, context.getVariableMapper());
-        assertEquals(null, getNode(tree).getType(bindings, context));
+      assertNull(getNode(tree).getType(bindings, context));
 
         tree = parse("${property_long_1}");
         bindings = tree.bind(null, context.getVariableMapper());
@@ -248,7 +248,7 @@ public class AstIdentifierTest extends TestCase {
 
         tree = parse("${var_var_long_1}");
         bindings = tree.bind(null, context.getVariableMapper());
-        assertEquals(null, getNode(tree).getType(bindings, context));
+      assertNull(getNode(tree).getType(bindings, context));
 
         tree = parse("${var_property_long_1}");
         bindings = tree.bind(null, context.getVariableMapper());
@@ -256,7 +256,7 @@ public class AstIdentifierTest extends TestCase {
 
         tree = parse("${indentifier_string}");
         bindings = tree.bind(null, context.getVariableMapper());
-        assertEquals(null, getNode(tree).getType(bindings, context));
+      assertNull(getNode(tree).getType(bindings, context));
     }
 
     @Test

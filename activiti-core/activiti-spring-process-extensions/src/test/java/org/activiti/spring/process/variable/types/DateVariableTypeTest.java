@@ -16,7 +16,8 @@
 package org.activiti.spring.process.variable.types;
 
 import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,7 +43,7 @@ class DateVariableTypeTest {
     public void should_returnDate_when_parseValidString() {
         Object result = dateVariableType.parseFromValue("1985-10-26T01:22:00.001Z");
 
-        assertTrue(result.getClass().getName().equals(Date.class.getName()));
+      assertEquals(result.getClass().getName(), Date.class.getName());
     }
 
     @Test
@@ -59,6 +60,6 @@ class DateVariableTypeTest {
         String expression = "${now()}";
         Object result = dateVariableType.parseFromValue(expression);
 
-        assertTrue(result.equals(expression));
+      assertEquals(result, expression);
     }
 }

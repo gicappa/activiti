@@ -15,9 +15,7 @@
  */
 package org.activiti.core.el.juel;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import jakarta.el.BeanELResolver;
 import jakarta.el.MethodInfo;
@@ -96,7 +94,7 @@ public class TreeMethodExpressionTest extends TestCase {
                 null,
                 new Class[0]
             );
-        assertFalse(e1.equals(e2));
+      assertNotEquals(e1, e2);
     }
 
     @Test

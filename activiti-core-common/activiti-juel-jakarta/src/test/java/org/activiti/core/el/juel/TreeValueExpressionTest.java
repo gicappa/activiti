@@ -15,10 +15,7 @@
  */
 package org.activiti.core.el.juel;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 import jakarta.el.BeanELResolver;
 import jakarta.el.PropertyNotFoundException;
@@ -228,7 +225,7 @@ public class TreeValueExpressionTest extends TestCase {
                 "${var_long_1}",
                 Object.class
             );
-        assertFalse(e1.equals(e2));
+      assertNotEquals(e1, e2);
 
         e1 =
             new TreeValueExpression(
@@ -312,7 +309,7 @@ public class TreeValueExpressionTest extends TestCase {
                 "${foo()}",
                 Object.class
             );
-        assertFalse(e1.equals(e2));
+      assertNotEquals(e1, e2);
 
         e2 =
             new TreeValueExpression(
@@ -333,7 +330,7 @@ public class TreeValueExpressionTest extends TestCase {
                 "${ns:foo_1()}",
                 Object.class
             );
-        assertFalse(e1.equals(e2));
+      assertNotEquals(e1, e2);
     }
 
     @Test
