@@ -33,13 +33,13 @@ import org.activiti.engine.impl.cmd.CompleteTaskCmd;
 import org.activiti.engine.impl.interceptor.CommandContext;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 
-@Ignore
+@Disabled
 public class ParallelMultiInstanceBehaviorTest {
 
     @Spy

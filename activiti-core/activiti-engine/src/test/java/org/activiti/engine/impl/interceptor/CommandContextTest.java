@@ -27,8 +27,8 @@ import org.activiti.engine.ApplicationStatusHolder;
 import org.activiti.engine.impl.agenda.DefaultActivitiEngineAgenda;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
 import org.slf4j.LoggerFactory;
 
 public class CommandContextTest {
@@ -47,7 +47,7 @@ public class CommandContextTest {
     assertLogLevel(appender, Level.ERROR);
   }
 
-  @Ignore // GK
+  @Disabled // GK
   @Test
   public void should_LogExceptionAtWarningLevel_when_closing() {
     var appender = startLogger();

@@ -31,8 +31,8 @@ import org.activiti.engine.impl.cfg.StandaloneInMemProcessEngineConfiguration;
 import org.activiti.engine.impl.test.JobTestHelper;
 import org.activiti.engine.runtime.Job;
 import org.activiti.engine.runtime.ProcessInstance;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -167,7 +167,7 @@ public class AsyncExecutorTest {
   }
 
   //TODO enable this test again: temporary disabled because it's randomly failing
-  @Ignore
+  @Disabled
   @Test
   public void testAsyncScriptExecutionOnTwoEngines() {
 
