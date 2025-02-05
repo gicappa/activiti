@@ -15,10 +15,7 @@
  */
 package org.activiti.core.el.juel.tree.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.activiti.core.el.juel.test.TestCase;
 import org.activiti.core.el.juel.tree.Tree;
@@ -86,7 +83,7 @@ public class ParserTest extends TestCase {
 
     Tree verifyBinary(AstBinary.Operator op, String canonical) {
         Tree tree = verifyEvalExpression(canonical);
-        assertTrue((tree.getRoot()).getChild(0) instanceof AstBinary);
+      assertInstanceOf(AstBinary.class, (tree.getRoot()).getChild(0));
         assertEquals(
             op,
             ((AstBinary) tree.getRoot().getChild(0)).getOperator()
