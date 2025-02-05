@@ -18,7 +18,6 @@ package org.activiti.engine.impl.bpmn.helper;
 import org.activiti.bpmn.model.*;
 import org.activiti.bpmn.model.Error;
 import org.activiti.bpmn.model.Process;
-import org.activiti.engine.ActivitiException;
 import org.activiti.engine.delegate.BpmnError;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.event.ActivitiEventType;

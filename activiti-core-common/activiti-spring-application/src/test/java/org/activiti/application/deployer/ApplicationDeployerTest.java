@@ -18,7 +18,6 @@ package org.activiti.application.deployer;
 import org.activiti.application.ApplicationContent;
 import org.activiti.application.ApplicationService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;

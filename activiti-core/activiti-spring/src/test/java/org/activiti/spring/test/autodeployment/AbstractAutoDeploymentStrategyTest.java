@@ -16,7 +16,6 @@
 package org.activiti.spring.test.autodeployment;
 
 import java.io.File;
-import java.io.InputStream;
 
 import org.activiti.core.common.spring.project.ApplicationUpgradeContextService;
 import org.activiti.engine.RepositoryService;

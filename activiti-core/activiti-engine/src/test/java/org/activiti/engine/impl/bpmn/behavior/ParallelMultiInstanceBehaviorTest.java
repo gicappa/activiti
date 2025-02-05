@@ -29,7 +29,6 @@ import java.util.Collections;
 import java.util.Map;
 import org.activiti.bpmn.model.Activity;
 import org.activiti.engine.delegate.DelegateExecution;
-import org.activiti.engine.impl.cmd.CompleteTaskCmd;
 import org.activiti.engine.impl.interceptor.CommandContext;
 import org.junit.After;
 import org.junit.Before;

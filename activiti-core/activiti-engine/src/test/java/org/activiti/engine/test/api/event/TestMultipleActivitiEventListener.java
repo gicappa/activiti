@@ -17,7 +17,9 @@ package org.activiti.engine.test.api.event;
 
 import static java.util.Arrays.asList;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.activiti.engine.delegate.event.ActivitiEvent;
 import org.activiti.engine.delegate.event.ActivitiEventListener;

@@ -21,7 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextClosedEvent;
-import org.springframework.core.Ordered;
 import org.springframework.core.PriorityOrdered;
 
 public class ShutdownListener implements ApplicationListener<ContextClosedEvent>, PriorityOrdered {

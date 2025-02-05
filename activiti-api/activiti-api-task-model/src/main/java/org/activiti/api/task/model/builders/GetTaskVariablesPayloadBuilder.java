@@ -17,8 +17,6 @@ package org.activiti.api.task.model.builders;
 
 import org.activiti.api.task.model.payloads.GetTaskVariablesPayload;
 
-import java.util.Collection;
-
 public class GetTaskVariablesPayloadBuilder {
 
     private String taskId;

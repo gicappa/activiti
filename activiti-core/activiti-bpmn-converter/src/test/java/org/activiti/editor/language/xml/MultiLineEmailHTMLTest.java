@@ -15,7 +15,8 @@
  */
 package org.activiti.editor.language.xml;
 
-import org.activiti.bpmn.model.*;
+import org.activiti.bpmn.model.BpmnModel;
+import org.activiti.bpmn.model.ExtensionElement;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;

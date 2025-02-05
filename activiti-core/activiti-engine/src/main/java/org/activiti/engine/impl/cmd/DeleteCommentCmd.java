@@ -23,9 +23,7 @@ import org.activiti.engine.impl.interceptor.Command;
 import org.activiti.engine.impl.interceptor.CommandContext;
 import org.activiti.engine.impl.persistence.entity.CommentEntity;
 import org.activiti.engine.impl.persistence.entity.CommentEntityManager;
-import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.task.Comment;
-import org.activiti.engine.task.Task;
 
 /**
 

@@ -31,9 +31,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import java.util.Map;
-import java.util.Optional;
-
 public class DefaultMessageExecutionContext implements MessageExecutionContext {
     private final ExpressionManager expressionManager;
     private final MessagePayloadMappingProvider messagePayloadMappingProvider;
