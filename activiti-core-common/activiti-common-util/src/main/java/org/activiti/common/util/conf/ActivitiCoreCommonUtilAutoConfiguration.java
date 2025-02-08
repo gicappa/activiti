@@ -24,11 +24,12 @@ import org.springframework.context.annotation.Bean;
 @AutoConfiguration
 public class ActivitiCoreCommonUtilAutoConfiguration {
 
-    @Bean
-    @ConditionalOnMissingBean
-    public DateFormatterProvider dateFormatterProvider(@Value("${spring.activiti.date-format-pattern:yyyy-MM-dd[['T']HH:mm:ss[.SSS][XXX]]}")
-                                                       String dateFormatPattern) {
-        return new DateFormatterProvider(dateFormatPattern);
-    }
+  @Bean
+  @ConditionalOnMissingBean
+  public DateFormatterProvider dateFormatterProvider(
+    @Value("${spring.activiti.date-format-pattern:yyyy-MM-dd[['T']HH:mm:ss[.SSS][XXX]]}")
+    String dateFormatPattern) {
+    return new DateFormatterProvider(dateFormatPattern);
+  }
 
 }

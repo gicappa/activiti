@@ -25,139 +25,141 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
-
 import org.junit.jupiter.api.Test;
 
 public class DateFormatterProviderTest {
 
-    private final DateFormatterProvider provider = new DateFormatterProvider("yyyy-MM-dd[['T']HH:mm:ss[.SSS][XXX]]");
+  private final DateFormatterProvider provider = new DateFormatterProvider(
+    "yyyy-MM-dd[['T']HH:mm:ss[.SSS][XXX]]");
 
-    @Test
-    public void should_returnDate_when_stringRepresentsADate() {
+  @Test
+  public void should_returnDate_when_stringRepresentsADate() {
 
-        String dateStr = "1970-01-01";
+    String dateStr = "1970-01-01";
 
-        Date date = provider.toDate(dateStr);
+    Date date = provider.toDate(dateStr);
 
-        assertThat(date).hasTime(0);
-    }
+    assertThat(date).hasTime(0);
+  }
 
-    @Test
-    public void should_returnDate_when_stringRepresentsADateWithTimeInformation() {
+  @Test
+  public void should_returnDate_when_stringRepresentsADateWithTimeInformation() {
 
-        // Formats without milliseconds
-        long time = Duration.ofHours(1).toMillis() + Duration.ofMinutes(1).toMillis() + Duration.ofSeconds(1).toMillis() ;
+    // Formats without milliseconds
+    long time =
+      Duration.ofHours(1).toMillis() + Duration.ofMinutes(1).toMillis() + Duration.ofSeconds(1)
+        .toMillis();
 
-        String dateStr = "1970-01-01T01:01:01";
-        Date date = provider.toDate(dateStr);
-        assertThat(date).hasTime(time);
+    String dateStr = "1970-01-01T01:01:01";
+    Date date = provider.toDate(dateStr);
+    assertThat(date).hasTime(time);
 
-        dateStr = "1970-01-01T01:01:01Z";
-        date = provider.toDate(dateStr);
-        assertThat(date).hasTime(time);
+    dateStr = "1970-01-01T01:01:01Z";
+    date = provider.toDate(dateStr);
+    assertThat(date).hasTime(time);
 
-        dateStr = "1970-01-01T01:01:01+00:00";
-        date = provider.toDate(dateStr);
-        assertThat(date).hasTime(time);
+    dateStr = "1970-01-01T01:01:01+00:00";
+    date = provider.toDate(dateStr);
+    assertThat(date).hasTime(time);
 
-        dateStr = "1970-01-01T02:01:01+01:00";
-        date = provider.toDate(dateStr);
-        assertThat(date).hasTime(time);
+    dateStr = "1970-01-01T02:01:01+01:00";
+    date = provider.toDate(dateStr);
+    assertThat(date).hasTime(time);
 
-        dateStr = "1969-12-31T23:01:01-02:00";
-        date = provider.toDate(dateStr);
-        assertThat(date).hasTime(time);
+    dateStr = "1969-12-31T23:01:01-02:00";
+    date = provider.toDate(dateStr);
+    assertThat(date).hasTime(time);
 
-        // Formats including milliseconds
-        time = time +1;
+    // Formats including milliseconds
+    time = time + 1;
 
-        dateStr = "1970-01-01T01:01:01.001";
-        date = provider.toDate(dateStr);
-        assertThat(date).hasTime(time);
+    dateStr = "1970-01-01T01:01:01.001";
+    date = provider.toDate(dateStr);
+    assertThat(date).hasTime(time);
 
-        dateStr = "1970-01-01T01:01:01.001Z";
-        date = provider.toDate(dateStr);
-        assertThat(date).hasTime(time);
+    dateStr = "1970-01-01T01:01:01.001Z";
+    date = provider.toDate(dateStr);
+    assertThat(date).hasTime(time);
 
-        dateStr = "1970-01-01T01:01:01.001+00:00";
-        date = provider.toDate(dateStr);
-        assertThat(date).hasTime(time);
+    dateStr = "1970-01-01T01:01:01.001+00:00";
+    date = provider.toDate(dateStr);
+    assertThat(date).hasTime(time);
 
-        dateStr = "1970-01-01T02:01:01.001+01:00";
-        date = provider.toDate(dateStr);
-        assertThat(date).hasTime(time);
+    dateStr = "1970-01-01T02:01:01.001+01:00";
+    date = provider.toDate(dateStr);
+    assertThat(date).hasTime(time);
 
-        dateStr = "1969-12-31T23:01:01.001-02:00";
-        date = provider.toDate(dateStr);
-        assertThat(date).hasTime(time);
-    }
+    dateStr = "1969-12-31T23:01:01.001-02:00";
+    date = provider.toDate(dateStr);
+    assertThat(date).hasTime(time);
+  }
 
-    @Test
-    public void should_throwException_when_stringIsNotADate() {
+  @Test
+  public void should_throwException_when_stringIsNotADate() {
 
-        String dateStr = "this is not a date";
+    String dateStr = "this is not a date";
 
-        assertThatExceptionOfType(DateTimeParseException.class)
-                .isThrownBy(() -> provider.parse(dateStr));
-    }
+    assertThatExceptionOfType(DateTimeParseException.class)
+      .isThrownBy(() -> provider.parse(dateStr));
+  }
 
-    @Test
-    public void should_returnDate_when_longIsProvided() {
+  @Test
+  public void should_returnDate_when_longIsProvided() {
 
-        long time = 1000;
+    long time = 1000;
 
-        Date date = provider.toDate(time);
+    Date date = provider.toDate(time);
 
-        assertThat(date).hasTime(time);
-    }
+    assertThat(date).hasTime(time);
+  }
 
-    @Test
-    public void should_returnDate_when_dateIsProvided() {
+  @Test
+  public void should_returnDate_when_dateIsProvided() {
 
-        Date initialDate = new Date(1000);
+    Date initialDate = new Date(1000);
 
-        Date date = provider.toDate(initialDate);
+    Date date = provider.toDate(initialDate);
 
-        assertThat(date).isEqualTo(initialDate);
-    }
+    assertThat(date).isEqualTo(initialDate);
+  }
 
-    @Test
-    public void should_returnDate_when_localDateIsProvided() {
+  @Test
+  public void should_returnDate_when_localDateIsProvided() {
 
-        LocalDate localDate = LocalDate.now();
+    LocalDate localDate = LocalDate.now();
 
-        Date date = provider.toDate(localDate);
+    Date date = provider.toDate(localDate);
 
-        assertThat(date).isEqualTo(Date.from(localDate.atStartOfDay(provider.getZoneId()).toInstant()));
-    }
+    assertThat(date).isEqualTo(Date.from(localDate.atStartOfDay(provider.getZoneId()).toInstant()));
+  }
 
-    @Test
-    public void should_returnDate_when_localDateTimeIsProvided() {
+  @Test
+  public void should_returnDate_when_localDateTimeIsProvided() {
 
-        LocalDateTime localDateTime = LocalDateTime.now();
+    LocalDateTime localDateTime = LocalDateTime.now();
 
-        Date date = provider.toDate(localDateTime);
+    Date date = provider.toDate(localDateTime);
 
-        assertThat(date).isEqualTo(Date.from(localDateTime.atZone(provider.getZoneId()).toInstant()));
-    }
+    assertThat(date).isEqualTo(Date.from(localDateTime.atZone(provider.getZoneId()).toInstant()));
+  }
 
-    @Test
-    public void should_returnDate_when_zonedDateTimeIsProvided() {
+  @Test
+  public void should_returnDate_when_zonedDateTimeIsProvided() {
 
-        ZonedDateTime zonedDateTime = ZonedDateTime.now();
+    ZonedDateTime zonedDateTime = ZonedDateTime.now();
 
-        Date date = provider.toDate(zonedDateTime);
+    Date date = provider.toDate(zonedDateTime);
 
-        assertThat(date).isEqualTo(Date.from(zonedDateTime.toInstant()));
-    }
+    assertThat(date).isEqualTo(Date.from(zonedDateTime.toInstant()));
+  }
 
-    @Test
-    public void should_throwException_when_isNotAStringADateOrALong() {
-        double value = 1.2;
+  @Test
+  public void should_throwException_when_isNotAStringADateOrALong() {
+    double value = 1.2;
 
-        assertThatExceptionOfType(DateTimeException.class)
-                .isThrownBy(
-                        () -> provider.toDate(value))
-                .withMessageContaining("Error while parsing date");
-    }
+    assertThatExceptionOfType(DateTimeException.class)
+      .isThrownBy(
+        () -> provider.toDate(value))
+      .withMessageContaining("Error while parsing date");
+  }
 }

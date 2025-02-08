@@ -16,23 +16,23 @@
 package org.activiti.core.el;
 
 import java.util.Date;
-import java.util.TimeZone;
 
 public class DateResolverHelper {
 
-    private static final String NOW_FUNCTION_NAME = "now";
-    private static final String NOW_INVOKE_METHOD = "now";
+  private static final String NOW_FUNCTION_NAME = "now";
+  private static final String NOW_INVOKE_METHOD = "now";
 
-    private static final TimeZone TIME_ZONE = TimeZone.getTimeZone("UTC");
+  public static Date now() {
+    return new Date();
+  }
 
-    public static final Date now() {
-        return new Date();
-    }
+  private DateResolverHelper() {
+  }
 
-    private DateResolverHelper() {
-    }
+  public static void addDateFunctions(ActivitiElContext elContext)
+    throws NoSuchMethodException {
 
-    public static void addDateFunctions(ActivitiElContext elContext) throws NoSuchMethodException {
-        elContext.setFunction("", NOW_FUNCTION_NAME, DateResolverHelper.class.getMethod(NOW_INVOKE_METHOD));
-    }
+    elContext.setFunction("", NOW_FUNCTION_NAME,
+      DateResolverHelper.class.getMethod(NOW_INVOKE_METHOD));
+  }
 }

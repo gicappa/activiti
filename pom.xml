@@ -379,6 +379,11 @@ limitations under the License.
     </pluginManagement>
     <plugins>
       <plugin>
+        <groupId>com.github.ferstl</groupId>
+        <artifactId>depgraph-maven-plugin</artifactId>
+        <version>4.0.3</version>
+      </plugin>
+      <plugin>
         <groupId>com.mycila</groupId>
         <artifactId>license-maven-plugin</artifactId>
         <executions>

@@ -19,17 +19,18 @@ import java.util.List;
 
 public class ListResolverHelper {
 
-    private static final String LIST_FUNCTION_NAME = "list";
-    private static final String LIST_INVOKE_METHOD = "list";
+  private static final String LIST_FUNCTION_NAME = "list";
+  private static final String LIST_INVOKE_METHOD = "list";
 
-    public static List<Object> list(Object... objects) {
-        return List.of(objects);
-    }
+  public static List<Object> list(Object... objects) {
+    return List.of(objects);
+  }
 
-    private ListResolverHelper() {
-    }
+  private ListResolverHelper() {
+  }
 
-    public static void addListFunctions(ActivitiElContext elContext) throws NoSuchMethodException {
-        elContext.setFunction("", LIST_FUNCTION_NAME, ListResolverHelper.class.getMethod(LIST_INVOKE_METHOD, Object[].class));
-    }
+  public static void addListFunctions(ActivitiElContext elContext) throws NoSuchMethodException {
+    elContext.setFunction("", LIST_FUNCTION_NAME,
+      ListResolverHelper.class.getMethod(LIST_INVOKE_METHOD, Object[].class));
+  }
 }

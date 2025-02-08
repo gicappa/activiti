@@ -17,83 +17,83 @@ package org.activiti.core.common.model.connector;
 
 public class VariableDefinition {
 
-    private String id;
+  private String id;
 
-    private String name;
+  private String name;
 
-    private String description;
+  private String description;
 
-    private String type;
+  private String type;
 
-    private boolean required;
+  private boolean required;
 
-    private Boolean display;
+  private Boolean display;
 
-    private String displayName;
+  private String displayName;
 
-    private boolean analytics;
+  private boolean analytics;
 
-    public String getId() {
-        return id;
-    }
+  public String getId() {
+    return id;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public String getDescription() {
-        return description;
-    }
+  public String getDescription() {
+    return description;
+  }
 
-    public String getType() {
-        return type;
-    }
+  public String getType() {
+    return type;
+  }
 
-    public boolean isRequired() {
-        return required;
-    }
+  public boolean isRequired() {
+    return required;
+  }
 
-    public Boolean getDisplay() {
-        return display;
-    }
+  public Boolean getDisplay() {
+    return display;
+  }
 
-    public String getDisplayName() {
-        return displayName;
-    }
+  public String getDisplayName() {
+    return displayName;
+  }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+  public void setId(String id) {
+    this.id = id;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-    public void setType(String type) {
-        this.type = type;
-    }
+  public void setType(String type) {
+    this.type = type;
+  }
 
-    public void setRequired(boolean required) {
-        this.required = required;
-    }
+  public void setRequired(boolean required) {
+    this.required = required;
+  }
 
-    public void setDisplay(Boolean display) {
-        this.display = display;
-    }
+  public void setDisplay(Boolean display) {
+    this.display = display;
+  }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
+  public void setDisplayName(String displayName) {
+    this.displayName = displayName;
+  }
 
-    public boolean isAnalytics() {
-        return analytics;
-    }
+  public boolean isAnalytics() {
+    return analytics;
+  }
 
-    public void setAnalytics(boolean analytics) {
-        this.analytics = analytics;
-    }
+  public void setAnalytics(boolean analytics) {
+    this.analytics = analytics;
+  }
 }

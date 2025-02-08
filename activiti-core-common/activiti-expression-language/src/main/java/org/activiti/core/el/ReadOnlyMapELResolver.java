@@ -15,18 +15,16 @@
  */
 package org.activiti.core.el;
 
+import jakarta.el.ELContext;
+import jakarta.el.ELResolver;
 import java.beans.FeatureDescriptor;
 import java.util.Iterator;
 import java.util.Map;
 
-import jakarta.el.ELContext;
-import jakarta.el.ELResolver;
-
 /**
- * An {@link ELResolver} that exposed object values in the map, under the name of the entry's key. The values in the map are only returned when requested property has no 'base', meaning it's a
+ * An {@link ELResolver} that exposed object values in the map, under the name of the entry's key.
+ * The values in the map are only returned when requested property has no 'base', meaning it's a
  * root-object.
- *
-
  */
 public class ReadOnlyMapELResolver extends ELResolver {
 
@@ -53,7 +51,8 @@ public class ReadOnlyMapELResolver extends ELResolver {
   public void setValue(ELContext context, Object base, Object property, Object value) {
     if (base == null) {
       if (wrappedMap.containsKey(property)) {
-        throw new IllegalArgumentException("Cannot set value of '" + property + "', it's readonly!");
+        throw new IllegalArgumentException(
+          "Cannot set value of '" + property + "', it's readonly!");
       }
     }
   }

@@ -24,6 +24,7 @@ import jakarta.el.VariableMapper;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
+import java.io.Serial;
 import java.util.Arrays;
 import org.activiti.core.el.juel.misc.LocalMessages;
 import org.activiti.core.el.juel.misc.TypeConverter;
@@ -44,6 +45,7 @@ import org.activiti.core.el.juel.tree.TreeStore;
  */
 public final class TreeMethodExpression extends MethodExpression {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private final TreeBuilder builder;
