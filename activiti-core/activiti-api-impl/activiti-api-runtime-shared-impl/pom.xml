@@ -15,6 +15,7 @@
       <artifactId>spring-boot-autoconfigure</artifactId>
       <optional>true</optional>
     </dependency>
+<!--
     <dependency>
       <groupId>org.activiti</groupId>
       <artifactId>activiti-api-runtime-shared</artifactId>
@@ -23,6 +24,7 @@
       <groupId>org.activiti</groupId>
       <artifactId>activiti-api-model-shared</artifactId>
     </dependency>
+-->
     <dependency>
       <groupId>org.activiti</groupId>
       <artifactId>activiti-api-model-shared-impl</artifactId>
