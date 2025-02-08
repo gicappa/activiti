@@ -7,7 +7,6 @@
     <artifactId>activiti-parent</artifactId>
     <version>8.7.0-SNAPSHOT</version>
   </parent>
-  <groupId>org.activiti</groupId>
   <artifactId>activiti-core-common</artifactId>
   <packaging>pom</packaging>
   <name>Activiti :: Core :: Common :: Parent</name>
@@ -40,8 +39,6 @@
     <module>activiti-spring-application</module>
     <module>activiti-spring-resource-finder</module>
     <module>activiti-core-test</module>
-    <module>activiti-project-model</module>
-    <module>activiti-spring-project</module>
     <module>activiti-common-util</module>
     <module>activiti-expression-language</module>
     <module>activiti-juel-jakarta</module>
