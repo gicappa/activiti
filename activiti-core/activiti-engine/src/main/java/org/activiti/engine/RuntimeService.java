@@ -19,7 +19,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.activiti.api.runtime.shared.NotFoundException;
 import org.activiti.bpmn.model.FlowNode;
 import org.activiti.engine.api.internal.Internal;
 import org.activiti.engine.delegate.VariableScope;
@@ -39,6 +38,7 @@ import org.activiti.engine.runtime.ProcessInstanceQuery;
 import org.activiti.engine.task.Event;
 import org.activiti.engine.task.IdentityLink;
 import org.activiti.engine.task.IdentityLinkType;
+import org.activiti.engine.impl.runtime.NotFoundException;
 
 @Internal
 public interface RuntimeService {
@@ -858,7 +858,7 @@ public interface RuntimeService {
    * @param locale
    *          locale the DataObject name and description should be returned in (if available).
    * @param withLocalizationFallback
-   *          When true localization will fallback to more general locales if the specified locale is not found.
+   *          When true localization will fall back to more general locales if the specified locale is not found.
    * @return the DataObjects or an empty map if no such dataObjects are found.
    * @throws ActivitiObjectNotFoundException
    *           when no execution is found for the given executionId.
@@ -870,7 +870,7 @@ public interface RuntimeService {
    *
    * @param executionId
    *          id of execution, cannot be null.
-   * @param dataObjectNames
+   * @param dataObjects
    *          the collection of DataObject names that should be retrieved.
    * @return the DataObjects or an empty map if no DataObjects are found.
    * @throws ActivitiObjectNotFoundException
@@ -888,7 +888,7 @@ public interface RuntimeService {
    * @param locale
    *          locale the DataObject name and description should be returned in (if available).
    * @param withLocalizationFallback
-   *          When true localization will fallback to more general locales if the specified locale is not found.
+   *          When true localization will fall back to more general locales if the specified locale is not found.
    * @return the DataObjects or an empty map if no DataObjects are found.
    * @throws ActivitiObjectNotFoundException
    *           when no execution is found for the given executionId.
@@ -901,7 +901,7 @@ public interface RuntimeService {
    *
    * @param executionId
    *          id of execution, cannot be null.
-   * @param dataObjectName
+   * @param dataObject
    *          name of DataObject, cannot be null.
    * @return the DataObject or null if the variable is undefined.
    * @throws ActivitiObjectNotFoundException
@@ -920,7 +920,7 @@ public interface RuntimeService {
    * @param locale
    *          locale the DataObject name and description should be returned in (if available).
    * @param withLocalizationFallback
-   *          When true localization will fallback to more general locales including the default locale of the JVM if the specified locale is not found.
+   *          When true localization will fall back to more general locales including the default locale of the JVM if the specified locale is not found.
    * @return the DataObject or null if the DataObject is undefined.
    * @throws ActivitiObjectNotFoundException
    *           when no execution is found for the given executionId.

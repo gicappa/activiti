@@ -12,10 +12,6 @@
   <name>Activiti :: Spring</name>
   <dependencies>
     <dependency>
-      <groupId>org.activiti</groupId>
-      <artifactId>activiti-project-model</artifactId>
-    </dependency>
-    <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
     </dependency>
@@ -55,7 +51,8 @@
     </dependency>
     <dependency>
       <groupId>org.activiti</groupId>
-      <artifactId>activiti-api-runtime-shared</artifactId>
+      <artifactId>activiti-api-runtime-shared-impl</artifactId>
+<!--      <version>${project.version}</version>-->
     </dependency>
     <dependency>
       <groupId>org.activiti</groupId>

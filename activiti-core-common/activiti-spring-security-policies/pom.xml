@@ -21,11 +21,13 @@
     </dependency>
     <dependency>
       <groupId>org.activiti</groupId>
-      <artifactId>activiti-api-process-model</artifactId>
+      <artifactId>activiti-api-process-model-impl</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.activiti</groupId>
-      <artifactId>activiti-api-runtime-shared</artifactId>
+      <artifactId>activiti-api-runtime-shared-impl</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

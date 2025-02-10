@@ -12,7 +12,6 @@
   <url>https://www.activiti.org</url>
   <modules>
     <module>activiti-dependency-check</module>
-    <module>activiti-api</module>
     <module>activiti-core-common</module>
     <module>activiti-core</module>
     <module>activiti-dependencies</module>

@@ -15,19 +15,20 @@
  */
 package org.activiti.engine.impl;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.activiti.api.runtime.shared.identity.UserGroupManager;
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.ActivitiIllegalArgumentException;
 import org.activiti.engine.DynamicBpmnConstants;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.impl.context.Context;
+import org.activiti.engine.impl.identity.UserGroupManager;
 import org.activiti.engine.impl.interceptor.CommandContext;
 import org.activiti.engine.impl.interceptor.CommandExecutor;
 import org.activiti.engine.impl.persistence.entity.HistoricTaskInstanceEntity;
@@ -37,6 +38,7 @@ import org.slf4j.LoggerFactory;
 
 public class HistoricTaskInstanceQueryImpl extends AbstractVariableQueryImpl<HistoricTaskInstanceQuery, HistoricTaskInstance> implements HistoricTaskInstanceQuery {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   private static final Logger log = LoggerFactory.getLogger(HistoricTaskInstanceQueryImpl.class);

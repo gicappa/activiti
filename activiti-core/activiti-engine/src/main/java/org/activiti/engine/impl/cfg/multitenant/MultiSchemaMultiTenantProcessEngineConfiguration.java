@@ -18,7 +18,6 @@ package org.activiti.engine.impl.cfg.multitenant;
 import java.util.concurrent.ExecutorService;
 import javax.sql.DataSource;
 
-import org.activiti.api.runtime.shared.identity.UserGroupManager;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngineConfiguration;
 import org.activiti.engine.impl.asyncexecutor.AsyncExecutor;
@@ -27,6 +26,7 @@ import org.activiti.engine.impl.asyncexecutor.multitenant.SharedExecutorServiceA
 import org.activiti.engine.impl.asyncexecutor.multitenant.TenantAwareAsyncExecutor;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.activiti.engine.impl.db.DbIdGenerator;
+import org.activiti.engine.impl.identity.UserGroupManager;
 import org.activiti.engine.impl.interceptor.CommandInterceptor;
 import org.activiti.engine.impl.persistence.StrongUuidGenerator;
 import org.activiti.engine.repository.DeploymentBuilder;
@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
  * If multitenancy is needed and no data isolation is needed: the default {@link ProcessEngineConfigurationImpl}
  * of Activiti is multitenant enabled out of the box by setting a tenant identifier on a {@link DeploymentBuilder}.
  *
- * This configuration has following characteristics:
+ * This configuration has the following characteristics:
  *
  * - It needs a {@link TenantInfoHolder} to determine which tenant is currently 'active'. Ie for which
  *   tenant a certain API call is executed.

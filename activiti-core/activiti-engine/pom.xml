@@ -21,11 +21,8 @@
   <dependencies>
     <dependency>
       <groupId>org.activiti</groupId>
-      <artifactId>activiti-api-runtime-shared</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.activiti</groupId>
       <artifactId>activiti-project-model</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.activiti</groupId>

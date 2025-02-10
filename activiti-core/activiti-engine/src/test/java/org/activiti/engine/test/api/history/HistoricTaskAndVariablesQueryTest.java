@@ -26,11 +26,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.activiti.api.runtime.shared.identity.UserGroupManager;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.activiti.engine.impl.history.HistoryLevel;
+import org.activiti.engine.impl.identity.UserGroupManager;
 import org.activiti.engine.impl.test.PluggableActivitiTestCase;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
@@ -53,7 +53,7 @@ public class HistoricTaskAndVariablesQueryTest extends PluggableActivitiTestCase
     private static final String FOZZIE = "fozzie";
     private static final List<String> FOZZIESGROUPS = asList("management");
 
-    private UserGroupManager userGroupManager = Mockito.mock(UserGroupManager.class);
+    private final UserGroupManager userGroupManager = Mockito.mock(UserGroupManager.class);
 
     public void setUp() throws Exception {
         ProcessEngineConfigurationImpl engineConfiguration = (ProcessEngineConfigurationImpl) cachedProcessEngine.getProcessEngineConfiguration();
@@ -123,14 +123,14 @@ public class HistoricTaskAndVariablesQueryTest extends PluggableActivitiTestCase
 
             tasks = historyService.createHistoricTaskInstanceQuery().includeTaskLocalVariables().taskInvolvedUser(KERMIT).orderByTaskCreateTime().asc().list();
             assertThat(tasks).hasSize(3);
-            assertThat(tasks.get(0).getTaskLocalVariables()).hasSize(1);
-            assertThat(tasks.get(0).getTaskLocalVariables().get("test")).isEqualTo("test");
-            assertThat(tasks.get(0).getProcessVariables()).hasSize(0);
+            assertThat(tasks.getFirst().getTaskLocalVariables()).hasSize(1);
+            assertThat(tasks.getFirst().getTaskLocalVariables().get("test")).isEqualTo("test");
+            assertThat(tasks.getFirst().getProcessVariables()).hasSize(0);
 
             tasks = historyService.createHistoricTaskInstanceQuery().includeProcessVariables().taskInvolvedUser(KERMIT).orderByTaskCreateTime().asc().list();
             assertThat(tasks).hasSize(3);
-            assertThat(tasks.get(0).getProcessVariables()).hasSize(0);
-            assertThat(tasks.get(0).getTaskLocalVariables()).hasSize(0);
+            assertThat(tasks.getFirst().getProcessVariables()).hasSize(0);
+            assertThat(tasks.getFirst().getTaskLocalVariables()).hasSize(0);
 
             task = historyService.createHistoricTaskInstanceQuery().includeTaskLocalVariables().taskAssignee(KERMIT).taskVariableValueEquals("localVar",
                                                                                                                                              "test").singleResult();

@@ -12,13 +12,13 @@
   <name>Activiti :: Core :: Common :: Parent</name>
   <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>org.activiti</groupId>
-        <artifactId>activiti-api-dependencies</artifactId>
-        <version>${project.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
+<!--      <dependency>-->
+<!--        <groupId>org.activiti</groupId>-->
+<!--        <artifactId>activiti-api-dependencies</artifactId>-->
+<!--        <version>${project.version}</version>-->
+<!--        <type>pom</type>-->
+<!--        <scope>import</scope>-->
+<!--      </dependency>-->
     </dependencies>
   </dependencyManagement>
   <dependencies>

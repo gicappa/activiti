@@ -17,6 +17,7 @@ package org.activiti.spring;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import javax.sql.DataSource;
 import org.activiti.core.common.spring.project.ApplicationUpgradeContextService;
 import org.activiti.engine.ActivitiException;
@@ -25,6 +26,7 @@ import org.activiti.engine.ProcessEngineConfiguration;
 import org.activiti.engine.ProcessEngines;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.activiti.engine.impl.cfg.StandaloneProcessEngineConfiguration;
+import org.activiti.engine.impl.identity.UserGroupManager;
 import org.activiti.engine.impl.interceptor.CommandConfig;
 import org.activiti.engine.impl.interceptor.CommandInterceptor;
 import org.activiti.engine.impl.variable.EntityManagerSession;
@@ -153,24 +155,12 @@ public class SpringProcessEngineConfiguration
     this.transactionManager = transactionManager;
   }
 
-  public String getDeploymentName() {
-    return deploymentName;
-  }
-
   public void setDeploymentName(String deploymentName) {
     this.deploymentName = deploymentName;
   }
 
-  public Resource[] getDeploymentResources() {
-    return deploymentResources;
-  }
-
   public void setDeploymentResources(Resource[] deploymentResources) {
     this.deploymentResources = deploymentResources;
-  }
-
-  public ApplicationContext getApplicationContext() {
-    return applicationContext;
   }
 
   @Override
@@ -178,8 +168,34 @@ public class SpringProcessEngineConfiguration
     this.applicationContext = applicationContext;
   }
 
-  public String getDeploymentMode() {
-    return deploymentMode;
+  public void setUserGroupManager(org.activiti.api.runtime.shared.identity.UserGroupManager userGroupManager) {
+    super.setUserGroupManager(traslateUserGroupManager(userGroupManager));
+
+  }
+
+  private UserGroupManager traslateUserGroupManager(
+    org.activiti.api.runtime.shared.identity.UserGroupManager userGroupManager) {
+    return new UserGroupManager() {
+      @Override
+      public List<String> getUserGroups(String username) {
+        return userGroupManager.getUserGroups(username);
+      }
+
+      @Override
+      public List<String> getUserRoles(String username) {
+        return userGroupManager.getUserRoles(username);
+      }
+
+      @Override
+      public List<String> getGroups() {
+        return userGroupManager.getGroups();
+      }
+
+      @Override
+      public List<String> getUsers() {
+        return userGroupManager.getUsers();
+      }
+    };
   }
 
   public void setDeploymentMode(String deploymentMode) {
@@ -197,7 +213,7 @@ public class SpringProcessEngineConfiguration
    */
   protected AutoDeploymentStrategy getAutoDeploymentStrategy(final String mode) {
     AutoDeploymentStrategy result = defaultAutoDeploymentStrategy;
-    for (final AutoDeploymentStrategy strategy : deploymentStrategies) {
+    for (var strategy : deploymentStrategies) {
       if (strategy.handlesMode(mode)) {
         result = strategy;
         break;

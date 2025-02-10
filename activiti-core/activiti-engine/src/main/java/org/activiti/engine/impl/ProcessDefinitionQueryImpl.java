@@ -18,10 +18,10 @@ package org.activiti.engine.impl;
 import java.util.List;
 import java.util.Set;
 
-import org.activiti.api.runtime.shared.identity.UserGroupManager;
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.ActivitiIllegalArgumentException;
 import org.activiti.engine.impl.context.Context;
+import org.activiti.engine.impl.identity.UserGroupManager;
 import org.activiti.engine.impl.interceptor.CommandContext;
 import org.activiti.engine.impl.interceptor.CommandExecutor;
 import org.activiti.engine.impl.persistence.entity.SuspensionState;

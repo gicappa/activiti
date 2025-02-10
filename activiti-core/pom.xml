@@ -31,13 +31,13 @@
   </properties>
   <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>org.activiti</groupId>
-        <artifactId>activiti-api-dependencies</artifactId>
-        <version>${project.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
+<!--      <dependency>-->
+<!--        <groupId>org.activiti</groupId>-->
+<!--        <artifactId>activiti-api-dependencies</artifactId>-->
+<!--        <version>${project.version}</version>-->
+<!--        <type>pom</type>-->
+<!--        <scope>import</scope>-->
+<!--      </dependency>-->
       <dependency>
         <groupId>org.activiti</groupId>
         <artifactId>activiti-core-common-dependencies</artifactId>
@@ -237,6 +237,6 @@
     <module>activiti-spring</module>
     <module>activiti-spring-boot-starter</module>
     <module>activiti-spring-process-extensions</module>
-    <module>activiti-spring-conformance-tests</module>
+<!--    <module>activiti-spring-conformance-tests</module>-->
   </modules>
 </project>

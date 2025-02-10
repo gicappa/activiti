@@ -29,11 +29,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.activiti.api.runtime.shared.identity.UserGroupManager;
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.ActivitiIllegalArgumentException;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.activiti.engine.impl.history.HistoryLevel;
+import org.activiti.engine.impl.identity.UserGroupManager;
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.impl.persistence.entity.VariableInstanceEntity;
 import org.activiti.engine.impl.test.PluggableActivitiTestCase;
@@ -63,7 +63,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   private static final String SCOOTER = "scooter";
   private static final List<String> SCOOTERSGROUPS = null;
 
-  private UserGroupManager userGroupManager = Mockito.mock(UserGroupManager.class);
+  private final UserGroupManager userGroupManager = Mockito.mock(UserGroupManager.class);
 
 
   public void setUp() throws Exception {
@@ -78,7 +78,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   public void testBasicTaskPropertiesNotNull() {
-    Task task = taskService.createTaskQuery().taskId(taskIds.get(0)).singleResult();
+    Task task = taskService.createTaskQuery().taskId(taskIds.getFirst()).singleResult();
     assertThat(task.getDescription()).isNotNull();
     assertThat(task.getId()).isNotNull();
     assertThat(task.getName()).isNotNull();
@@ -101,7 +101,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   public void testQueryByTaskIdOr() {
-    TaskQuery query = taskService.createTaskQuery().or().taskId(taskIds.get(0)).taskName("INVALID NAME").endOr();
+    TaskQuery query = taskService.createTaskQuery().or().taskId(taskIds.getFirst()).taskName("INVALID NAME").endOr();
     assertThat(query.singleResult()).isNotNull();
     assertThat(query.list()).hasSize(1);
     assertThat(query.count()).isEqualTo(1);
@@ -405,7 +405,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
     assertThat(query.count()).isEqualTo(2);
 
     assertThatExceptionOfType(ActivitiException.class)
-      .isThrownBy(() -> query.singleResult());
+      .isThrownBy(query::singleResult);
   }
 
   public void testQueryByPriorityOr() {
@@ -635,13 +635,13 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
     assertThat(query.count()).isEqualTo(11);
     assertThat(query.list()).hasSize(11);
     assertThatExceptionOfType(ActivitiException.class)
-      .isThrownBy(() -> query.singleResult());
+      .isThrownBy(query::singleResult);
 
     TaskQuery queryFozzie = taskService.createTaskQuery().taskCandidateUser(FOZZIE, FOZZIESGROUPS);
     assertThat(queryFozzie.count()).isEqualTo(3);
     assertThat(queryFozzie.list()).hasSize(3);
     assertThatExceptionOfType(ActivitiException.class)
-      .isThrownBy(() -> queryFozzie.singleResult());
+      .isThrownBy(queryFozzie::singleResult);
   }
 
   public void testQueryByCandidateUserOr() {
@@ -649,13 +649,13 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
     assertThat(query.count()).isEqualTo(11);
     assertThat(query.list()).hasSize(11);
     assertThatExceptionOfType(ActivitiException.class)
-      .isThrownBy(() -> query.singleResult());
+      .isThrownBy(query::singleResult);
 
     TaskQuery queryFozzie = taskService.createTaskQuery().or().taskId("invalid").taskCandidateUser(FOZZIE, FOZZIESGROUPS);
     assertThat(queryFozzie.count()).isEqualTo(3);
     assertThat(queryFozzie.list()).hasSize(3);
     assertThatExceptionOfType(ActivitiException.class)
-      .isThrownBy(() -> queryFozzie.singleResult());
+      .isThrownBy(queryFozzie::singleResult);
   }
 
   public void testQueryByNullCandidateUser() {
@@ -673,7 +673,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
     assertThat(query.count()).isEqualTo(3);
     assertThat(query.list()).hasSize(3);
     assertThatExceptionOfType(ActivitiException.class)
-      .isThrownBy(() -> query.singleResult());
+      .isThrownBy(query::singleResult);
 
     TaskQuery querySales = taskService.createTaskQuery().taskCandidateGroup("sales");
     assertThat(querySales.count()).isEqualTo(0);
@@ -685,7 +685,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
     assertThat(query.count()).isEqualTo(3);
     assertThat(query.list()).hasSize(3);
     assertThatExceptionOfType(ActivitiException.class)
-      .isThrownBy(() -> query.singleResult());
+      .isThrownBy(query::singleResult);
 
     TaskQuery querySales = taskService.createTaskQuery().or().taskId("invalid").taskCandidateGroup("sales");
     assertThat(querySales.count()).isEqualTo(0);
