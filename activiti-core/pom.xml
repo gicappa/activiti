@@ -210,12 +210,6 @@
   <dependencies>
     <dependency>
       <groupId>org.activiti</groupId>
-      <artifactId>activiti-api-dependencies</artifactId>
-      <version>${project.version}</version>
-      <type>pom</type>
-    </dependency>
-    <dependency>
-      <groupId>org.activiti</groupId>
       <artifactId>activiti-core-common-dependencies</artifactId>
       <version>${project.version}</version>
       <type>pom</type>

@@ -10,25 +10,6 @@
   <artifactId>activiti-core-common</artifactId>
   <packaging>pom</packaging>
   <name>Activiti :: Core :: Common :: Parent</name>
-  <dependencyManagement>
-    <dependencies>
-<!--      <dependency>-->
-<!--        <groupId>org.activiti</groupId>-->
-<!--        <artifactId>activiti-api-dependencies</artifactId>-->
-<!--        <version>${project.version}</version>-->
-<!--        <type>pom</type>-->
-<!--        <scope>import</scope>-->
-<!--      </dependency>-->
-    </dependencies>
-  </dependencyManagement>
-  <dependencies>
-    <dependency>
-      <groupId>org.activiti</groupId>
-      <artifactId>activiti-api-dependencies</artifactId>
-      <version>${project.version}</version>
-      <type>pom</type>
-    </dependency>
-  </dependencies>
   <modules>
     <module>activiti-core-common-dependencies</module>
     <module>activiti-spring-identity</module>
