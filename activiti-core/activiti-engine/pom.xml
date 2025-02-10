@@ -21,11 +21,6 @@
   <dependencies>
     <dependency>
       <groupId>org.activiti</groupId>
-      <artifactId>activiti-project-model</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.activiti</groupId>
       <artifactId>activiti-bpmn-converter</artifactId>
     </dependency>
     <dependency>

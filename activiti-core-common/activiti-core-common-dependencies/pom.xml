@@ -59,16 +59,6 @@
       </dependency>
       <dependency>
         <groupId>org.activiti</groupId>
-        <artifactId>activiti-project-model</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.activiti</groupId>
-        <artifactId>activiti-spring-project</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.activiti</groupId>
         <artifactId>activiti-common-util</artifactId>
         <version>${project.version}</version>
       </dependency>

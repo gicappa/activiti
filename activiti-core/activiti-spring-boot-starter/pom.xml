@@ -26,17 +26,12 @@
     </dependency>
     <dependency>
       <groupId>org.activiti</groupId>
-      <artifactId>activiti-api-process-runtime</artifactId>
+      <artifactId>activiti-api-model-shared-impl</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.activiti</groupId>
-      <artifactId>activiti-api-model-shared</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.activiti</groupId>
-      <artifactId>activiti-api-runtime-shared</artifactId>
+      <artifactId>activiti-api-runtime-shared-impl</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
