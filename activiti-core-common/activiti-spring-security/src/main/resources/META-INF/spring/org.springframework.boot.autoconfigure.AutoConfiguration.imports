@@ -1,1 +1,1 @@
-org.activiti.core.common.spring.security.config.ActivitiSpringSecurityAutoConfiguration
+org.activiti.core.common.spring.identity.config.ActivitiSpringIdentityAutoConfiguration

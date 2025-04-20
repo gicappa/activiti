@@ -41,10 +41,6 @@
     </dependency>
     <dependency>
       <groupId>org.activiti</groupId>
-      <artifactId>activiti-spring-identity</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.activiti</groupId>
       <artifactId>activiti-spring-process-extensions</artifactId>
     </dependency>
     <dependency>

@@ -43,10 +43,5 @@
       <artifactId>spring-security-test</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.activiti</groupId>
-      <artifactId>activiti-spring-identity</artifactId>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 </project>
