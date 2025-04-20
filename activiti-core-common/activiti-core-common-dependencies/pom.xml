@@ -34,11 +34,6 @@
       </dependency>
       <dependency>
         <groupId>org.activiti</groupId>
-        <artifactId>activiti-spring-security</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.activiti</groupId>
         <artifactId>activiti-spring-security-policies</artifactId>
         <version>${project.version}</version>
       </dependency>
