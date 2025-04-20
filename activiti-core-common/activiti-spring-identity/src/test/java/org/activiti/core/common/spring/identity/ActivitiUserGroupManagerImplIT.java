@@ -18,20 +18,25 @@ package org.activiti.core.common.spring.identity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.activiti.api.runtime.shared.identity.UserGroupManager;
+import org.activiti.engine.RuntimeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class ActivitiUserGroupManagerImplIT {
 
-    @Autowired
-    private UserGroupManager userGroupManager;
+  @MockBean
+  private RuntimeService runtimeService;
 
-    @Test
-    public void onlyAdminShouldHaveAdminRole() throws Exception {
-        assertThat(userGroupManager.getUserRoles("user")).doesNotContain("ACTIVITI_ADMIN");
-        assertThat(userGroupManager.getUserRoles("admin")).contains("ACTIVITI_ADMIN");
-    }
+  @Autowired
+  private UserGroupManager userGroupManager;
+
+  @Test
+  public void onlyAdminShouldHaveAdminRole() throws Exception {
+    assertThat(userGroupManager.getUserRoles("user")).doesNotContain("ACTIVITI_ADMIN");
+    assertThat(userGroupManager.getUserRoles("admin")).contains("ACTIVITI_ADMIN");
+  }
 
 }

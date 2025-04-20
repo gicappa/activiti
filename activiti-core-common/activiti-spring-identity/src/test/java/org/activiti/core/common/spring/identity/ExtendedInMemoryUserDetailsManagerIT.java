@@ -17,16 +17,22 @@ package org.activiti.core.common.spring.identity;
 
 import java.util.List;
 
+import org.activiti.api.runtime.shared.identity.UserGroupManager;
+import org.activiti.engine.RuntimeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class ExtendedInMemoryUserDetailsManagerIT {
 
-    @Autowired
+  @MockBean
+  private RuntimeService runtimeService;
+
+  @Autowired
     private ExtendedInMemoryUserDetailsManager extendedInMemoryUserDetailsManager;
 
     @Test

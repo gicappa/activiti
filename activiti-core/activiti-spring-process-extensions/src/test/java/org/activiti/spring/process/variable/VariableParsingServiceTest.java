@@ -15,9 +15,19 @@
  */
 package org.activiti.spring.process.variable;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import java.math.BigDecimal;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import org.activiti.common.util.DateFormatterProvider;
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.RepositoryService;
+import org.activiti.engine.RuntimeService;
 import org.activiti.spring.process.model.VariableDefinition;
 import org.activiti.spring.process.variable.types.JsonObjectVariableType;
 import org.activiti.spring.process.variable.types.VariableType;
@@ -26,118 +36,138 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.math.BigDecimal;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 @SpringBootTest
 public class VariableParsingServiceTest {
 
-    @Autowired
-    private VariableParsingService variableParsingService;
+  @MockBean
+  private RuntimeService runtimeService;
 
-    @Autowired
-    private Map<String, VariableType> variableTypeMap;
+  @Autowired
+  private VariableParsingService variableParsingService;
 
-    @Autowired
-    private DateFormatterProvider dateFormatterProvider;
+  @Autowired
+  private Map<String, VariableType> variableTypeMap;
 
-    @MockBean
-    private RepositoryService repositoryService;
+  @Autowired
+  private DateFormatterProvider dateFormatterProvider;
 
-    @Test
-    void shouldParseBooleanVariable() {
-        assertThat(variableParsingService.parse(new VariableDefinition("boolean", Boolean.TRUE))).isEqualTo(Boolean.TRUE);
-    }
+  @MockBean
+  private RepositoryService repositoryService;
 
-    @Test
-    void shouldParseStringVariable() {
-        String stringVar = "Han Solo";
-        assertThat(variableParsingService.parse(new VariableDefinition("string", stringVar))).isEqualTo(stringVar);
-    }
+  @Test
+  void shouldParseBooleanVariable() {
+    assertThat(
+      variableParsingService.parse(new VariableDefinition("boolean", Boolean.TRUE))).isEqualTo(
+      Boolean.TRUE);
+  }
 
-    @Test
-    void shouldParseIntegerVariable() {
-        Integer integerVar = 1;
-        assertThat(variableParsingService.parse(new VariableDefinition("integer", integerVar))).isEqualTo(integerVar);
-    }
+  @Test
+  void shouldParseStringVariable() {
+    String stringVar = "Han Solo";
+    assertThat(variableParsingService.parse(new VariableDefinition("string", stringVar))).isEqualTo(
+      stringVar);
+  }
 
-    @Test
-    void shouldParseBigdecimalVariable() {
-        BigDecimal bigDecimal = BigDecimal.valueOf(2.3);
-        assertThat(variableParsingService.parse(new VariableDefinition("bigdecimal", bigDecimal))).isEqualTo(bigDecimal);
-    }
+  @Test
+  void shouldParseIntegerVariable() {
+    Integer integerVar = 1;
+    assertThat(
+      variableParsingService.parse(new VariableDefinition("integer", integerVar))).isEqualTo(
+      integerVar);
+  }
 
-    @Test
-    void shouldParseDateVariableFromDateObject() {
+  @Test
+  void shouldParseBigdecimalVariable() {
+    BigDecimal bigDecimal = BigDecimal.valueOf(2.3);
+    assertThat(
+      variableParsingService.parse(new VariableDefinition("bigdecimal", bigDecimal))).isEqualTo(
+      bigDecimal);
+  }
 
-        Date dateVar = new Date();
-        assertThat(variableParsingService.parse(new VariableDefinition("date", dateVar))).isEqualTo(dateVar);
-    }
-    @Test
-    void shouldParseDateVariableFromString() {
+  @Test
+  void shouldParseDateVariableFromDateObject() {
 
-        Date dateVar = new Date();
-        DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendPattern(dateFormatterProvider.getDateFormatPattern()).toFormatter().withZone(dateFormatterProvider.getZoneId());
-        String stringDate = formatter.format(dateVar.toInstant());
+    Date dateVar = new Date();
+    assertThat(variableParsingService.parse(new VariableDefinition("date", dateVar))).isEqualTo(
+      dateVar);
+  }
 
-        assertThat(variableParsingService.parse(new VariableDefinition("date", stringDate))).isEqualTo(dateVar);
-    }
+  @Test
+  void shouldParseDateVariableFromString() {
 
-    @Test
-    void shouldParseDateVariableFromEpoch() {
+    Date dateVar = new Date();
+    DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendPattern(
+        dateFormatterProvider.getDateFormatPattern()).toFormatter()
+      .withZone(dateFormatterProvider.getZoneId());
+    String stringDate = formatter.format(dateVar.toInstant());
 
-        Date dateVar = new Date();
-        assertThat(variableParsingService.parse(new VariableDefinition("date", dateVar.getTime()))).isEqualTo(dateVar);
-    }
+    assertThat(variableParsingService.parse(new VariableDefinition("date", stringDate))).isEqualTo(
+      dateVar);
+  }
 
-    @Test
-    void shouldParseDatetimeVariableFromDateObject() {
+  @Test
+  void shouldParseDateVariableFromEpoch() {
 
-        Date dateVar = new Date();
-        assertThat(variableParsingService.parse(new VariableDefinition("datetime", dateVar))).isEqualTo(dateVar);
-    }
-    @Test
-    void shouldParseDatetimeVariableFromString() {
+    Date dateVar = new Date();
+    assertThat(
+      variableParsingService.parse(new VariableDefinition("date", dateVar.getTime()))).isEqualTo(
+      dateVar);
+  }
 
-        Date dateVar = new Date();
-        DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendPattern(dateFormatterProvider.getDateFormatPattern()).toFormatter().withZone(dateFormatterProvider.getZoneId());
-        String stringDate = formatter.format(dateVar.toInstant());
+  @Test
+  void shouldParseDatetimeVariableFromDateObject() {
 
-        assertThat(variableParsingService.parse(new VariableDefinition("datetime", stringDate))).isEqualTo(dateVar);
-    }
+    Date dateVar = new Date();
+    assertThat(variableParsingService.parse(new VariableDefinition("datetime", dateVar))).isEqualTo(
+      dateVar);
+  }
 
-    @Test
-    void shouldParseDatetimeVariableFromEpoch() {
+  @Test
+  void shouldParseDatetimeVariableFromString() {
 
-        Date dateVar = new Date();
-        assertThat(variableParsingService.parse(new VariableDefinition("date", dateVar.getTime()))).isEqualTo(dateVar);
-    }
+    Date dateVar = new Date();
+    DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendPattern(
+        dateFormatterProvider.getDateFormatPattern()).toFormatter()
+      .withZone(dateFormatterProvider.getZoneId());
+    String stringDate = formatter.format(dateVar.toInstant());
 
-    @Test
-    void should_ReturnSameObject_whenAssignedVariableTypeIsJsonObjectVariableType() {
+    assertThat(
+      variableParsingService.parse(new VariableDefinition("datetime", stringDate))).isEqualTo(
+      dateVar);
+  }
 
-        List<String> jsonObjectVariableTypes = variableTypeMap.entrySet().stream().filter(e -> e.getValue().equals(JsonObjectVariableType.class)).map(Map.Entry::getKey).toList();
-        assertThat(jsonObjectVariableTypes).allSatisfy(type -> {
-            Object obj = new Object();
-            assertThat(variableParsingService.parse(new VariableDefinition(type, obj))).isEqualTo(obj);
-        });
-    }
+  @Test
+  void shouldParseDatetimeVariableFromEpoch() {
 
-    @Test
-    void should_ThrowActivitiException_whenParsingBigdecimalFromInvalidValue() {
-        assertThatThrownBy(() -> variableParsingService.parse(new VariableDefinition("bigdecimal","Michael Jackson"))).isInstanceOf(ActivitiException.class);
-    }
+    Date dateVar = new Date();
+    assertThat(
+      variableParsingService.parse(new VariableDefinition("date", dateVar.getTime()))).isEqualTo(
+      dateVar);
+  }
 
-    @Test
-    void should_ThrowActivitiException_whenParsingDateFromInvalidValue() {
-        assertThatThrownBy(() -> variableParsingService.parse(new VariableDefinition("date","Michael Jackson"))).isInstanceOf(ActivitiException.class);
-    }
+  @Test
+  void should_ReturnSameObject_whenAssignedVariableTypeIsJsonObjectVariableType() {
+
+    List<String> jsonObjectVariableTypes = variableTypeMap.entrySet().stream()
+      .filter(e -> e.getValue().equals(JsonObjectVariableType.class)).map(Map.Entry::getKey)
+      .toList();
+    assertThat(jsonObjectVariableTypes).allSatisfy(type -> {
+      Object obj = new Object();
+      assertThat(variableParsingService.parse(new VariableDefinition(type, obj))).isEqualTo(obj);
+    });
+  }
+
+  @Test
+  void should_ThrowActivitiException_whenParsingBigdecimalFromInvalidValue() {
+    assertThatThrownBy(() -> variableParsingService.parse(
+      new VariableDefinition("bigdecimal", "Michael Jackson"))).isInstanceOf(
+      ActivitiException.class);
+  }
+
+  @Test
+  void should_ThrowActivitiException_whenParsingDateFromInvalidValue() {
+    assertThatThrownBy(() -> variableParsingService.parse(
+      new VariableDefinition("date", "Michael Jackson"))).isInstanceOf(ActivitiException.class);
+  }
 
 }

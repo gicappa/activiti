@@ -18,7 +18,9 @@ package org.activiti.core.common.spring.security;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
+import java.util.List;
 import org.activiti.api.runtime.shared.security.SecurityManager;
+import org.activiti.engine.RuntimeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -29,106 +31,107 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import java.util.List;
-
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class LocalSpringSecurityManagerTest {
 
-    @MockBean
-    private UserDetailsService userDetailsService;
+  @MockBean
+  private RuntimeService runtimeService;
 
-    @Autowired
-    private SecurityManager securityManager;
+  @MockBean
+  private UserDetailsService userDetailsService;
 
-    @SpringBootApplication
-    static class Application {
+  @Autowired
+  private SecurityManager securityManager;
 
-    }
+  @SpringBootApplication
+  static class Application {
 
-    @Test
-    public void contextLoads() {
-        assertThat(securityManager).isInstanceOf(LocalSpringSecurityManager.class);
-    }
+  }
 
-    @Test
-    @WithMockUser(username = "hruser", authorities = {"ROLE_user", "GROUP_users"})
-    public void testGetAuthenticatedUserId() {
+  @Test
+  public void contextLoads() {
+    assertThat(securityManager).isInstanceOf(LocalSpringSecurityManager.class);
+  }
 
-        // when
-        String result = securityManager.getAuthenticatedUserId();
+  @Test
+  @WithMockUser(username = "hruser", authorities = {"ROLE_user", "GROUP_users"})
+  public void testGetAuthenticatedUserId() {
 
-        // then
-        assertThat(result).isEqualTo("hruser");
-    }
+    // when
+    String result = securityManager.getAuthenticatedUserId();
 
-    @Test
-    @WithMockUser(username = "hruser", authorities = {"ROLE_user", "GROUP_users"})
-    public void testGetAuthenticatedUserGroups() {
+    // then
+    assertThat(result).isEqualTo("hruser");
+  }
 
-        // when
-        List<String> result = securityManager.getAuthenticatedUserGroups();
+  @Test
+  @WithMockUser(username = "hruser", authorities = {"ROLE_user", "GROUP_users"})
+  public void testGetAuthenticatedUserGroups() {
 
-        // then
-        assertThat(result).containsExactly("users");
-    }
+    // when
+    List<String> result = securityManager.getAuthenticatedUserGroups();
 
-    @Test
-    @WithMockUser(username = "hruser", authorities = {"ROLE_user", "GROUP_users"})
-    public void testGetAuthenticatedUserRoles() {
+    // then
+    assertThat(result).containsExactly("users");
+  }
 
-        // when
-        List<String> result = securityManager.getAuthenticatedUserRoles();
+  @Test
+  @WithMockUser(username = "hruser", authorities = {"ROLE_user", "GROUP_users"})
+  public void testGetAuthenticatedUserRoles() {
 
-        // then
-        assertThat(result).containsExactly("user");
-    }
+    // when
+    List<String> result = securityManager.getAuthenticatedUserRoles();
 
-    @Test
-    @WithAnonymousUser
-    public void testGetAuthenticatedUserIdAnonymous() {
+    // then
+    assertThat(result).containsExactly("user");
+  }
 
-        // when
-        String result = securityManager.getAuthenticatedUserId();
+  @Test
+  @WithAnonymousUser
+  public void testGetAuthenticatedUserIdAnonymous() {
 
-        // then
-        assertThat(result).isEqualTo("anonymous");
-    }
+    // when
+    String result = securityManager.getAuthenticatedUserId();
 
-    @Test
-    public void testGetAuthenticatedUserIdInvalidUser() {
-        // given
-        SecurityContextHolder.clearContext();
+    // then
+    assertThat(result).isEqualTo("anonymous");
+  }
 
-        // when
-        Throwable result = catchThrowable(() -> securityManager.getAuthenticatedUserId());
+  @Test
+  public void testGetAuthenticatedUserIdInvalidUser() {
+    // given
+    SecurityContextHolder.clearContext();
 
-        // then
-        assertThat(result).isInstanceOf(SecurityException.class);
-    }
+    // when
+    Throwable result = catchThrowable(() -> securityManager.getAuthenticatedUserId());
 
-    @Test
-    public void testGetAuthenticatedUserGroupInvalidUser() {
-        // given
-        SecurityContextHolder.clearContext();
+    // then
+    assertThat(result).isInstanceOf(SecurityException.class);
+  }
 
-        // when
-        Throwable result = catchThrowable(() -> securityManager.getAuthenticatedUserGroups());
+  @Test
+  public void testGetAuthenticatedUserGroupInvalidUser() {
+    // given
+    SecurityContextHolder.clearContext();
 
-        // then
-        assertThat(result).isInstanceOf(SecurityException.class);
-    }
+    // when
+    Throwable result = catchThrowable(() -> securityManager.getAuthenticatedUserGroups());
 
-    @Test
-    public void testGetAuthenticatedUserRolesInvalidUser() {
-        // given
-        SecurityContextHolder.clearContext();
+    // then
+    assertThat(result).isInstanceOf(SecurityException.class);
+  }
 
-        // when
-        Throwable result = catchThrowable(() -> securityManager.getAuthenticatedUserRoles());
+  @Test
+  public void testGetAuthenticatedUserRolesInvalidUser() {
+    // given
+    SecurityContextHolder.clearContext();
 
-        // then
-        assertThat(result).isInstanceOf(SecurityException.class);
-    }
+    // when
+    Throwable result = catchThrowable(() -> securityManager.getAuthenticatedUserRoles());
+
+    // then
+    assertThat(result).isInstanceOf(SecurityException.class);
+  }
 
 }

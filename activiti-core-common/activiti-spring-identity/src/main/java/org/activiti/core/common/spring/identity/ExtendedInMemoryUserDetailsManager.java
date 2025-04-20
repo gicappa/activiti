@@ -19,6 +19,9 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.activiti.api.runtime.shared.identity.UserGroupManager;
+import org.activiti.engine.RuntimeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -42,6 +45,7 @@ public class ExtendedInMemoryUserDetailsManager extends InMemoryUserDetailsManag
     super.createUser(user);
 
     users.add(user.getUsername());
+
     groups = user.getAuthorities().stream()
       .map(GrantedAuthority::getAuthority)
       .filter(authority -> (authority.contains("GROUP")))
