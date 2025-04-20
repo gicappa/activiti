@@ -15,39 +15,37 @@
  */
 package org.activiti.core.common.spring.identity;
 
-import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import org.activiti.api.runtime.shared.identity.UserGroupManager;
+import java.util.List;
 import org.activiti.engine.RuntimeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class ExtendedInMemoryUserDetailsManagerIT {
 
-  @MockBean
+  @MockitoBean
   private RuntimeService runtimeService;
 
   @Autowired
-    private ExtendedInMemoryUserDetailsManager extendedInMemoryUserDetailsManager;
+  private ExtendedInMemoryUserDetailsManager extendedInMemoryUserDetailsManager;
 
-    @Test
-    public void checkGroupAuthorities() {
-        List<String> groups = extendedInMemoryUserDetailsManager.getGroups();
-        assertThat(groups).isNotNull();
-        groups.stream().forEach(x -> assertThat(x).contains("GROUP"));
-    }
+  @Test
+  public void checkGroupAuthorities() {
+    List<String> groups = extendedInMemoryUserDetailsManager.getGroups();
+    assertThat(groups).isNotNull();
+    groups.stream().forEach(x -> assertThat(x).contains("GROUP"));
+  }
 
-    @Test
-    public void checkUsers() {
-        List<String> users = extendedInMemoryUserDetailsManager.getUsers();
-        assertThat(users).isNotNull();
-        assertThat(users.size() > 1).isTrue();
-        String adminUser = users.stream().filter(x -> x.equals("admin")).findFirst().get();
-        assertThat(adminUser).isNotNull();
-    }
+  @Test
+  public void checkUsers() {
+    List<String> users = extendedInMemoryUserDetailsManager.getUsers();
+    assertThat(users).isNotNull();
+    assertThat(users.size() > 1).isTrue();
+    String adminUser = users.stream().filter(x -> x.equals("admin")).findFirst().get();
+    assertThat(adminUser).isNotNull();
+  }
 }

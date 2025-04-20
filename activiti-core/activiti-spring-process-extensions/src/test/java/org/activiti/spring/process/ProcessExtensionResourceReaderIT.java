@@ -30,7 +30,7 @@ import org.activiti.spring.process.model.TemplatesDefinition;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest(
   webEnvironment = SpringBootTest.WebEnvironment.NONE,
@@ -38,12 +38,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 )
 public class ProcessExtensionResourceReaderIT {
 
-  private static String FROM = "no-reply@activiti.org";
-
-  @MockBean
+  @MockitoBean
   private RuntimeService runtimeService;
 
-  @MockBean
+  @MockitoBean
   private RepositoryService repositoryService;
 
   @Autowired
@@ -79,6 +77,7 @@ public class ProcessExtensionResourceReaderIT {
         .getTemplates();
       TaskTemplateDefinition defaultTemplate = templates.getDefaultTemplate();
       assertThat(defaultTemplate).isNotNull();
+      var FROM = "no-reply@activiti.org";
       assertThat(defaultTemplate.getAssignee())
         .isNotNull()
         .extracting(
