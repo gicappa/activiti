@@ -15,8 +15,9 @@
  */
 package org.activiti.test.assertions;
 
-import java.util.List;
+import static org.activiti.test.matchers.OperationScopeImpl.processInstanceScope;
 
+import java.util.List;
 import org.activiti.api.model.shared.event.RuntimeEvent;
 import org.activiti.api.process.model.ProcessInstance;
 import org.activiti.test.EventSource;
@@ -25,53 +26,56 @@ import org.activiti.test.matchers.OperationScopeMatcher;
 import org.activiti.test.matchers.ProcessResultMatcher;
 import org.activiti.test.matchers.ProcessTaskMatcher;
 
-import static org.activiti.test.matchers.OperationScopeImpl.processInstanceScope;
-
 public class ProcessInstanceAssertionsImpl implements ProcessInstanceAssertions {
 
-    private EventSource eventSource;
+  private final EventSource eventSource;
+  private final List<TaskSource> taskSources;
+  private final ProcessInstance processInstance;
 
-    private List<TaskSource> taskSources;
-    private ProcessInstance processInstance;
+  public ProcessInstanceAssertionsImpl(
+    EventSource eventSource,
+    List<TaskSource> taskSources,
+    ProcessInstance processInstance) {
 
-    public ProcessInstanceAssertionsImpl(EventSource eventSource,
-                                         List<TaskSource> taskSources,
-                                         ProcessInstance processInstance) {
-        this.eventSource = eventSource;
-        this.taskSources = taskSources;
-        this.processInstance = processInstance;
+    this.eventSource = eventSource;
+    this.taskSources = taskSources;
+    this.processInstance = processInstance;
+  }
+
+  @Override
+  public ProcessInstanceAssertions expectFields(ProcessResultMatcher... processResultMatcher) {
+
+    for (ProcessResultMatcher matcher : processResultMatcher) {
+      matcher.match(processInstance);
     }
 
-    @Override
-    public ProcessInstanceAssertions expectFields(ProcessResultMatcher... processResultMatcher) {
-        List<RuntimeEvent<?, ?>> events = eventSource.getEvents();
-        for (ProcessResultMatcher matcher : processResultMatcher) {
-            matcher.match(processInstance);
-        }
-        return this;
+    return this;
+  }
+
+  @Override
+  public ProcessInstanceAssertions expectEvents(OperationScopeMatcher... matchers) {
+    var events = eventSource.getEvents();
+
+    for (OperationScopeMatcher matcher : matchers) {
+      matcher.match(processInstanceScope(processInstance.getId()),
+        events);
     }
 
-    @Override
-    public ProcessInstanceAssertions expectEvents(OperationScopeMatcher... matchers) {
-        List<RuntimeEvent<?, ?>> events = eventSource.getEvents();
-        for (OperationScopeMatcher matcher : matchers) {
-            matcher.match(processInstanceScope(processInstance.getId()),
-                          events);
-        }
-        return this;
+    return this;
+  }
+
+  @Override
+  public ProcessInstanceAssertions expect(ProcessTaskMatcher... matchers) {
+    for (ProcessTaskMatcher matcher : matchers) {
+      matcher.match(processInstance.getId(),
+        taskSources);
     }
 
-    @Override
-    public ProcessInstanceAssertions expect(ProcessTaskMatcher... matchers) {
-        for (ProcessTaskMatcher matcher : matchers) {
-            matcher.match(processInstance.getId(),
-                          taskSources);
-        }
-        return this;
-    }
+    return this;
+  }
 
-    @Override
-    public ProcessInstance andReturn() {
-        return processInstance;
-    }
+  @Override
+  public ProcessInstance andReturn() {
+    return processInstance;
+  }
 }

@@ -26,18 +26,18 @@ import org.springframework.context.annotation.Bean;
 @AutoConfiguration
 public class AssertionsAPIAutoConfiguration {
 
-    @Bean
-    public ProcessOperations processOperations(ProcessOperations processRuntimeOperations,
-                                               @Value("${activiti.assertions.await.enabled:false}") boolean awaitEnabled) {
-        return new AwaitableProcessOperations(processRuntimeOperations,
-                                              awaitEnabled);
-    }
+  @Bean
+  public ProcessOperations processOperations(ProcessOperations processRuntimeOperations,
+    @Value("${activiti.assertions.await.enabled:false}") boolean awaitEnabled) {
+    return new AwaitableProcessOperations(processRuntimeOperations,
+      awaitEnabled);
+  }
 
-    @Bean
-    public TaskOperations taskOperations(TaskOperations taskRuntimeOperations,
-                                         @Value("${activiti.assertions.await.enabled:false}") boolean awaitEnabled) {
-        return new AwaitableTaskOperations(
-                taskRuntimeOperations,
-                awaitEnabled);
-    }
+  @Bean
+  public TaskOperations taskOperations(TaskOperations taskRuntimeOperations,
+    @Value("${activiti.assertions.await.enabled:false}") boolean awaitEnabled) {
+    return new AwaitableTaskOperations(
+      taskRuntimeOperations,
+      awaitEnabled);
+  }
 }

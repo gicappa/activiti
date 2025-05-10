@@ -22,31 +22,32 @@ import org.activiti.test.assertions.TaskAssertions;
 
 public class AwaitableTaskOperations implements TaskOperations {
 
-    private TaskOperations taskOperations;
-    private boolean awaitEnabled;
+  private final TaskOperations taskOperations;
+  private final boolean awaitEnabled;
 
-    public AwaitableTaskOperations(TaskOperations taskOperations,
-                                   boolean awaitEnabled) {
-        this.taskOperations = taskOperations;
-        this.awaitEnabled = awaitEnabled;
-    }
+  public AwaitableTaskOperations(TaskOperations taskOperations, boolean awaitEnabled) {
+    this.taskOperations = taskOperations;
+    this.awaitEnabled = awaitEnabled;
+  }
 
-    @Override
-    public TaskAssertions claim(ClaimTaskPayload claimTaskPayload) {
-        TaskAssertions taskAssertions = taskOperations.claim(claimTaskPayload);
-        return awaitableAssertions(taskAssertions);
-    }
+  @Override
+  public TaskAssertions claim(ClaimTaskPayload claimTaskPayload) {
+    var taskAssertions = taskOperations.claim(claimTaskPayload);
 
-    private TaskAssertions awaitableAssertions(TaskAssertions taskAssertions) {
-        if (awaitEnabled) {
-            return new AwaitTaskAssertions(taskAssertions);
-        }
-        return taskAssertions;
-    }
+    return awaitableAssertions(taskAssertions);
+  }
 
-    @Override
-    public TaskAssertions complete(CompleteTaskPayload completeTaskPayload) {
-        TaskAssertions taskAssertions = taskOperations.complete(completeTaskPayload);
-        return awaitableAssertions(taskAssertions);
+  private TaskAssertions awaitableAssertions(TaskAssertions taskAssertions) {
+    if (awaitEnabled) {
+      return new AwaitTaskAssertions(taskAssertions);
     }
+    return taskAssertions;
+  }
+
+  @Override
+  public TaskAssertions complete(CompleteTaskPayload completeTaskPayload) {
+    var taskAssertions = taskOperations.complete(completeTaskPayload);
+
+    return awaitableAssertions(taskAssertions);
+  }
 }

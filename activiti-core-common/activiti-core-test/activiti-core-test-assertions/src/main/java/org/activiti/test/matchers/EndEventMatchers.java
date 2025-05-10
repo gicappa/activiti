@@ -17,20 +17,19 @@ package org.activiti.test.matchers;
 
 public class EndEventMatchers extends ActivityMatchers {
 
-    private static final String END_EVENT = "endEvent";
+  private static final String END_EVENT = "endEvent";
 
-    private EndEventMatchers(String definitionKey) {
-        super(definitionKey);
+  private EndEventMatchers(String definitionKey) {
+    super(definitionKey);
+  }
 
-    }
+  public static EndEventMatchers endEvent(String definitionKey) {
+    return new EndEventMatchers(definitionKey);
+  }
 
-    @Override
-    public String getActivityType() {
-        return END_EVENT;
-    }
-
-    public static EndEventMatchers endEvent(String definitionKey) {
-        return new EndEventMatchers(definitionKey);
-    }
+  @Override
+  public String getActivityType() {
+    return END_EVENT;
+  }
 
 }

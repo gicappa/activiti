@@ -16,8 +16,6 @@
 package org.activiti.test;
 
 import java.util.List;
-
-import org.activiti.api.runtime.shared.query.Page;
 import org.activiti.api.runtime.shared.query.Pageable;
 import org.activiti.api.task.model.Task;
 import org.activiti.api.task.model.builders.TaskPayloadBuilder;
@@ -25,29 +23,27 @@ import org.activiti.api.task.runtime.TaskRuntime;
 
 public class LocalTaskSource implements TaskSource {
 
-    private static final int MAX_ITEMS = 1000;
-    private TaskRuntime taskRuntime;
+  private static final int MAX_ITEMS = 1000;
+  private final TaskRuntime taskRuntime;
 
-    public LocalTaskSource(TaskRuntime taskRuntime) {
-        this.taskRuntime = taskRuntime;
-    }
+  public LocalTaskSource(TaskRuntime taskRuntime) {
+    this.taskRuntime = taskRuntime;
+  }
 
-    @Override
-    public List<Task> getTasks(String processInstanceId) {
-        Page<Task> taskPage = taskRuntime.tasks(Pageable.of(0,
-                                                         MAX_ITEMS),
-                                             TaskPayloadBuilder.tasks().withProcessInstanceId(processInstanceId).build());
-        return taskPage.getContent();
-    }
+  @Override
+  public List<Task> getTasks(String processInstanceId) {
+    var taskPage = taskRuntime.tasks(
+      Pageable.of(0, MAX_ITEMS),
+      TaskPayloadBuilder.tasks().withProcessInstanceId(processInstanceId).build());
 
-    @Override
-    public boolean canHandle(Task.TaskStatus taskStatus) {
-        switch (taskStatus) {
-            case CREATED:
-            case ASSIGNED:
-            case SUSPENDED:
-                return true;
-        }
-        return false;
-    }
+    return taskPage.getContent();
+  }
+
+  @Override
+  public boolean canHandle(Task.TaskStatus taskStatus) {
+    return switch (taskStatus) {
+      case CREATED, ASSIGNED, SUSPENDED -> true;
+      default -> false;
+    };
+  }
 }

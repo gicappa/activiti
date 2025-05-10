@@ -16,9 +16,6 @@
 package org.activiti.test.matchers;
 
 public interface OperationScope {
-
-    String getProcessInstanceId();
-
-    String getTaskId();
-
+  String getProcessInstanceId();
+  String getTaskId();
 }
