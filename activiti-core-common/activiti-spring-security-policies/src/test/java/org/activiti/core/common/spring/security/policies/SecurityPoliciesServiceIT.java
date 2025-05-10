@@ -21,16 +21,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.activiti.api.runtime.shared.security.SecurityManager;
+import org.activiti.core.common.spring.security.config.ActivitiSpringSecurityAutoConfiguration;
 import org.activiti.core.common.spring.security.policies.conf.SecurityPoliciesProperties;
 import org.activiti.engine.RuntimeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@Import(ActivitiSpringSecurityAutoConfiguration.class)
 @ContextConfiguration
 public class SecurityPoliciesServiceIT {
 

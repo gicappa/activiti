@@ -17,10 +17,12 @@ package org.activiti.spring.boot;
 
 import org.activiti.api.runtime.shared.identity.UserGroupManager;
 import org.activiti.api.runtime.shared.security.SecurityManager;
+import org.activiti.core.common.spring.security.config.ActivitiSpringSecurityAutoConfiguration;
 import org.activiti.spring.boot.security.util.SecurityUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -29,6 +31,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@Import(ActivitiSpringSecurityAutoConfiguration.class)
 public class RuntimeConfigurationTest {
 
 

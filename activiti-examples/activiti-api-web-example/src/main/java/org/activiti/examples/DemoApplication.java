@@ -24,10 +24,12 @@ import org.activiti.api.process.model.builders.ProcessPayloadBuilder;
 import org.activiti.api.process.runtime.ProcessRuntime;
 import org.activiti.api.process.runtime.connector.Connector;
 import org.activiti.api.runtime.shared.query.Pageable;
+import org.activiti.core.common.spring.security.config.ActivitiSpringSecurityAutoConfiguration;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,9 +37,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
+@Import(ActivitiSpringSecurityAutoConfiguration.class)
 public class DemoApplication implements CommandLineRunner {
 
-    private ProcessRuntime processRuntime;
+    private final ProcessRuntime processRuntime;
 
     public DemoApplication(ProcessRuntime processRuntime) {
         this.processRuntime = processRuntime;

@@ -18,13 +18,14 @@ package org.activiti.core.common.spring.security;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
-import java.util.List;
 import org.activiti.api.runtime.shared.security.SecurityManager;
+import org.activiti.core.common.spring.security.config.ActivitiSpringSecurityAutoConfiguration;
 import org.activiti.engine.RuntimeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithAnonymousUser;
@@ -33,6 +34,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@Import(ActivitiSpringSecurityAutoConfiguration.class)
 public class LocalSpringSecurityManagerTest {
 
   @MockitoBean
@@ -46,7 +48,6 @@ public class LocalSpringSecurityManagerTest {
 
   @SpringBootApplication
   static class Application {
-
   }
 
   @Test
@@ -59,7 +60,7 @@ public class LocalSpringSecurityManagerTest {
   public void testGetAuthenticatedUserId() {
 
     // when
-    String result = securityManager.getAuthenticatedUserId();
+    var result = securityManager.getAuthenticatedUserId();
 
     // then
     assertThat(result).isEqualTo("hruser");
@@ -70,7 +71,7 @@ public class LocalSpringSecurityManagerTest {
   public void testGetAuthenticatedUserGroups() {
 
     // when
-    List<String> result = securityManager.getAuthenticatedUserGroups();
+    var result = securityManager.getAuthenticatedUserGroups();
 
     // then
     assertThat(result).containsExactly("users");
@@ -81,7 +82,7 @@ public class LocalSpringSecurityManagerTest {
   public void testGetAuthenticatedUserRoles() {
 
     // when
-    List<String> result = securityManager.getAuthenticatedUserRoles();
+    var result = securityManager.getAuthenticatedUserRoles();
 
     // then
     assertThat(result).containsExactly("user");
@@ -92,7 +93,7 @@ public class LocalSpringSecurityManagerTest {
   public void testGetAuthenticatedUserIdAnonymous() {
 
     // when
-    String result = securityManager.getAuthenticatedUserId();
+    var result = securityManager.getAuthenticatedUserId();
 
     // then
     assertThat(result).isEqualTo("anonymous");
@@ -104,7 +105,7 @@ public class LocalSpringSecurityManagerTest {
     SecurityContextHolder.clearContext();
 
     // when
-    Throwable result = catchThrowable(() -> securityManager.getAuthenticatedUserId());
+    var result = catchThrowable(() -> securityManager.getAuthenticatedUserId());
 
     // then
     assertThat(result).isInstanceOf(SecurityException.class);
@@ -116,7 +117,7 @@ public class LocalSpringSecurityManagerTest {
     SecurityContextHolder.clearContext();
 
     // when
-    Throwable result = catchThrowable(() -> securityManager.getAuthenticatedUserGroups());
+    var result = catchThrowable(() -> securityManager.getAuthenticatedUserGroups());
 
     // then
     assertThat(result).isInstanceOf(SecurityException.class);
@@ -128,7 +129,7 @@ public class LocalSpringSecurityManagerTest {
     SecurityContextHolder.clearContext();
 
     // when
-    Throwable result = catchThrowable(() -> securityManager.getAuthenticatedUserRoles());
+    var result = catchThrowable(() -> securityManager.getAuthenticatedUserRoles());
 
     // then
     assertThat(result).isInstanceOf(SecurityException.class);

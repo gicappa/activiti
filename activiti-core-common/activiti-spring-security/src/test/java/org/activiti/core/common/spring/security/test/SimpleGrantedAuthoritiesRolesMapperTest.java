@@ -27,15 +27,15 @@ import java.util.List;
 
 public class SimpleGrantedAuthoritiesRolesMapperTest {
 
-    private SimpleGrantedAuthoritiesRolesMapper subject = new SimpleGrantedAuthoritiesRolesMapper();
+    private final SimpleGrantedAuthoritiesRolesMapper subject = new SimpleGrantedAuthoritiesRolesMapper();
 
     @Test
     public void testGetGroups() {
         // given
-        List<GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList("GROUP_users,ROLE_admin");
+        var authorities = AuthorityUtils.commaSeparatedStringToAuthorityList("GROUP_users,ROLE_admin");
 
         // when
-        List<String> result = subject.getRoles(authorities);
+        var result = subject.getRoles(authorities);
 
         // then
         assertThat(result).isNotEmpty()

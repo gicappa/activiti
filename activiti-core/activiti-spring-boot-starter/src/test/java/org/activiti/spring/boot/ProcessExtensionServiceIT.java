@@ -18,6 +18,7 @@ package org.activiti.spring.boot;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
+import org.activiti.core.common.spring.security.config.ActivitiSpringSecurityAutoConfiguration;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.spring.process.ProcessExtensionService;
@@ -25,8 +26,10 @@ import org.activiti.spring.process.model.Extension;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@Import(ActivitiSpringSecurityAutoConfiguration.class)
 public class ProcessExtensionServiceIT {
 
     @Autowired

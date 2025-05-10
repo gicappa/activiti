@@ -44,6 +44,7 @@ import org.activiti.api.task.model.Task;
 import org.activiti.api.task.model.events.TaskRuntimeEvent;
 import org.activiti.api.task.runtime.events.TaskAssignedEvent;
 import org.activiti.api.task.runtime.events.TaskCreatedEvent;
+import org.activiti.core.common.spring.security.config.ActivitiSpringSecurityAutoConfiguration;
 import org.activiti.engine.ProcessEngineConfiguration;
 import org.activiti.spring.boot.RuntimeTestConfiguration;
 import org.activiti.spring.boot.process.ProcessBaseRuntime;
@@ -58,9 +59,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles(ProcessRuntimeBPMNTimerIT.PROCESS_RUNTIME_BPMN_TIMER_IT)
+@Import(ActivitiSpringSecurityAutoConfiguration.class)
 public class TaskRuntimeMultiInstanceIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TaskRuntimeMultiInstanceIT.class);

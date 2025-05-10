@@ -17,13 +17,16 @@ package org.activiti.spring.boot;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.activiti.core.common.spring.security.config.ActivitiSpringSecurityAutoConfiguration;
 import org.activiti.spring.SpringAsyncExecutor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@Import(ActivitiSpringSecurityAutoConfiguration.class)
 @TestPropertySource("classpath:application-async-executor.properties")
 public class AsyncExecutorConfigurationTest {
 

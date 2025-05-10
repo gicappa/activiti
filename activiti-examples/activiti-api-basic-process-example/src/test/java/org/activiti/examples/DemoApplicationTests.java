@@ -17,13 +17,16 @@ package org.activiti.examples;
 
 import org.activiti.api.process.model.ProcessDefinition;
 import org.activiti.api.process.runtime.ProcessRuntime;
+import org.activiti.core.common.spring.security.config.ActivitiSpringSecurityAutoConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Import(ActivitiSpringSecurityAutoConfiguration.class)
 public class DemoApplicationTests {
 
     private static final String PROCESS_DEFINITION_KEY = "categorizeProcess";

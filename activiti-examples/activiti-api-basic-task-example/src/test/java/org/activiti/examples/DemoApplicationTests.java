@@ -15,10 +15,13 @@
  */
 package org.activiti.examples;
 
+import org.activiti.core.common.spring.security.config.ActivitiSpringSecurityAutoConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 
 @SpringBootTest
+@Import(ActivitiSpringSecurityAutoConfiguration.class)
 public class DemoApplicationTests {
 
 	@Test

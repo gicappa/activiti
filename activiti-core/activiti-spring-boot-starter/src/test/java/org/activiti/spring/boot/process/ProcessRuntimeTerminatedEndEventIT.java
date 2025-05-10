@@ -23,6 +23,7 @@ import org.activiti.api.process.model.builders.ProcessPayloadBuilder;
 import org.activiti.api.process.runtime.ProcessRuntime;
 import org.activiti.api.process.runtime.events.ProcessCancelledEvent;
 import org.activiti.api.task.model.Task;
+import org.activiti.core.common.spring.security.config.ActivitiSpringSecurityAutoConfiguration;
 import org.activiti.spring.boot.security.util.SecurityUtil;
 import org.activiti.spring.boot.tasks.TaskBaseRuntime;
 import org.activiti.spring.boot.tasks.TaskRuntimeEventListeners;
@@ -33,8 +34,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@Import(ActivitiSpringSecurityAutoConfiguration.class)
 public class ProcessRuntimeTerminatedEndEventIT {
 
     private static final String PROCESS_TERMINATE_EVENT = "Process_KzwZAEl-";
