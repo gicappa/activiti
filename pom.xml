@@ -11,7 +11,6 @@
   <description>${project.name}</description>
   <url>https://www.activiti.org</url>
   <modules>
-    <module>activiti-dependency-check</module>
     <module>activiti-core-common</module>
     <module>activiti-core</module>
     <module>activiti-dependencies</module>
@@ -97,13 +96,6 @@
         <scope>test</scope>
       </dependency>
       <!-- Temporary Security fix  -->
-      <dependency>
-        <groupId>org.activiti</groupId>
-        <artifactId>activiti-dependency-check</artifactId>
-        <version>${project.version}</version>
-        <type>xml</type>
-        <classifier>suppression</classifier>
-      </dependency>
       <dependency>
         <groupId>com.h2database</groupId>
         <artifactId>h2</artifactId>
@@ -741,42 +733,6 @@ limitations under the License.
       </distributionManagement>
     </profile>
     <!-- profile to check dependencies for vulnerabilities -->
-    <profile>
-      <id>dependency-check</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.owasp</groupId>
-            <artifactId>dependency-check-maven</artifactId>
-            <version>${dependency-check-maven.version}</version>
-            <configuration>
-              <failBuildOnCVSS>7</failBuildOnCVSS>
-              <suppressionFiles>
-                <suppressionFile>
-                  ${settings.localRepository}/org/activiti/build/activiti-dependency-check/${project.version}/activiti-dependency-check-${project.version}-suppression.xml
-                </suppressionFile>
-              </suppressionFiles>
-            </configuration>
-            <dependencies>
-              <dependency>
-                <groupId>org.activiti</groupId>
-                <artifactId>activiti-dependency-check</artifactId>
-                <version>${project.version}</version>
-                <type>xml</type>
-                <classifier>suppression</classifier>
-              </dependency>
-            </dependencies>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>check</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
   </profiles>
   <repositories>
     <repository>
