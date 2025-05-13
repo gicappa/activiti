@@ -24,7 +24,7 @@ import java.util.Optional;
 
 public class ToActivityStartedConverter implements EventConverter<BPMNActivityStartedEvent, ActivitiActivityEvent> {
 
-    private ToActivityConverter toActivityConverter;
+    private final ToActivityConverter toActivityConverter;
 
     public ToActivityStartedConverter(ToActivityConverter toActivityConverter) {
         this.toActivityConverter = toActivityConverter;

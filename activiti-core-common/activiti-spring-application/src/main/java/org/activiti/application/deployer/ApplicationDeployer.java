@@ -17,14 +17,13 @@ package org.activiti.application.deployer;
 
 import java.util.List;
 
-import org.activiti.application.ApplicationContent;
 import org.activiti.application.ApplicationService;
 
 public class ApplicationDeployer {
 
-    private ApplicationService applicationLoader;
+    private final ApplicationService applicationLoader;
 
-    private List<ApplicationEntryDeployer> deployers;
+    private final List<ApplicationEntryDeployer> deployers;
 
     public ApplicationDeployer(ApplicationService applicationLoader,
                                List<ApplicationEntryDeployer> deployers) {

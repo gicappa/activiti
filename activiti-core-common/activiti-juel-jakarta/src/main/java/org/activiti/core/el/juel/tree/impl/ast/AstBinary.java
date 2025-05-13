@@ -24,11 +24,11 @@ import org.activiti.core.el.juel.tree.Bindings;
 public class AstBinary extends AstRightValue {
 
     public interface Operator {
-        public Object eval(
-            Bindings bindings,
-            ELContext context,
-            AstNode left,
-            AstNode right
+        Object eval(
+          Bindings bindings,
+          ELContext context,
+          AstNode left,
+          AstNode right
         );
     }
 

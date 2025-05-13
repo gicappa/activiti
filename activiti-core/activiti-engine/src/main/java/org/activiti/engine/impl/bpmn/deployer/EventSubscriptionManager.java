@@ -78,13 +78,11 @@ public class EventSubscriptionManager {
                                                 BpmnModel bpmnModel) {
         if (process != null && CollectionUtil.isNotEmpty(process.getFlowElements())) {
             for (FlowElement element : process.getFlowElements()) {
-                if (element instanceof StartEvent) {
-                    StartEvent startEvent = (StartEvent) element;
-                    if (CollectionUtil.isNotEmpty(startEvent.getEventDefinitions())) {
-                        EventDefinition eventDefinition = startEvent.getEventDefinitions().get(0);
-                        if (eventDefinition instanceof MessageEventDefinition) {
-                            MessageEventDefinition messageEventDefinition = (MessageEventDefinition) eventDefinition;
-                            insertMessageEvent(messageEventDefinition,
+                if (element instanceof StartEvent startEvent) {
+                  if (CollectionUtil.isNotEmpty(startEvent.getEventDefinitions())) {
+                        EventDefinition eventDefinition = startEvent.getEventDefinitions().getFirst();
+                        if (eventDefinition instanceof MessageEventDefinition messageEventDefinition) {
+                          insertMessageEvent(messageEventDefinition,
                                                startEvent,
                                                processDefinition,
                                                bpmnModel);
@@ -139,13 +137,11 @@ public class EventSubscriptionManager {
                                                BpmnModel bpmnModel) {
         if (process != null && CollectionUtil.isNotEmpty(process.getFlowElements())) {
             for (FlowElement element : process.getFlowElements()) {
-                if (element instanceof StartEvent) {
-                    StartEvent startEvent = (StartEvent) element;
-                    if (CollectionUtil.isNotEmpty(startEvent.getEventDefinitions())) {
+                if (element instanceof StartEvent startEvent) {
+                  if (CollectionUtil.isNotEmpty(startEvent.getEventDefinitions())) {
                         EventDefinition eventDefinition = startEvent.getEventDefinitions().get(0);
-                        if (eventDefinition instanceof SignalEventDefinition) {
-                            SignalEventDefinition signalEventDefinition = (SignalEventDefinition) eventDefinition;
-                            SignalEventSubscriptionEntity subscriptionEntity = commandContext.getEventSubscriptionEntityManager().createSignalEventSubscription();
+                        if (eventDefinition instanceof SignalEventDefinition signalEventDefinition) {
+                          SignalEventSubscriptionEntity subscriptionEntity = commandContext.getEventSubscriptionEntityManager().createSignalEventSubscription();
                             Signal signal = bpmnModel.getSignal(signalEventDefinition.getSignalRef());
                             if (signal != null) {
                                 subscriptionEntity.setEventName(signal.getName());

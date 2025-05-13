@@ -15,10 +15,10 @@
  */
 package org.activiti.examples.bpmn.tasklistener;
 
-import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.activiti.engine.impl.test.PluggableActivitiTestCase;
@@ -37,7 +37,7 @@ public class CustomTaskAssignmentTest extends PluggableActivitiTestCase {
   public void testCandidateGroupAssignment() {
     runtimeService.startProcessInstanceByKey("customTaskAssignment");
     assertThat(taskService.createTaskQuery().taskCandidateGroup("management").count()).isEqualTo(1);
-    assertThat(taskService.createTaskQuery().taskCandidateUser("kermit", asList("management")).count()).isEqualTo(1);
+    assertThat(taskService.createTaskQuery().taskCandidateUser("kermit", List.of("management")).count()).isEqualTo(1);
     assertThat(taskService.createTaskQuery().taskCandidateUser("fozzie",null).count()).isEqualTo(0);
   }
 

@@ -27,10 +27,10 @@ import java.lang.annotation.RetentionPolicy;
 @Internal
 public @interface MockServiceTask {
 
-  public String id() default "";
+  String id() default "";
 
-  public String originalClassName() default "";
+  String originalClassName() default "";
 
-  public String mockedClassName() default "";
+  String mockedClassName() default "";
 
 }

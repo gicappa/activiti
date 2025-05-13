@@ -15,6 +15,7 @@
  */
 package org.activiti.core.el.juel.tree.impl.ast;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -25,7 +26,6 @@ import jakarta.el.ELException;
 import jakarta.el.MethodInfo;
 import jakarta.el.PropertyNotFoundException;
 import jakarta.el.ValueExpression;
-import java.util.Arrays;
 import java.util.HashMap;
 import org.activiti.core.el.juel.test.TestCase;
 import org.activiti.core.el.juel.test.TestClass;
@@ -45,7 +45,7 @@ public class AstBracketTest extends TestCase {
     SimpleContext context;
     Bindings bindings;
 
-    long foo = 1l;
+    long foo = 1L;
 
     public long getFoo() {
         return foo;
@@ -56,7 +56,7 @@ public class AstBracketTest extends TestCase {
     }
 
     public long bar() {
-        return 1l;
+        return 1L;
     }
 
     public long bar(long value) {
@@ -89,7 +89,7 @@ public class AstBracketTest extends TestCase {
             parseNode("${base[bad]}").eval(bindings, context);
             fail();
         } catch (ELException e) {}
-        assertEquals(1l, parseNode("${base['foo']}").eval(bindings, context));
+        assertEquals(1L, parseNode("${base['foo']}").eval(bindings, context));
     }
 
     @Test
@@ -156,10 +156,10 @@ public class AstBracketTest extends TestCase {
             parseNode("${base[bad]}").setValue(bindings, context, "good");
             fail();
         } catch (ELException e) {}
-        parseNode("${base['foo']}").setValue(bindings, context, 2l);
-        assertEquals(2l, getFoo());
+        parseNode("${base['foo']}").setValue(bindings, context, 2L);
+        assertEquals(2L, getFoo());
         parseNode("${base['foo']}").setValue(bindings, context, "3");
-        assertEquals(3l, getFoo());
+        assertEquals(3L, getFoo());
         if (BUILDER.isEnabled(Builder.Feature.NULL_PROPERTIES)) {
             parseNode("${nullmap[null]}").setValue(bindings, context, "bar");
             assertEquals(
@@ -179,7 +179,7 @@ public class AstBracketTest extends TestCase {
     @Test
     public void testGetValue() {
         assertEquals(
-            1l,
+          1L,
             parseNode("${base['foo']}").getValue(bindings, context, null)
         );
         assertEquals(
@@ -222,19 +222,19 @@ public class AstBracketTest extends TestCase {
     @Test
     public void testInvoke() {
         assertEquals(
-            1l,
+          1L,
             parseNode("${base['bar']}")
                 .invoke(bindings, context, long.class, new Class[0], null)
         );
         assertEquals(
-            2l,
+          2L,
             parseNode("${base['bar']}")
                 .invoke(
                     bindings,
                     context,
                     null,
                     new Class[] { long.class },
-                    new Object[] { 2l }
+                    new Object[] {2L}
                 )
         );
 
@@ -267,7 +267,7 @@ public class AstBracketTest extends TestCase {
             parseNode("${base['bar']}")
                 .getMethodInfo(bindings, context, long.class, new Class[0]);
         assertEquals("bar", info.getName());
-        assertTrue(Arrays.equals(new Class[0], info.getParamTypes()));
+      assertArrayEquals(new Class[0], info.getParamTypes());
         assertEquals(long.class, info.getReturnType());
 
         // long bar(long)
@@ -280,9 +280,7 @@ public class AstBracketTest extends TestCase {
                     new Class[] { long.class }
                 );
         assertEquals("bar", info.getName());
-        assertTrue(
-            Arrays.equals(new Class[] { long.class }, info.getParamTypes())
-        );
+      assertArrayEquals(new Class[]{long.class}, info.getParamTypes());
         assertEquals(long.class, info.getReturnType());
 
         // bad arg type

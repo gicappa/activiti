@@ -16,18 +16,16 @@
 package org.activiti.standalone.deploy;
 
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
-/**
-
- */
 public class DeploymentCacheTestUtil {
 
   public static String readTemplateFile(String templateFile) {
     InputStream inputStream = DeploymentCacheTestUtil.class.getResourceAsStream(templateFile);
     Scanner scanner = null;
     try {
-      scanner = new Scanner(inputStream, "UTF-8").useDelimiter("\\A");
+      scanner = new Scanner(inputStream, StandardCharsets.UTF_8).useDelimiter("\\A");
       if (scanner.hasNext()) {
         return scanner.next();
       }

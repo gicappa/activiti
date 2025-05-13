@@ -26,7 +26,7 @@ public class SubProcessInstanceExecutionBySuperExecutionIdMatcher implements Sin
   @Override
   public boolean isRetained(ExecutionEntity executionEntity, Object parameter) {
     return executionEntity.getSuperExecutionId() != null
-        && ((String) parameter).equals(executionEntity.getSuperExecutionId());
+        && parameter.equals(executionEntity.getSuperExecutionId());
   }
 
 }

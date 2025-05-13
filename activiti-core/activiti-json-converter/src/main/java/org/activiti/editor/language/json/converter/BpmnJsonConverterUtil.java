@@ -61,8 +61,8 @@ public class BpmnJsonConverterUtil implements EditorJsonConstants, StencilConsta
 
   private static final Logger logger = LoggerFactory.getLogger(BpmnJsonConverterUtil.class);
 
-  private static DateTimeFormatter dateTimeFormatter = ISODateTimeFormat.dateTimeParser();
-  private static ObjectMapper objectMapper = new ObjectMapper();
+  private static final DateTimeFormatter dateTimeFormatter = ISODateTimeFormat.dateTimeParser();
+  private static final ObjectMapper objectMapper = new ObjectMapper();
 
   public static ObjectNode createChildShape(String id, String type, double lowerRightX, double lowerRightY, double upperLeftX, double upperLeftY) {
     ObjectNode shapeNode = objectMapper.createObjectNode();
@@ -581,16 +581,16 @@ public class BpmnJsonConverterUtil implements EditorJsonConstants, StencilConsta
       propertyItemNode.put(PROPERTY_DATA_TYPE, dataType);
 
       Object dObjValue = dObj.getValue();
-      String value = new String();
+      String value = "";
       if (null == dObjValue) {
         propertyItemNode.put(PROPERTY_DATA_VALUE, "");
       } else {
         if ("datetime".equals(dataType)) {
           value = new DateTime(dObjValue).toString("yyyy-MM-dd'T'hh:mm:ss");
         } else {
-          value = new String(dObjValue.toString());
+          value = dObjValue.toString();
         }
-        propertyItemNode.put(PROPERTY_DATA_VALUE, value.toString());
+        propertyItemNode.put(PROPERTY_DATA_VALUE, value);
       }
 
       itemsNode.add(propertyItemNode);
@@ -623,7 +623,7 @@ public class BpmnJsonConverterUtil implements EditorJsonConstants, StencilConsta
   public static String getPropertyValueAsString(String name, JsonNode objectNode) {
     String propertyValue = null;
     JsonNode propertyNode = getProperty(name, objectNode);
-    if (propertyNode != null && propertyNode.isNull() == false) {
+    if (propertyNode != null && !propertyNode.isNull()) {
       propertyValue = propertyNode.asText();
     }
     return propertyValue;

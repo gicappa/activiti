@@ -76,15 +76,14 @@ public class ReceiveMessagePayloadBuilder {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("ReceiveMessagePayloadBuilder [name=");
-        builder.append(name);
-        builder.append(", correlationKey=");
-        builder.append(correlationKey);
-        builder.append(", variables=");
-        builder.append(variables);
-        builder.append("]");
-        return builder.toString();
+      var builder = "ReceiveMessagePayloadBuilder [name="
+        + name
+        + ", correlationKey="
+        + correlationKey
+        + ", variables="
+        + variables
+        + "]";
+        return builder;
     }
 
     @Override

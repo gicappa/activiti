@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 
 class APIVariableInstanceConverterTest {
 
-    private APIVariableInstanceConverter converter = new APIVariableInstanceConverter();
+    private final APIVariableInstanceConverter converter = new APIVariableInstanceConverter();
 
     @Test
     void should_convertToApiVariableInstance() {

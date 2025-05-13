@@ -42,9 +42,8 @@ public class VariableUpdatedListenerDelegate implements ActivitiEventListener {
 
     @Override
     public void onEvent(ActivitiEvent event) {
-        if (event instanceof ActivitiVariableUpdatedEvent) {
-            ActivitiVariableUpdatedEvent internalEvent = (ActivitiVariableUpdatedEvent) event;
-            if (variableEventFilter.shouldEmmitEvent(internalEvent)) {
+        if (event instanceof ActivitiVariableUpdatedEvent internalEvent) {
+          if (variableEventFilter.shouldEmmitEvent(internalEvent)) {
                 converter.from(internalEvent)
                     .ifPresent(convertedEvent -> {
                         if (listeners != null) {

@@ -86,17 +86,16 @@ public class MessageEventPayloadBuilder {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("MessageEventPayloadBuilder [name=");
-        builder.append(name);
-        builder.append(", correlationKey=");
-        builder.append(correlationKey);
-        builder.append(", businessKey=");
-        builder.append(businessKey);
-        builder.append(", variables=");
-        builder.append(variables);
-        builder.append("]");
-        return builder.toString();
+      var builder = "MessageEventPayloadBuilder [name="
+        + name
+        + ", correlationKey="
+        + correlationKey
+        + ", businessKey="
+        + businessKey
+        + ", variables="
+        + variables
+        + "]";
+        return builder;
     }
 
     @Override
@@ -112,7 +111,7 @@ public class MessageEventPayloadBuilder {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        MessageEventPayloadBuilder other = (MessageEventPayloadBuilder) obj;
+      var other = (MessageEventPayloadBuilder) obj;
         return Objects.equals(correlationKey, other.correlationKey)
                 && Objects.equals(businessKey, other.businessKey)
                 && Objects.equals(name, other.name)

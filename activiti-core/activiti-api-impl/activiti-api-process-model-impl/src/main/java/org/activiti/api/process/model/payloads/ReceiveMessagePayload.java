@@ -83,17 +83,16 @@ public class ReceiveMessagePayload implements Payload {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("ReceiveMessagePayload [id=");
-        builder.append(id);
-        builder.append(", name=");
-        builder.append(name);
-        builder.append(", correlationKey=");
-        builder.append(correlationKey);
-        builder.append(", variables=");
-        builder.append(variables);
-        builder.append("]");
-        return builder.toString();
+      var builder = "ReceiveMessagePayload [id="
+        + id
+        + ", name="
+        + name
+        + ", correlationKey="
+        + correlationKey
+        + ", variables="
+        + variables
+        + "]";
+        return builder;
     }
 
 }

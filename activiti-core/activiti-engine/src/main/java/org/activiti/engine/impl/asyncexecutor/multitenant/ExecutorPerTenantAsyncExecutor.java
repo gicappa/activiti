@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * An {@link AsyncExecutor} that has one {@link AsyncExecutor} per tenant.
- * So each tenant has its own acquiring threads and it's own threadpool for executing jobs.
+ * So each tenant has its own acquiring threads and its own threadpool for executing jobs.
  *
 
  */
@@ -62,7 +62,7 @@ public class ExecutorPerTenantAsyncExecutor implements TenantAwareAsyncExecutor 
   }
 
   public void addTenantAsyncExecutor(String tenantId, boolean startExecutor) {
-    AsyncExecutor tenantExecutor = null;
+    AsyncExecutor tenantExecutor;
 
     if (tenantAwareAyncExecutorFactory == null) {
       tenantExecutor = new DefaultAsyncJobExecutor();
@@ -72,8 +72,7 @@ public class ExecutorPerTenantAsyncExecutor implements TenantAwareAsyncExecutor 
 
     tenantExecutor.setProcessEngineConfiguration(processEngineConfiguration);
 
-    if (tenantExecutor instanceof DefaultAsyncJobExecutor) {
-      DefaultAsyncJobExecutor defaultAsyncJobExecutor = (DefaultAsyncJobExecutor) tenantExecutor;
+    if (tenantExecutor instanceof DefaultAsyncJobExecutor defaultAsyncJobExecutor) {
       defaultAsyncJobExecutor.setAsyncJobsDueRunnable(new TenantAwareAcquireAsyncJobsDueRunnable(defaultAsyncJobExecutor, tenantInfoHolder, tenantId));
       defaultAsyncJobExecutor.setTimerJobRunnable(new TenantAwareAcquireTimerJobsRunnable(defaultAsyncJobExecutor, tenantInfoHolder, tenantId));
       defaultAsyncJobExecutor.setExecuteAsyncRunnableFactory(new TenantAwareExecuteAsyncRunnableFactory(tenantInfoHolder, tenantId));

@@ -44,7 +44,7 @@ public class ExpressionResolverTest {
 
     private ExpressionResolver expressionResolver;
 
-    private ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
 
     @Mock
     private ExpressionManager expressionManager;

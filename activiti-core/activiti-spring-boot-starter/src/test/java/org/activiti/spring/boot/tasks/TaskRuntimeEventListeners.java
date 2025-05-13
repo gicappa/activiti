@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class TaskRuntimeEventListeners {
 
-    private List<Task> cancelledTasks = new ArrayList<>();
+    private final List<Task> cancelledTasks = new ArrayList<>();
 
     @Bean
     public TaskRuntimeEventListener<TaskCancelledEvent> taskCancelledListener() {

@@ -15,6 +15,7 @@
  */
 package org.activiti.editor.language.xml;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.activiti.bpmn.converter.BpmnXMLConverter;
@@ -25,39 +26,39 @@ import org.junit.jupiter.api.Test;
 
 public class ManualTaskConverterTest extends AbstractConverterTest {
 
-    @Test
-    public void convertXMLToModel() throws Exception {
-        BpmnModel bpmnModel = readXMLFile();
-        validateModel(bpmnModel);
-    }
+  @Test
+  public void convertXMLToModel() throws Exception {
+    BpmnModel bpmnModel = readXMLFile();
+    validateModel(bpmnModel);
+  }
 
-    @Test
-    public void convertModelToXML() throws Exception {
-        BpmnModel bpmnModel = readXMLFile();
-        BpmnModel parsedModel = exportAndReadXMLFile(bpmnModel);
-        validateModel(parsedModel);
-    }
+  @Test
+  public void convertModelToXML() throws Exception {
+    BpmnModel bpmnModel = readXMLFile();
+    BpmnModel parsedModel = exportAndReadXMLFile(bpmnModel);
+    validateModel(parsedModel);
+  }
 
-    @Override
-    protected String getResource() {
-        return "manualTaskModel.bpmn";
-    }
+  @Override
+  protected String getResource() {
+    return "manualTaskModel.bpmn";
+  }
 
-    private void validateModel(BpmnModel model) throws Exception {
-        FlowElement flowElement = model.getMainProcess().getFlowElement("ManualTask_0ej3luy");
-        assertThat(flowElement).isNotNull();
-        assertThat(flowElement).isInstanceOf(ManualTask.class);
+  private void validateModel(BpmnModel model) {
+    FlowElement flowElement = model.getMainProcess().getFlowElement("ManualTask_0ej3luy");
+    assertThat(flowElement).isNotNull();
+    assertThat(flowElement).isInstanceOf(ManualTask.class);
 
-        checkXml(model);
-    }
+    checkXml(model);
+  }
 
-    private void checkXml(BpmnModel model) throws Exception {
+  private void checkXml(BpmnModel model) {
 
-        String xml = new String(new BpmnXMLConverter().convertToXML(model),
-                                "UTF-8");
+    String xml = new String(new BpmnXMLConverter().convertToXML(model),
+      UTF_8);
 
-        assertThat(xml).contains("incoming>SequenceFlow_12e82d4<",
-                                 "outgoing>SequenceFlow_0zx88mt<");
+    assertThat(xml).contains("incoming>SequenceFlow_12e82d4<",
+      "outgoing>SequenceFlow_0zx88mt<");
 
-    }
+  }
 }

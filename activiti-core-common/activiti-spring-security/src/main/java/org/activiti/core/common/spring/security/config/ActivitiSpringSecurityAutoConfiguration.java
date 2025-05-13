@@ -48,9 +48,9 @@ public class ActivitiSpringSecurityAutoConfiguration {
     @ConditionalOnMissingBean
     public GrantedAuthoritiesGroupsMapper grantedAuthoritiesGroupsMapper() {
         return new SimpleGrantedAuthoritiesGroupsMapper();
-    };
+    }
 
-    @Bean
+  @Bean
     @ConditionalOnMissingBean
     public GrantedAuthoritiesRolesMapper grantedAuthoritiesRolesMapper() {
         return new SimpleGrantedAuthoritiesRolesMapper();

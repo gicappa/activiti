@@ -26,9 +26,9 @@ import java.util.List;
 
 public class ProcessUpdatedListenerDelegate implements ActivitiEventListener {
 
-    private List<ProcessRuntimeEventListener<ProcessUpdatedEvent>> processRuntimeEventListeners;
+    private final List<ProcessRuntimeEventListener<ProcessUpdatedEvent>> processRuntimeEventListeners;
 
-    private ToProcessUpdatedConverter processUpdatedConverter;
+    private final ToProcessUpdatedConverter processUpdatedConverter;
 
     public ProcessUpdatedListenerDelegate(List<ProcessRuntimeEventListener<ProcessUpdatedEvent>> listeners,
                                           ToProcessUpdatedConverter processUpdatedConverter) {

@@ -15,6 +15,7 @@
  */
 package org.activiti.engine.impl;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +29,7 @@ import org.activiti.engine.repository.DeploymentQuery;
  */
 public class DeploymentQueryProperty implements QueryProperty {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   private static final Map<String, DeploymentQueryProperty> properties = new HashMap<String, DeploymentQueryProperty>();
@@ -37,7 +39,7 @@ public class DeploymentQueryProperty implements QueryProperty {
   public static final DeploymentQueryProperty DEPLOYMENT_TENANT_ID = new DeploymentQueryProperty("RES.TENANT_ID_");
   public static final DeploymentQueryProperty DEPLOY_TIME = new DeploymentQueryProperty("RES.DEPLOY_TIME_");
 
-  private String name;
+  private final String name;
 
   public DeploymentQueryProperty(String name) {
     this.name = name;

@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 
 public class MessageSubscriptionConverterTest {
 
-    private MessageSubscriptionConverter converter = new MessageSubscriptionConverter();
+    private final MessageSubscriptionConverter converter = new MessageSubscriptionConverter();
 
     @Test
     public void convertShouldReturnBPMNMessage() {

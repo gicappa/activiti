@@ -31,8 +31,7 @@ public class ErrorEventDefinitionParseHandler extends AbstractBpmnParseHandler<E
   }
 
   protected void executeParse(BpmnParse bpmnParse, ErrorEventDefinition eventDefinition) {
-    if (bpmnParse.getCurrentFlowElement() instanceof BoundaryEvent) {
-      BoundaryEvent boundaryEvent = (BoundaryEvent) bpmnParse.getCurrentFlowElement();
+    if (bpmnParse.getCurrentFlowElement() instanceof BoundaryEvent boundaryEvent) {
       boundaryEvent.setBehavior(bpmnParse.getActivityBehaviorFactory().createBoundaryEventActivityBehavior(boundaryEvent, true));
     }
   }

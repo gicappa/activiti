@@ -165,7 +165,7 @@ public interface HistoryManager {
   /**
    * Record a change of the process-definition id of a task instance, if activity history is enabled.
    */
-  public abstract void recordTaskProcessDefinitionChange(String taskId, String processDefinitionId);
+  void recordTaskProcessDefinitionChange(String taskId, String processDefinitionId);
 
   /**
    * Record a variable has been created, if audit history is enabled.

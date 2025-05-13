@@ -15,6 +15,7 @@
  */
 package org.activiti.engine.impl.el;
 
+import java.io.Serial;
 import java.util.Map;
 
 import org.activiti.engine.ActivitiException;
@@ -29,8 +30,10 @@ import org.activiti.engine.impl.interceptor.DelegateInterceptor;
  */
 public class FixedValue implements Expression {
 
+    @Serial
     private static final long serialVersionUID = 1L;
-    private Object value;
+
+    private final Object value;
 
     public FixedValue(Object value) {
         this.value = value;

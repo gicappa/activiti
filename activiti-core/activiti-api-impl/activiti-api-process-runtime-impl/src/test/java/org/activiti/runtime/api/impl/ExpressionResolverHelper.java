@@ -19,12 +19,10 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.activiti.core.el.CustomFunctionProvider;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
@@ -37,233 +35,252 @@ import org.activiti.spring.process.model.VariableDefinition;
 
 public class ExpressionResolverHelper {
 
-    private static ObjectMapper objectMapper = new ObjectMapper();
+  private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    private static void initializeExpressionResolver(List<CustomFunctionProvider> customFunctionProviders) {
-        ProcessEngineConfigurationImpl processEngineConfiguration = mock(ProcessEngineConfigurationImpl.class);
-        Context.setProcessEngineConfiguration(processEngineConfiguration);
-        ExpressionManager expressionManager = new ExpressionManager();
-        expressionManager.setCustomFunctionProviders(customFunctionProviders);
-        given(processEngineConfiguration.getExpressionManager()).willReturn(expressionManager);
-        given(processEngineConfiguration.getDelegateInterceptor()).willReturn(new DefaultDelegateInterceptor());
+  private static void initializeExpressionResolver(
+    List<CustomFunctionProvider> customFunctionProviders) {
+
+    var processEngineConfiguration = mock(ProcessEngineConfigurationImpl.class);
+    Context.setProcessEngineConfiguration(processEngineConfiguration);
+
+    var expressionManager = new ExpressionManager();
+    expressionManager.setCustomFunctionProviders(customFunctionProviders);
+
+    given(processEngineConfiguration.getExpressionManager())
+      .willReturn(expressionManager);
+
+    given(processEngineConfiguration.getDelegateInterceptor())
+      .willReturn(new DefaultDelegateInterceptor());
+  }
+
+  public static ExpressionResolver initContext(
+    DelegateExecution execution,
+    Extension extensions) {
+
+    return initContext(execution, extensions, new ArrayList<>());
+  }
+
+  public static ExpressionResolver initContext(DelegateExecution execution,
+    Extension extensions,
+    List<CustomFunctionProvider> customFunctionProviders) {
+
+    initializeExpressionResolver(customFunctionProviders);
+
+    var variables = convertToStringObjectMap(extensions.getProperties());
+
+    setExecutionVariables(execution, variables);
+
+    var expressionManager = new ExpressionManager();
+
+    expressionManager.setCustomFunctionProviders(customFunctionProviders);
+
+    return new ExpressionResolver(
+      expressionManager, objectMapper, new DefaultDelegateInterceptor());
+  }
+
+  public static void setExecutionVariables(
+    DelegateExecution execution,
+    Map<String, Object> variables) {
+
+    given(execution.getVariables()).willReturn(variables);
+    given(execution.getVariablesLocal()).willReturn(variables);
+
+    for (var key : variables.keySet()) {
+      given(execution.hasVariable(key)).willReturn(true);
+
+      var var = getVariableInstance(key, variables.get(key));
+
+      given(execution.getVariableInstance(key)).willReturn(var);
+      given(execution.getVariable(key)).willReturn(variables.get(key));
     }
+  }
 
-    public static ExpressionResolver initContext(DelegateExecution execution,
-                                                 Extension extensions) {
-        return initContext(execution, extensions, new ArrayList<>());
-    }
 
-    public static ExpressionResolver initContext(DelegateExecution execution,
-                                                 Extension extensions,
-                                                 List<CustomFunctionProvider> customFunctionProviders) {
-        initializeExpressionResolver(customFunctionProviders);
+  private static Map<String, Object> convertToStringObjectMap(
+    Map<String, VariableDefinition> sourceMap) {
 
-        Map<String, Object> variables = convertToStringObjectMap(extensions.getProperties());
+    var result = new HashMap<String, Object>();
 
-        setExecutionVariables(execution, variables);
-        ExpressionManager expressionManager = new ExpressionManager();
-        expressionManager.setCustomFunctionProviders(customFunctionProviders);
-        return new ExpressionResolver(expressionManager,
-                                      objectMapper, new DefaultDelegateInterceptor());
-    }
+    sourceMap.forEach((key, value) -> result.put(
+      value.getName(), value.getValue()));
+    return result;
+  }
 
-    public static void setExecutionVariables(DelegateExecution execution, Map<String, Object> variables) {
-        given(execution.getVariables()).willReturn(variables);
-        given(execution.getVariablesLocal()).willReturn(variables);
-        for (String key : variables.keySet()) {
-            given(execution.hasVariable(key)).willReturn(true);
-            VariableInstance var = getVariableInstance(key,
-                                                       variables.get(key));
-            given(execution.getVariableInstance(key)).willReturn(var);
-            given(execution.getVariable(key)).willReturn(variables.get(key));
+  private static VariableInstance getVariableInstance(String key,
+    Object value) {
+    VariableInstance var = new VariableInstance() {
+      @Override
+      public void setRevision(int revision) {
+      }
+
+      @Override
+      public int getRevisionNext() {
+        return 0;
+      }
+
+      @Override
+      public int getRevision() {
+        return 0;
+      }
+
+      @Override
+      public void setUpdated(boolean updated) {
+      }
+
+      @Override
+      public void setInserted(boolean inserted) {
+      }
+
+      @Override
+      public void setId(String id) {
+      }
+
+      @Override
+      public void setDeleted(boolean deleted) {
+      }
+
+      @Override
+      public boolean isUpdated() {
+        return false;
+      }
+
+      @Override
+      public boolean isInserted() {
+        return false;
+      }
+
+      @Override
+      public boolean isDeleted() {
+        return false;
+      }
+
+      @Override
+      public Object getPersistentState() {
+        return null;
+      }
+
+      @Override
+      public String getId() {
+        return null;
+      }
+
+      @Override
+      public void setTextValue2(String textValue2) {
+      }
+
+      @Override
+      public void setTextValue(String textValue) {
+      }
+
+      @Override
+      public void setLongValue(Long longValue) {
+      }
+
+      @Override
+      public void setDoubleValue(Double doubleValue) {
+      }
+
+      @Override
+      public void setCachedValue(Object cachedValue) {
+      }
+
+      @Override
+      public void setBytes(byte[] bytes) {
+      }
+
+      @Override
+      public String getTextValue2() {
+        return null;
+      }
+
+      @Override
+      public String getTextValue() {
+        return null;
+      }
+
+      @Override
+      public String getName() {
+
+        return null;
+      }
+
+      @Override
+      public Long getLongValue() {
+        return null;
+      }
+
+      @Override
+      public Double getDoubleValue() {
+        return null;
+      }
+
+      @Override
+      public Object getCachedValue() {
+        return null;
+      }
+
+      @Override
+      public byte[] getBytes() {
+        return null;
+      }
+
+      @Override
+      public void setValue(Object value) {
+      }
+
+      @Override
+      public void setTypeName(String typeName) {
+      }
+
+      @Override
+      public void setTaskId(String taskId) {
+      }
+
+      @Override
+      public void setProcessInstanceId(String processInstanceId) {
+      }
+
+      @Override
+      public void setName(String name) {
+      }
+
+      @Override
+      public void setExecutionId(String executionId) {
+      }
+
+      @Override
+      public Object getValue() {
+        return value;
+      }
+
+      @Override
+      public String getTypeName() {
+        if (value instanceof String) {
+          return "string";
+        } else if (value instanceof Integer) {
+          return "integer";
+        } else if (value instanceof Boolean) {
+          return "boolean";
+        } else {
+          return "json";
         }
-    }
+      }
 
+      @Override
+      public String getTaskId() {
+        return null;
+      }
 
-    private static Map<String, Object> convertToStringObjectMap(
-        Map<String, VariableDefinition> sourceMap) {
-        Map<String, Object> result = new HashMap<>();
-        sourceMap.forEach((key,
-                value) -> result.put(value.getName(),
-                                     value.getValue()));
-        return result;
-    }
+      @Override
+      public String getProcessInstanceId() {
+        return null;
+      }
 
-    private static VariableInstance getVariableInstance(String key,
-                                                        Object value) {
-        VariableInstance var = new VariableInstance() {
-            @Override
-            public void setRevision(int revision) {
-            }
-
-            @Override
-            public int getRevisionNext() {
-                return 0;
-            }
-
-            @Override
-            public int getRevision() {
-                return 0;
-            }
-
-            @Override
-            public void setUpdated(boolean updated) {
-            }
-
-            @Override
-            public void setInserted(boolean inserted) {
-            }
-
-            @Override
-            public void setId(String id) {
-            }
-
-            @Override
-            public void setDeleted(boolean deleted) {
-            }
-
-            @Override
-            public boolean isUpdated() {
-                return false;
-            }
-
-            @Override
-            public boolean isInserted() {
-                return false;
-            }
-
-            @Override
-            public boolean isDeleted() {
-                return false;
-            }
-
-            @Override
-            public Object getPersistentState() {
-                return null;
-            }
-
-            @Override
-            public String getId() {
-                return null;
-            }
-
-            @Override
-            public void setTextValue2(String textValue2) {
-            }
-
-            @Override
-            public void setTextValue(String textValue) {
-            }
-
-            @Override
-            public void setLongValue(Long longValue) {
-            }
-
-            @Override
-            public void setDoubleValue(Double doubleValue) {
-            }
-
-            @Override
-            public void setCachedValue(Object cachedValue) {
-            }
-
-            @Override
-            public void setBytes(byte[] bytes) {
-            }
-
-            @Override
-            public String getTextValue2() {
-                return null;
-            }
-
-            @Override
-            public String getTextValue() {
-                return null;
-            }
-
-            @Override
-            public String getName() {
-
-                return null;
-            }
-
-            @Override
-            public Long getLongValue() {
-                return null;
-            }
-
-            @Override
-            public Double getDoubleValue() {
-                return null;
-            }
-
-            @Override
-            public Object getCachedValue() {
-                return null;
-            }
-
-            @Override
-            public byte[] getBytes() {
-                return null;
-            }
-
-            @Override
-            public void setValue(Object value) {
-            }
-
-            @Override
-            public void setTypeName(String typeName) {
-            }
-
-            @Override
-            public void setTaskId(String taskId) {
-            }
-
-            @Override
-            public void setProcessInstanceId(String processInstanceId) {
-            }
-
-            @Override
-            public void setName(String name) {
-            }
-
-            @Override
-            public void setExecutionId(String executionId) {
-            }
-
-            @Override
-            public Object getValue() {
-                return value;
-            }
-
-            @Override
-            public String getTypeName() {
-                if (value instanceof String) {
-                    return "string";
-                } else if (value instanceof Integer) {
-                    return "integer";
-                } else if (value instanceof Boolean) {
-                    return "boolean";
-                } else {
-                    return "json";
-                }
-            }
-
-            @Override
-            public String getTaskId() {
-                return null;
-            }
-
-            @Override
-            public String getProcessInstanceId() {
-                return null;
-            }
-
-            @Override
-            public String getExecutionId() {
-                return null;
-            }
-        };
-        return var;
-    }
+      @Override
+      public String getExecutionId() {
+        return null;
+      }
+    };
+    return var;
+  }
 }

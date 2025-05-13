@@ -42,7 +42,7 @@ public class HistoricProcessInstanceQueryProperty implements QueryProperty {
 
   public static final HistoricProcessInstanceQueryProperty INCLUDED_VARIABLE_TIME = new HistoricProcessInstanceQueryProperty("VAR.LAST_UPDATED_TIME_");
 
-  private String name;
+  private final String name;
 
   public HistoricProcessInstanceQueryProperty(String name) {
     this.name = name;

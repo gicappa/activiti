@@ -23,7 +23,7 @@ import java.util.Optional;
 
 public class ToTaskActivatedConverter implements EventConverter<TaskActivatedEvent, ActivitiEntityEvent> {
 
-    private APITaskConverter taskConverter;
+    private final APITaskConverter taskConverter;
 
     public ToTaskActivatedConverter(APITaskConverter taskConverter) {
         this.taskConverter = taskConverter;

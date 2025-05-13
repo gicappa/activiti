@@ -100,9 +100,8 @@ public class ExpressionManager {
 
     public ELContext getElContext(VariableScope variableScope) {
         ELContext elContext = null;
-        if (variableScope instanceof VariableScopeImpl) {
-            VariableScopeImpl variableScopeImpl = (VariableScopeImpl) variableScope;
-            elContext = variableScopeImpl.getCachedElContext();
+        if (variableScope instanceof VariableScopeImpl variableScopeImpl) {
+          elContext = variableScopeImpl.getCachedElContext();
         }
 
         if (elContext == null) {

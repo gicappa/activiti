@@ -31,12 +31,12 @@ public class BooleanOperationsTest extends TestCase {
     /**
      * Test enum type
      */
-    static enum Foo {
+    enum Foo {
         BAR,
         BAZ,
     }
 
-    private TypeConverter converter = TypeConverter.DEFAULT;
+    private final TypeConverter converter = TypeConverter.DEFAULT;
 
     /*
      * Test method for 'org.activiti.core.el.juel.BooleanOperations.lt(Object, Object)'

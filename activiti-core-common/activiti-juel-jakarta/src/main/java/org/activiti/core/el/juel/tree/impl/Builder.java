@@ -22,6 +22,7 @@ import jakarta.el.ExpressionFactory;
 import jakarta.el.FunctionMapper;
 import jakarta.el.VariableMapper;
 import java.io.PrintWriter;
+import java.io.Serial;
 import java.util.EnumSet;
 import org.activiti.core.el.juel.tree.Bindings;
 import org.activiti.core.el.juel.tree.NodePrinter;
@@ -37,12 +38,13 @@ import org.activiti.core.el.juel.tree.impl.Parser.ParseException;
  */
 public class Builder implements TreeBuilder {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
      * Feature enumeration type.
      */
-    public static enum Feature {
+    public enum Feature {
         /**
          * Method invocations as in <code>${foo.bar(1)}</code> as specified in JSR 245,
          * maintenance release 2.
@@ -82,9 +84,7 @@ public class Builder implements TreeBuilder {
             this.features = EnumSet.of(features[0]);
         } else {
             Feature[] rest = new Feature[features.length - 1];
-            for (int i = 1; i < features.length; i++) {
-                rest[i - 1] = features[i];
-            }
+          System.arraycopy(features, 1, rest, 0, features.length - 1);
             this.features = EnumSet.of(features[0], rest);
         }
     }

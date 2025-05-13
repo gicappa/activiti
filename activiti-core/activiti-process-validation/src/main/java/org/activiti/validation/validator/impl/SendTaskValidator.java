@@ -15,12 +15,12 @@
  */
 package org.activiti.validation.validator.impl;
 
-import java.util.List;
+import static org.activiti.validation.validator.Problems.SEND_TASK_INVALID_IMPLEMENTATION;
+import static org.activiti.validation.validator.Problems.SEND_TASK_INVALID_TYPE;
 
+import java.util.List;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.ImplementationType;
-import org.activiti.bpmn.model.Interface;
-import org.activiti.bpmn.model.Operation;
 import org.activiti.bpmn.model.Process;
 import org.activiti.bpmn.model.SendTask;
 import org.activiti.validation.ValidationError;
@@ -28,29 +28,34 @@ import org.activiti.validation.validator.Problems;
 import org.apache.commons.lang3.StringUtils;
 
 /**
-
+ *
  */
 public class SendTaskValidator extends ExternalInvocationTaskValidator {
 
   @Override
-  protected void executeValidation(BpmnModel bpmnModel, Process process, List<ValidationError> errors) {
-    List<SendTask> sendTasks = process.findFlowElementsOfType(SendTask.class);
-    for (SendTask sendTask : sendTasks) {
+  protected void executeValidation(BpmnModel bpmnModel, Process process,
+    List<ValidationError> errors) {
+    var sendTasks = process.findFlowElementsOfType(SendTask.class);
+    for (var sendTask : sendTasks) {
 
       // Verify implementation
-      if (StringUtils.isEmpty(sendTask.getType()) && !ImplementationType.IMPLEMENTATION_TYPE_WEBSERVICE.equalsIgnoreCase(sendTask.getImplementationType())) {
-        addError(errors, Problems.SEND_TASK_INVALID_IMPLEMENTATION, process, sendTask);
+      if (StringUtils.isEmpty(sendTask.getType())
+        && !ImplementationType.IMPLEMENTATION_TYPE_WEBSERVICE.equalsIgnoreCase(
+        sendTask.getImplementationType())) {
+        addError(errors, SEND_TASK_INVALID_IMPLEMENTATION, process, sendTask);
       }
 
       // Verify type
       if (StringUtils.isNotEmpty(sendTask.getType())) {
 
-        if (!sendTask.getType().equalsIgnoreCase("mail") && !sendTask.getType().equalsIgnoreCase("mule") && !sendTask.getType().equalsIgnoreCase("camel")) {
-          addError(errors, Problems.SEND_TASK_INVALID_TYPE, process, sendTask);
+        if (!sendTask.getType().equalsIgnoreCase("mail") && !sendTask.getType()
+          .equalsIgnoreCase("mule") && !sendTask.getType().equalsIgnoreCase("camel")) {
+          addError(errors, SEND_TASK_INVALID_TYPE, process, sendTask);
         }
 
         if (sendTask.getType().equalsIgnoreCase("mail")) {
-          validateFieldDeclarationsForEmail(process, sendTask, sendTask.getFieldExtensions(), errors);
+          validateFieldDeclarationsForEmail(process, sendTask, sendTask.getFieldExtensions(),
+            errors);
         }
 
       }
@@ -60,16 +65,20 @@ public class SendTaskValidator extends ExternalInvocationTaskValidator {
     }
   }
 
-  protected void verifyWebservice(BpmnModel bpmnModel, Process process, SendTask sendTask, List<ValidationError> errors) {
-    if (ImplementationType.IMPLEMENTATION_TYPE_WEBSERVICE.equalsIgnoreCase(sendTask.getImplementationType()) && StringUtils.isNotEmpty(sendTask.getOperationRef())) {
+  protected void verifyWebservice(BpmnModel bpmnModel, Process process, SendTask sendTask,
+    List<ValidationError> errors) {
+    if (ImplementationType.IMPLEMENTATION_TYPE_WEBSERVICE.equalsIgnoreCase(
+      sendTask.getImplementationType()) && StringUtils.isNotEmpty(sendTask.getOperationRef())) {
 
       boolean operationFound = false;
       if (bpmnModel.getInterfaces() != null && !bpmnModel.getInterfaces().isEmpty()) {
-        for (Interface bpmnInterface : bpmnModel.getInterfaces()) {
+        for (var bpmnInterface : bpmnModel.getInterfaces()) {
           if (bpmnInterface.getOperations() != null && !bpmnInterface.getOperations().isEmpty()) {
-            for (Operation operation : bpmnInterface.getOperations()) {
-              if (operation.getId() != null && operation.getId().equals(sendTask.getOperationRef())) {
+            for (var operation : bpmnInterface.getOperations()) {
+              if (operation.getId() != null && operation.getId()
+                .equals(sendTask.getOperationRef())) {
                 operationFound = true;
+                break;
               }
             }
           }

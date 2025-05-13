@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 
 public class AstBooleanTest extends TestCase {
 
-    private Bindings bindings = new Bindings(null, null, null);
+    private final Bindings bindings = new Bindings(null, null, null);
 
     AstBoolean parseNode(String expression) {
         return (AstBoolean) parse(expression).getRoot().getChild(0);

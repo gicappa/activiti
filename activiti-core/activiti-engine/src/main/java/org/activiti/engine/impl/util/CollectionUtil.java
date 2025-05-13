@@ -69,7 +69,7 @@ public class CollectionUtil {
         int valueIndex = i + 1;
         Object key = objects[keyIndex];
         Object value = objects[valueIndex];
-        if (!String.class.isInstance(key)) {
+        if (!(key instanceof String)) {
             throw new ActivitiIllegalArgumentException("key at index " + keyIndex + " should be a String but is a " + key.getClass());
         }
         if (value != null && !clazz.isInstance(value)) {

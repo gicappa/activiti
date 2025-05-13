@@ -15,49 +15,48 @@
  */
 package org.activiti.editor.language.xml;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.bpmn.model.BpmnModel;
-import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
 import org.junit.jupiter.api.Test;
 
 public class SimpleUserTaskConverterTest extends AbstractConverterTest {
 
-    @Test
-    public void convertXMLToModel() throws Exception {
-        BpmnModel bpmnModel = readXMLFile();
-        validateModel(bpmnModel);
-    }
+  @Test
+  public void convertXMLToModel() throws Exception {
+    var bpmnModel = readXMLFile();
+    validateModel(bpmnModel);
+  }
 
-    @Test
-    public void convertModelToXML() throws Exception {
-        BpmnModel bpmnModel = readXMLFile();
-        BpmnModel parsedModel = exportAndReadXMLFile(bpmnModel);
-        validateModel(parsedModel);
-    }
+  @Test
+  public void convertModelToXML() throws Exception {
+    var bpmnModel = readXMLFile();
+    var parsedModel = exportAndReadXMLFile(bpmnModel);
+    validateModel(parsedModel);
+  }
 
-    @Override
-    protected String getResource() {
-        return "simpleUserTaskModel.bpmn";
-    }
+  @Override
+  protected String getResource() {
+    return "simpleUserTaskModel.bpmn";
+  }
 
-    private void validateModel(BpmnModel model) throws Exception {
-        FlowElement flowElement = model.getMainProcess().getFlowElement("UserTask_0ej3luy");
-        assertThat(flowElement).isNotNull();
-        assertThat(flowElement).isInstanceOf(UserTask.class);
+  private void validateModel(BpmnModel model) throws Exception {
+    var flowElement = model.getMainProcess().getFlowElement("UserTask_0ej3luy");
+    assertThat(flowElement).isNotNull();
+    assertThat(flowElement).isInstanceOf(UserTask.class);
 
-        checkXml(model);
-    }
+    checkXml(model);
+  }
 
-    private void checkXml(BpmnModel model) throws Exception {
+  private void checkXml(BpmnModel model) {
 
-        String xml = new String(new BpmnXMLConverter().convertToXML(model),
-                                "UTF-8");
+    var xml = new String(new BpmnXMLConverter().convertToXML(model), UTF_8);
 
-        assertThat(xml).contains("incoming>SequenceFlow_12e82d4<",
-                                 "outgoing>SequenceFlow_0zx88mt<");
+    assertThat(xml).contains("incoming>SequenceFlow_12e82d4<",
+      "outgoing>SequenceFlow_0zx88mt<");
 
-    }
+  }
 }

@@ -15,12 +15,13 @@
  */
 package org.activiti.engine.impl;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
-
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.ActivitiIllegalArgumentException;
 import org.activiti.engine.DynamicBpmnConstants;
@@ -32,21 +33,17 @@ import org.activiti.engine.impl.persistence.entity.SuspensionState;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 
 /**
-
-
-
-
-
-
+ *
  */
-public class ProcessInstanceQueryImpl extends AbstractVariableQueryImpl<ProcessInstanceQuery, ProcessInstance> implements ProcessInstanceQuery, Serializable {
+public class ProcessInstanceQueryImpl extends
+  AbstractVariableQueryImpl<ProcessInstanceQuery, ProcessInstance> implements ProcessInstanceQuery,
+  Serializable {
 
+  @Serial
   private static final long serialVersionUID = 1L;
+
   protected String executionId;
   protected String businessKey;
   protected boolean includeChildExecutionsWithBusinessKeyQuery;
@@ -146,7 +143,8 @@ public class ProcessInstanceQueryImpl extends AbstractVariableQueryImpl<ProcessI
     return this;
   }
 
-  public ProcessInstanceQuery processInstanceBusinessKey(String businessKey, String processDefinitionKey) {
+  public ProcessInstanceQuery processInstanceBusinessKey(String businessKey,
+    String processDefinitionKey) {
     if (businessKey == null) {
       throw new ActivitiIllegalArgumentException("Business key is null");
     }
@@ -160,10 +158,10 @@ public class ProcessInstanceQueryImpl extends AbstractVariableQueryImpl<ProcessI
   }
 
   public ProcessInstanceQuery processInstanceTenantId(String tenantId) {
-  	if (tenantId == null) {
-  		throw new ActivitiIllegalArgumentException("process instance tenant id is null");
-  	}
-  	if (inOrStatement) {
+    if (tenantId == null) {
+      throw new ActivitiIllegalArgumentException("process instance tenant id is null");
+    }
+    if (inOrStatement) {
       this.currentOrQueryObject.tenantId = tenantId;
     } else {
       this.tenantId = tenantId;
@@ -172,10 +170,10 @@ public class ProcessInstanceQueryImpl extends AbstractVariableQueryImpl<ProcessI
   }
 
   public ProcessInstanceQuery processInstanceTenantIdLike(String tenantIdLike) {
-  	if (tenantIdLike == null) {
-  		throw new ActivitiIllegalArgumentException("process instance tenant id is null");
-  	}
-  	if (inOrStatement) {
+    if (tenantIdLike == null) {
+      throw new ActivitiIllegalArgumentException("process instance tenant id is null");
+    }
+    if (inOrStatement) {
       this.currentOrQueryObject.tenantIdLike = tenantIdLike;
     } else {
       this.tenantIdLike = tenantIdLike;
@@ -410,7 +408,7 @@ public class ProcessInstanceQueryImpl extends AbstractVariableQueryImpl<ProcessI
   }
 
   public ProcessInstanceQuery processInstanceNameLikeIgnoreCase(String nameLikeIgnoreCase) {
-  	if (inOrStatement) {
+    if (inOrStatement) {
       this.currentOrQueryObject.nameLikeIgnoreCase = nameLikeIgnoreCase.toLowerCase();
     } else {
       this.nameLikeIgnoreCase = nameLikeIgnoreCase.toLowerCase();
@@ -542,10 +540,10 @@ public class ProcessInstanceQueryImpl extends AbstractVariableQueryImpl<ProcessI
   @Override
   public ProcessInstanceQuery variableValueLikeIgnoreCase(String name, String value) {
     if (inOrStatement) {
-        currentOrQueryObject.variableValueLikeIgnoreCase(name, value, false);
-        return this;
+      currentOrQueryObject.variableValueLikeIgnoreCase(name, value, false);
+      return this;
     } else {
-        return variableValueLikeIgnoreCase(name, value, false);
+      return variableValueLikeIgnoreCase(name, value, false);
     }
   }
 
@@ -607,8 +605,8 @@ public class ProcessInstanceQueryImpl extends AbstractVariableQueryImpl<ProcessI
   }
 
   public String getMssqlOrDB2OrderBy() {
-    String specialOrderBy = super.getOrderBy();
-    if (specialOrderBy != null && specialOrderBy.length() > 0) {
+    var specialOrderBy = super.getOrderBy();
+    if (specialOrderBy != null && !specialOrderBy.isEmpty()) {
       specialOrderBy = specialOrderBy.replace("RES.", "TEMPRES_");
       specialOrderBy = specialOrderBy.replace("ProcessDefinitionKey", "TEMPP_KEY_");
       specialOrderBy = specialOrderBy.replace("ProcessDefinitionId", "TEMPP_ID_");
@@ -627,15 +625,18 @@ public class ProcessInstanceQueryImpl extends AbstractVariableQueryImpl<ProcessI
   public List<ProcessInstance> executeList(CommandContext commandContext, Page page) {
     checkQueryOk();
     ensureVariablesInitialized();
-    List<ProcessInstance> processInstances = null;
+    List<ProcessInstance> processInstances;
     if (includeProcessVariables) {
-      processInstances = commandContext.getExecutionEntityManager().findProcessInstanceAndVariablesByQueryCriteria(this);
+      processInstances = commandContext.getExecutionEntityManager()
+        .findProcessInstanceAndVariablesByQueryCriteria(this);
     } else {
-      processInstances = commandContext.getExecutionEntityManager().findProcessInstanceByQueryCriteria(this);
+      processInstances = commandContext.getExecutionEntityManager()
+        .findProcessInstanceByQueryCriteria(this);
     }
 
-    if (Context.getProcessEngineConfiguration().getPerformanceSettings().isEnableLocalization()) {
-      for (ProcessInstance processInstance : processInstances) {
+    if (Objects.requireNonNull(Context.getProcessEngineConfiguration()).getPerformanceSettings()
+      .isEnableLocalization()) {
+      for (var processInstance : processInstances) {
         localize(processInstance);
       }
     }
@@ -653,22 +654,25 @@ public class ProcessInstanceQueryImpl extends AbstractVariableQueryImpl<ProcessI
   }
 
   protected void localize(ProcessInstance processInstance) {
-    ExecutionEntity processInstanceExecution = (ExecutionEntity) processInstance;
+    var processInstanceExecution = (ExecutionEntity) processInstance;
     processInstanceExecution.setLocalizedName(null);
     processInstanceExecution.setLocalizedDescription(null);
 
     if (locale != null) {
-      String processDefinitionId = processInstanceExecution.getProcessDefinitionId();
+      var processDefinitionId = processInstanceExecution.getProcessDefinitionId();
       if (processDefinitionId != null) {
-        ObjectNode languageNode = Context.getLocalizationElementProperties(locale, processInstanceExecution.getProcessDefinitionKey(), processDefinitionId, withLocalizationFallback);
+        var languageNode = Context.getLocalizationElementProperties(locale,
+          processInstanceExecution.getProcessDefinitionKey(), processDefinitionId,
+          withLocalizationFallback);
         if (languageNode != null) {
-          JsonNode languageNameNode = languageNode.get(DynamicBpmnConstants.LOCALIZATION_NAME);
-          if (languageNameNode != null && languageNameNode.isNull() == false) {
+          var languageNameNode = languageNode.get(DynamicBpmnConstants.LOCALIZATION_NAME);
+          if (languageNameNode != null && !languageNameNode.isNull()) {
             processInstanceExecution.setLocalizedName(languageNameNode.asText());
           }
 
-          JsonNode languageDescriptionNode = languageNode.get(DynamicBpmnConstants.LOCALIZATION_DESCRIPTION);
-          if (languageDescriptionNode != null && languageDescriptionNode.isNull() == false) {
+          var languageDescriptionNode = languageNode.get(
+            DynamicBpmnConstants.LOCALIZATION_DESCRIPTION);
+          if (languageDescriptionNode != null && !languageDescriptionNode.isNull()) {
             processInstanceExecution.setLocalizedDescription(languageDescriptionNode.asText());
           }
         }
@@ -823,7 +827,8 @@ public class ProcessInstanceQueryImpl extends AbstractVariableQueryImpl<ProcessI
   }
 
   /**
-   * Methods needed for ibatis because of re-use of query-xml for executions. ExecutionQuery contains a parentId property.
+   * Methods needed for ibatis because of re-use of query-xml for executions. ExecutionQuery
+   * contains a parentId property.
    */
 
   public String getParentId() {

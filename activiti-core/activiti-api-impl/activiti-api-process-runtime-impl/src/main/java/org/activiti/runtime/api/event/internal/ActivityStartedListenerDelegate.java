@@ -26,9 +26,9 @@ import java.util.List;
 
 public class ActivityStartedListenerDelegate implements ActivitiEventListener {
 
-    private List<BPMNElementEventListener<BPMNActivityStartedEvent>> processRuntimeEventListeners;
+    private final List<BPMNElementEventListener<BPMNActivityStartedEvent>> processRuntimeEventListeners;
 
-    private ToActivityStartedConverter converter;
+    private final ToActivityStartedConverter converter;
 
     public ActivityStartedListenerDelegate(List<BPMNElementEventListener<BPMNActivityStartedEvent>> processRuntimeEventListeners,
                                            ToActivityStartedConverter converter) {

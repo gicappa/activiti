@@ -15,6 +15,7 @@
  */
 package org.activiti.engine.impl.cmd;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import org.activiti.engine.ActivitiIllegalArgumentException;
@@ -31,9 +32,10 @@ import org.slf4j.LoggerFactory;
  */
 public class UnlockExclusiveJobCmd implements Command<Object>, Serializable {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
-  private static Logger log = LoggerFactory.getLogger(UnlockExclusiveJobCmd.class);
+  private static final Logger log = LoggerFactory.getLogger(UnlockExclusiveJobCmd.class);
 
   protected Job job;
 

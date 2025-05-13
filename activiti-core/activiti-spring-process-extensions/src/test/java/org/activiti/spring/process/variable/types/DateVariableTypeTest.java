@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 
 class DateVariableTypeTest {
 
-    private DateFormatterProvider provider = new DateFormatterProvider("yyyy-MM-dd[['T']HH:mm:ss[.SSS'Z']]");
+    private final DateFormatterProvider provider = new DateFormatterProvider("yyyy-MM-dd[['T']HH:mm:ss[.SSS'Z']]");
     private List<ActivitiException> exceptionList;
     DateVariableType dateVariableType;
 

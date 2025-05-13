@@ -46,11 +46,7 @@ public class ConditionUtil {
 
       Expression expression = Context.getProcessEngineConfiguration().getExpressionManager().createExpression(conditionExpression);
       Condition condition = new UelExpressionCondition(expression);
-      if (condition.evaluate(sequenceFlow.getId(), execution)) {
-        return true;
-      }
-
-      return false;
+      return condition.evaluate(sequenceFlow.getId(), execution);
 
     } else {
       return true;

@@ -15,6 +15,7 @@
  */
 package org.activiti.engine.impl.cmd;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import org.activiti.engine.ActivitiIllegalArgumentException;
@@ -31,9 +32,10 @@ import org.slf4j.LoggerFactory;
  */
 public class MoveTimerToExecutableJobCmd implements Command<JobEntity>, Serializable {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
-  private static Logger log = LoggerFactory.getLogger(MoveTimerToExecutableJobCmd.class);
+  private static final Logger log = LoggerFactory.getLogger(MoveTimerToExecutableJobCmd.class);
 
   protected String jobId;
 
@@ -47,7 +49,7 @@ public class MoveTimerToExecutableJobCmd implements Command<JobEntity>, Serializ
       throw new ActivitiIllegalArgumentException("jobId and job is null");
     }
 
-    TimerJobEntity timerJob = commandContext.getTimerJobEntityManager().findById(jobId);
+    var timerJob = commandContext.getTimerJobEntityManager().findById(jobId);
 
     if (timerJob == null) {
       throw new JobNotFoundException(jobId);

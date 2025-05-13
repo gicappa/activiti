@@ -15,6 +15,7 @@
  */
 package org.activiti.engine.impl.cmd;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import org.activiti.engine.ActivitiException;
@@ -33,9 +34,10 @@ import org.slf4j.LoggerFactory;
  */
 public class ExecuteJobCmd implements Command<Object>, Serializable {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
-  private static Logger log = LoggerFactory.getLogger(ExecuteJobCmd.class);
+  private static final Logger log = LoggerFactory.getLogger(ExecuteJobCmd.class);
 
   protected String jobId;
 

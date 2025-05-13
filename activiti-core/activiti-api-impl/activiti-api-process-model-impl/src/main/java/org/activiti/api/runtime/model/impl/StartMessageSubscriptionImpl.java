@@ -98,21 +98,20 @@ public class StartMessageSubscriptionImpl implements StartMessageSubscription {
 
     @Override
     public String toString() {
-        StringBuilder builder2 = new StringBuilder();
-        builder2.append("MessageEventSubscriptionImpl [id=")
-                .append(id)
-                .append(", eventName=")
-                .append(eventName)
-                .append(", processDefinitionId=")
-                .append(processDefinitionId)
-                .append(", configuration=")
-                .append(configuration)
-                .append(", activityId=")
-                .append(activityId)
-                .append(", created=")
-                .append(created)
-                .append("]");
-        return builder2.toString();
+      var builder2 = "MessageEventSubscriptionImpl [id="
+        + id
+        + ", eventName="
+        + eventName
+        + ", processDefinitionId="
+        + processDefinitionId
+        + ", configuration="
+        + configuration
+        + ", activityId="
+        + activityId
+        + ", created="
+        + created
+        + "]";
+        return builder2;
     }
 
     /**

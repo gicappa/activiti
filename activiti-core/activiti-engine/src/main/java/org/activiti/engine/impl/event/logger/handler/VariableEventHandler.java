@@ -56,7 +56,7 @@ public abstract class VariableEventHandler extends AbstractDatabaseEventLoggerEv
   public static final String TYPE_JSON = "json";
 
   protected Map<String, Object> createData(ActivitiVariableEvent variableEvent) {
-    Map<String, Object> data = new HashMap<String, Object>();
+    Map<String, Object> data = new HashMap<>();
     putInMapIfNotNull(data, Fields.NAME, variableEvent.getVariableName());
     putInMapIfNotNull(data, Fields.PROCESS_DEFINITION_ID, variableEvent.getProcessDefinitionId());
     putInMapIfNotNull(data, Fields.PROCESS_INSTANCE_ID, variableEvent.getProcessInstanceId());
@@ -66,13 +66,13 @@ public abstract class VariableEventHandler extends AbstractDatabaseEventLoggerEv
     VariableType variableType = variableEvent.getVariableType();
     if (variableType instanceof BooleanType) {
 
-      putInMapIfNotNull(data, Fields.VALUE_BOOLEAN, (Boolean) variableEvent.getVariableValue());
+      putInMapIfNotNull(data, Fields.VALUE_BOOLEAN, variableEvent.getVariableValue());
       putInMapIfNotNull(data, Fields.VALUE, variableEvent.getVariableValue());
       putInMapIfNotNull(data, Fields.VARIABLE_TYPE, TYPE_BOOLEAN);
 
     } else if (variableType instanceof StringType || variableType instanceof LongStringType) {
 
-      putInMapIfNotNull(data, Fields.VALUE_STRING, (String) variableEvent.getVariableValue());
+      putInMapIfNotNull(data, Fields.VALUE_STRING, variableEvent.getVariableValue());
       putInMapIfNotNull(data, Fields.VARIABLE_TYPE, TYPE_STRING);
 
     } else if (variableType instanceof ShortType) {
@@ -129,7 +129,7 @@ public abstract class VariableEventHandler extends AbstractDatabaseEventLoggerEv
 
       String value = null;
       if (variableEvent.getVariableValue() instanceof UUID) {
-        value = ((UUID) variableEvent.getVariableValue()).toString();
+        value = variableEvent.getVariableValue().toString();
       } else {
         value = (String) variableEvent.getVariableValue();
       }

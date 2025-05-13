@@ -100,7 +100,7 @@ public class DeploymentManager {
   }
 
   public ProcessDefinition findDeployedProcessDefinitionByKeyAndVersionAndTenantId(String processDefinitionKey, Integer processDefinitionVersion, String tenantId) {
-    ProcessDefinition processDefinition = (ProcessDefinitionEntity) processDefinitionEntityManager
+    ProcessDefinition processDefinition = processDefinitionEntityManager
         .findProcessDefinitionByKeyAndVersionAndTenantId(processDefinitionKey, processDefinitionVersion, tenantId);
     if (processDefinition == null) {
       throw new ActivitiObjectNotFoundException("no processes deployed with key = '" + processDefinitionKey + "' and version = '" + processDefinitionVersion + "'", ProcessDefinition.class);

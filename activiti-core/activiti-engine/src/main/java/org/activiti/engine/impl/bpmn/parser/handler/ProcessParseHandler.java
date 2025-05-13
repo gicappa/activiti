@@ -17,6 +17,7 @@ package org.activiti.engine.impl.bpmn.parser.handler;
 
 import java.util.List;
 
+import java.util.Objects;
 import org.activiti.bpmn.model.BaseElement;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.EventListener;
@@ -44,7 +45,7 @@ public class ProcessParseHandler extends AbstractBpmnParseHandler<Process> {
   }
 
   protected void executeParse(BpmnParse bpmnParse, Process process) {
-    if (process.isExecutable() == false) {
+    if (!process.isExecutable()) {
       LOGGER.info("Ignoring non-executable process with id='" + process.getId() + "'. Set the attribute isExecutable=\"true\" to deploy this process.");
     } else {
       bpmnParse.getProcessDefinitions().add(transformProcess(bpmnParse, process));
@@ -52,7 +53,8 @@ public class ProcessParseHandler extends AbstractBpmnParseHandler<Process> {
   }
 
   protected ProcessDefinitionEntity transformProcess(BpmnParse bpmnParse, Process process) {
-    ProcessDefinitionEntity currentProcessDefinition = Context.getCommandContext().getProcessDefinitionEntityManager().create();
+    ProcessDefinitionEntity currentProcessDefinition = Objects.requireNonNull(
+      Context.getCommandContext()).getProcessDefinitionEntityManager().create();
     bpmnParse.setCurrentProcessDefinition(currentProcessDefinition);
 
     /*

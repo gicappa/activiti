@@ -22,8 +22,8 @@ import org.activiti.api.model.shared.event.RuntimeEvent;
 
 public abstract class RuntimeEventImpl<ENTITY_TYPE, EVENT_TYPE extends Enum<?>> implements RuntimeEvent<ENTITY_TYPE, EVENT_TYPE> {
 
-    private String id;
-    private Long timestamp;
+    private final String id;
+    private final Long timestamp;
     private String processInstanceId;
     private String processDefinitionId;
     private String processDefinitionKey;
@@ -126,27 +126,26 @@ public abstract class RuntimeEventImpl<ENTITY_TYPE, EVENT_TYPE extends Enum<?>> 
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("RuntimeEventImpl [id=")
-               .append(id)
-               .append(", timestamp=")
-               .append(timestamp)
-               .append(", processInstanceId=")
-               .append(processInstanceId)
-               .append(", processDefinitionId=")
-               .append(processDefinitionId)
-               .append(", processDefinitionKey=")
-               .append(processDefinitionKey)
-               .append(", processDefinitionVersion=")
-               .append(processDefinitionVersion)
-               .append(", businessKey=")
-               .append(businessKey)
-               .append(", parentProcessInstanceId=")
-               .append(parentProcessInstanceId)
-               .append(", entity=")
-               .append(entity)
-               .append("]");
-        return builder.toString();
+      var builder = "RuntimeEventImpl [id="
+        + id
+        + ", timestamp="
+        + timestamp
+        + ", processInstanceId="
+        + processInstanceId
+        + ", processDefinitionId="
+        + processDefinitionId
+        + ", processDefinitionKey="
+        + processDefinitionKey
+        + ", processDefinitionVersion="
+        + processDefinitionVersion
+        + ", businessKey="
+        + businessKey
+        + ", parentProcessInstanceId="
+        + parentProcessInstanceId
+        + ", entity="
+        + entity
+        + "]";
+        return builder;
     }
 
     @Override

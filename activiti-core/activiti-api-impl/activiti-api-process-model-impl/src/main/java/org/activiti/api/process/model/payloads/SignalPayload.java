@@ -22,7 +22,7 @@ import org.activiti.api.model.shared.Payload;
 
 public class SignalPayload implements Payload {
 
-    private String id;
+    private final String id;
     private String name;
     private Map<String, Object> variables = new HashMap<>();
 

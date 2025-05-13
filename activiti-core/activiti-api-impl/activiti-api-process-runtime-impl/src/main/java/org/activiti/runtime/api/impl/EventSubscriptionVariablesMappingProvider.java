@@ -34,7 +34,7 @@ public class EventSubscriptionVariablesMappingProvider implements EventSubscript
     @SuppressWarnings("unchecked")
     @Override
     public <T> T apply(Object payload, EventSubscriptionEntity eventSubscription) {
-        if (Map.class.isInstance(payload)) {
+        if (payload instanceof Map) {
             MappingExecutionContext context = new MappingExecutionContext(eventSubscription.getProcessDefinitionId(),
                                                                           eventSubscription.getActivityId());
 

@@ -15,10 +15,9 @@
  */
 package org.activiti.examples.bpmn.executionlistener;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.activiti.bpmn.model.FlowElement;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.ExecutionListener;
 import org.activiti.engine.impl.el.FixedValue;
@@ -26,24 +25,26 @@ import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.impl.util.ProcessDefinitionUtil;
 
 /**
-
-
+ *
  */
 public class RecorderExecutionListener implements ExecutionListener {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   private FixedValue parameter;
 
-  private static List<RecorderExecutionListener.RecordedEvent> recordedEvents = new ArrayList<RecorderExecutionListener.RecordedEvent>();
+  private static final List<RecorderExecutionListener.RecordedEvent> recordedEvents = new ArrayList<RecorderExecutionListener.RecordedEvent>();
 
   public static class RecordedEvent {
+
     private final String activityId;
     private final String eventName;
     private final String activityName;
     private final String parameter;
 
-    public RecordedEvent(String activityId, String activityName, String eventName, String parameter) {
+    public RecordedEvent(String activityId, String activityName, String eventName,
+      String parameter) {
       this.activityId = activityId;
       this.activityName = activityName;
       this.parameter = parameter;
@@ -71,15 +72,15 @@ public class RecorderExecutionListener implements ExecutionListener {
   public void notify(DelegateExecution execution) {
     ExecutionEntity executionCasted = ((ExecutionEntity) execution);
 
-    org.activiti.bpmn.model.Process process = ProcessDefinitionUtil.getProcess(execution.getProcessDefinitionId());
-    String activityId = execution.getCurrentActivityId();
-    FlowElement currentFlowElement = process.getFlowElement(activityId, true);
+    var process = ProcessDefinitionUtil.getProcess(execution.getProcessDefinitionId());
+    var activityId = execution.getCurrentActivityId();
+    var currentFlowElement = process.getFlowElement(activityId, true);
 
     recordedEvents.add(new RecordedEvent(
-        executionCasted.getActivityId(),
-        (currentFlowElement != null) ? currentFlowElement.getName() : null,
-        execution.getEventName(),
-        (String) parameter.getValue(execution)));
+      executionCasted.getActivityId(),
+      (currentFlowElement != null) ? currentFlowElement.getName() : null,
+      execution.getEventName(),
+      (String) parameter.getValue(execution)));
   }
 
   public static void clear() {

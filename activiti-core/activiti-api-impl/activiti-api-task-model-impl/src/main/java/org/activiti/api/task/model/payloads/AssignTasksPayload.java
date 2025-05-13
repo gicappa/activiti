@@ -21,7 +21,7 @@ import org.activiti.api.model.shared.Payload;
 
 public class AssignTasksPayload implements Payload {
 
-    private String id;
+    private final String id;
     private List<String> taskIds;
     private String assignee;
 

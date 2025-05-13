@@ -34,7 +34,7 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class DemoApplication implements CommandLineRunner {
 
-    private Logger logger = LoggerFactory.getLogger(DemoApplication.class);
+    private final Logger logger = LoggerFactory.getLogger(DemoApplication.class);
 
     @Autowired
     private TaskRuntime taskRuntime;

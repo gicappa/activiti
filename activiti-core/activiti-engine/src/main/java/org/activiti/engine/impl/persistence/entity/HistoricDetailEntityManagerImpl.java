@@ -67,8 +67,7 @@ public class HistoricDetailEntityManagerImpl extends AbstractEntityManager<Histo
   public void delete(HistoricDetailEntity entity, boolean fireDeleteEvent) {
     super.delete(entity, fireDeleteEvent);
 
-    if (entity instanceof HistoricDetailVariableInstanceUpdateEntity) {
-      HistoricDetailVariableInstanceUpdateEntity historicDetailVariableInstanceUpdateEntity = ((HistoricDetailVariableInstanceUpdateEntity) entity);
+    if (entity instanceof HistoricDetailVariableInstanceUpdateEntity historicDetailVariableInstanceUpdateEntity) {
       if (historicDetailVariableInstanceUpdateEntity.getByteArrayRef() != null) {
         historicDetailVariableInstanceUpdateEntity.getByteArrayRef().delete();
       }
@@ -100,8 +99,8 @@ public class HistoricDetailEntityManagerImpl extends AbstractEntityManager<Histo
   public void deleteHistoricDetailsByTaskId(String taskId) {
     if (getHistoryManager().isHistoryLevelAtLeast(HistoryLevel.FULL)) {
       List<HistoricDetailEntity> details = historicDetailDataManager.findHistoricDetailsByTaskId(taskId);
-      for (HistoricDetail detail : details) {
-        delete((HistoricDetailEntity) detail);
+      for (HistoricDetailEntity detail : details) {
+        delete(detail);
       }
     }
   }

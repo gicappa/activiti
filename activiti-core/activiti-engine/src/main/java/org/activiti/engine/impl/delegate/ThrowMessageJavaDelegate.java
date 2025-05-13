@@ -35,10 +35,10 @@ public class ThrowMessageJavaDelegate implements ThrowMessageDelegate {
     @Override
     public boolean send(DelegateExecution execution, ThrowMessage message) {
 
-        Object delegate = (ThrowMessageDelegate) ClassDelegate.defaultInstantiateDelegate(clazz, fieldDeclarations);
+        Object delegate = ClassDelegate.defaultInstantiateDelegate(clazz, fieldDeclarations);
 
-        if(ThrowMessageDelegate.class.isInstance(delegate)) {
-            return ThrowMessageDelegate.class.cast(delegate)
+        if(delegate instanceof ThrowMessageDelegate) {
+            return ((ThrowMessageDelegate) delegate)
                                              .send(execution, message);
         }
 

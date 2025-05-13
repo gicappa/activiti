@@ -33,7 +33,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SecurityUtil {
 
-    private Logger logger = LoggerFactory.getLogger(SecurityUtil.class);
+    private final Logger logger = LoggerFactory.getLogger(SecurityUtil.class);
 
     @Autowired
     private UserDetailsService userDetailsService;

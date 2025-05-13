@@ -15,6 +15,8 @@
  */
 package org.activiti.spring.boot.process.listener;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.activiti.api.process.model.ProcessCandidateStarterGroup;
 import org.activiti.api.process.runtime.events.ProcessCandidateStarterGroupAddedEvent;
 import org.activiti.api.process.runtime.events.listener.ProcessRuntimeEventListener;
@@ -22,31 +24,29 @@ import org.activiti.api.runtime.event.impl.ProcessCandidateStarterGroupAddedEven
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Component
-public class ProcessCandidateStarterGroupAddedListener implements ProcessRuntimeEventListener<ProcessCandidateStarterGroupAddedEvent> {
+public class ProcessCandidateStarterGroupAddedListener implements
+  ProcessRuntimeEventListener<ProcessCandidateStarterGroupAddedEvent> {
 
-    private List<ProcessCandidateStarterGroup> candidateStarterGroups = new ArrayList<>();
-    private ProcessCandidateStarterGroupAddedEvents events;
+  private final List<ProcessCandidateStarterGroup> candidateStarterGroups = new ArrayList<>();
+  private ProcessCandidateStarterGroupAddedEvents events;
 
-    @Override
-    public void onEvent(ProcessCandidateStarterGroupAddedEvent event) {
-        candidateStarterGroups.add(event.getEntity());
-    }
+  @Override
+  public void onEvent(ProcessCandidateStarterGroupAddedEvent event) {
+    candidateStarterGroups.add(event.getEntity());
+  }
 
-    public List<ProcessCandidateStarterGroup> getCandidateStarterGroups() {
-        return candidateStarterGroups;
-    }
+  public List<ProcessCandidateStarterGroup> getCandidateStarterGroups() {
+    return candidateStarterGroups;
+  }
 
-    @EventListener
-    public void publishedEvent(ProcessCandidateStarterGroupAddedEvents events) {
-        this.events = events;
-    }
+  @EventListener
+  public void publishedEvent(ProcessCandidateStarterGroupAddedEvents events) {
+    this.events = events;
+  }
 
-    public ProcessCandidateStarterGroupAddedEvents getPublishedEvents() {
-        return events;
-    }
+  public ProcessCandidateStarterGroupAddedEvents getPublishedEvents() {
+    return events;
+  }
 
 }

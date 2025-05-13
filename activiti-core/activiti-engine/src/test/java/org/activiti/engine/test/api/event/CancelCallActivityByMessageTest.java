@@ -77,7 +77,7 @@ public class CancelCallActivityByMessageTest extends PluggableActivitiTestCase {
     assertThat(executionEntity.getParentId()).isNotNull();
     assertThat(executionEntity.getParentId()).isEqualTo(processExecutionId);
 
-    ActivitiEvent activitiEvent = (ActivitiEvent) myEventListener.getEventsReceived().get(2);
+    ActivitiEvent activitiEvent = myEventListener.getEventsReceived().get(2);
     assertThat(activitiEvent.getType()).isEqualTo(ActivitiEventType.PROCESS_STARTED);
 
     ActivitiActivityEvent activityEvent = (ActivitiActivityEvent) myEventListener.getEventsReceived().get(3);
@@ -113,7 +113,7 @@ public class CancelCallActivityByMessageTest extends PluggableActivitiTestCase {
     assertThat(executionEntity.getActivityId()).isEqualTo("calledSubprocessTask");
 
     // start event in external subprocess
-    activitiEvent = (ActivitiEvent) myEventListener.getEventsReceived().get(9);
+    activitiEvent = myEventListener.getEventsReceived().get(9);
     assertThat(activitiEvent.getType()).isEqualTo(ActivitiEventType.PROCESS_STARTED);
 
     activityEvent = (ActivitiActivityEvent) myEventListener.getEventsReceived().get(10);
@@ -230,10 +230,10 @@ public class CancelCallActivityByMessageTest extends PluggableActivitiTestCase {
 
   class CallActivityByMessageEventListener implements ActivitiEventListener {
 
-    private List<ActivitiEvent> eventsReceived;
+    private final List<ActivitiEvent> eventsReceived;
 
     public CallActivityByMessageEventListener() {
-      eventsReceived = new ArrayList<ActivitiEvent>();
+      eventsReceived = new ArrayList<>();
     }
 
     public List<ActivitiEvent> getEventsReceived() {

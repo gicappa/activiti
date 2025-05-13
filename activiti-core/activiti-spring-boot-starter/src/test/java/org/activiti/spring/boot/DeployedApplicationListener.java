@@ -25,7 +25,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DeployedApplicationListener implements ProcessRuntimeEventListener<ApplicationDeployedEvent> {
 
-    private List<Deployment> deployedApplications = new ArrayList<>();
+    private final List<Deployment> deployedApplications = new ArrayList<>();
 
     @Override
     public void onEvent(ApplicationDeployedEvent event) {

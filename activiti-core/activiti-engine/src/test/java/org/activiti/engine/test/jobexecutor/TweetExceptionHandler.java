@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
  */
 public class TweetExceptionHandler implements JobHandler {
 
-  private static Logger log = LoggerFactory.getLogger(TweetExceptionHandler.class);
+  private static final Logger log = LoggerFactory.getLogger(TweetExceptionHandler.class);
 
   protected int exceptionsRemaining = 2;
 

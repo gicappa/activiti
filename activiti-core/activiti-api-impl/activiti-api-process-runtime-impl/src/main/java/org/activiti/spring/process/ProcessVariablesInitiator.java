@@ -41,15 +41,11 @@ import org.activiti.spring.process.variable.VariableValidationService;
 
 public class ProcessVariablesInitiator extends ProcessInstanceHelper {
 
-    private ProcessExtensionService processExtensionService;
-
+    private final ProcessExtensionService processExtensionService;
     private final VariableParsingService variableParsingService;
-
     private final VariableValidationService variableValidationService;
-
-    private VariablesCalculator variablesCalculator;
-
-    private ExpressionResolver expressionResolver;
+    private final VariablesCalculator variablesCalculator;
+    private final ExpressionResolver expressionResolver;
 
     public ProcessVariablesInitiator(ProcessExtensionService processExtensionService,
                                      VariableParsingService variableParsingService,

@@ -134,11 +134,11 @@ public class Scanner {
 
         private final String string;
 
-        private Symbol() {
+        Symbol() {
             this(null);
         }
 
-        private Symbol(String string) {
+        Symbol(String string) {
             this.string = string;
         }
 

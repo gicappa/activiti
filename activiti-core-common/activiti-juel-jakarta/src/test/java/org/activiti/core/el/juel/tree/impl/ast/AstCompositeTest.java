@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 
 public class AstCompositeTest extends TestCase {
 
-    private Bindings bindings = new Bindings(null, null, null);
+    private final Bindings bindings = new Bindings(null, null, null);
 
     AstComposite parseNode(String expression) {
         return (AstComposite) parse(expression).getRoot();
@@ -81,7 +81,7 @@ public class AstCompositeTest extends TestCase {
             parseNode("${1}0${1}").getValue(bindings, null, null)
         );
         assertEquals(
-            101l,
+          101L,
             parseNode("${1}0${1}").getValue(bindings, null, Long.class)
         );
     }

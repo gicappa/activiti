@@ -39,7 +39,7 @@ public class ProcessDefinitionQueryProperty implements QueryProperty {
   public static final ProcessDefinitionQueryProperty DEPLOYMENT_ID = new ProcessDefinitionQueryProperty("RES.DEPLOYMENT_ID_");
   public static final ProcessDefinitionQueryProperty PROCESS_DEFINITION_TENANT_ID = new ProcessDefinitionQueryProperty("RES.TENANT_ID_");
 
-  private String name;
+  private final String name;
 
   public ProcessDefinitionQueryProperty(String name) {
     this.name = name;

@@ -80,9 +80,9 @@ public class RuntimeTestConfiguration {
 
     public static Set<TaskCandidateGroupRemovedEvent> taskCandidateGroupRemovedEvents = new HashSet<>();
 
-    private CountDownLatch multiInstanceLatch = new CountDownLatch(1);
+    private final CountDownLatch multiInstanceLatch = new CountDownLatch(1);
 
-    private CountDownLatch singleInstanceLatch = new CountDownLatch(1);
+    private final CountDownLatch singleInstanceLatch = new CountDownLatch(1);
 
     public CountDownLatch getMultiInstanceLatch() {
         return multiInstanceLatch;

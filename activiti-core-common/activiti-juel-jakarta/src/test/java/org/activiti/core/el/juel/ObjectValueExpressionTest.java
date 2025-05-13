@@ -15,7 +15,12 @@
  */
 package org.activiti.core.el.juel;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import jakarta.el.ELException;
 import org.activiti.core.el.juel.misc.TypeConverter;
@@ -24,84 +29,85 @@ import org.junit.jupiter.api.Test;
 
 public class ObjectValueExpressionTest extends TestCase {
 
-    private TypeConverter converter = TypeConverter.DEFAULT;
+  private final TypeConverter converter = TypeConverter.DEFAULT;
 
-    @Test
-    public void testHashCode() {
-        assertEquals(
-            "foo".hashCode(),
-            new ObjectValueExpression(converter, "foo", Object.class).hashCode()
-        );
-    }
+  @Test
+  public void testHashCode() {
+    assertEquals(
+      "foo".hashCode(),
+      new ObjectValueExpression(converter, "foo", Object.class).hashCode()
+    );
+  }
 
-    @Test
-    public void testEqualsObject() {
-      assertEquals(new ObjectValueExpression(converter, "foo", Object.class), new ObjectValueExpression(converter, "foo", Object.class));
-      assertEquals(new ObjectValueExpression(
-                  converter,
-                  new String("foo"),
-                  Object.class
-      ), new ObjectValueExpression(converter, "foo", Object.class));
-      assertNotEquals(new ObjectValueExpression(converter, "foo", Object.class), new ObjectValueExpression(converter, "bar", Object.class));
-    }
+  @Test
+  public void testEqualsObject() {
+    assertEquals(new ObjectValueExpression(converter, "foo", Object.class),
+      new ObjectValueExpression(converter, "foo", Object.class));
+    assertEquals(
+      new ObjectValueExpression(converter, "foo", Object.class),
+      new ObjectValueExpression(converter, "foo", Object.class));
+    assertNotEquals(new ObjectValueExpression(converter, "foo", Object.class),
+      new ObjectValueExpression(converter, "bar", Object.class));
+  }
 
-    @Test
-    public void testGetValue() {
-        assertEquals(
-            "foo",
-            new ObjectValueExpression(converter, "foo", Object.class)
-                .getValue(null)
-        );
-    }
+  @Test
+  public void testGetValue() {
+    assertEquals(
+      "foo",
+      new ObjectValueExpression(converter, "foo", Object.class)
+        .getValue(null)
+    );
+  }
 
-    @Test
-    public void testGetExpressionString() {
-        assertNull(
-            new ObjectValueExpression(converter, "foo", Object.class)
-                .getExpressionString()
-        );
-    }
+  @Test
+  public void testGetExpressionString() {
+    assertNull(
+      new ObjectValueExpression(converter, "foo", Object.class)
+        .getExpressionString()
+    );
+  }
 
-    @Test
-    public void testIsLiteralText() {
-        assertFalse(
-            new ObjectValueExpression(converter, "foo", Object.class)
-                .isLiteralText()
-        );
-    }
+  @Test
+  public void testIsLiteralText() {
+    assertFalse(
+      new ObjectValueExpression(converter, "foo", Object.class)
+        .isLiteralText()
+    );
+  }
 
-    @Test
-    public void testGetType() {
-        assertNull(
-            new ObjectValueExpression(converter, "foo", Object.class)
-                .getType(null)
-        );
-    }
+  @Test
+  public void testGetType() {
+    assertNull(
+      new ObjectValueExpression(converter, "foo", Object.class)
+        .getType(null)
+    );
+  }
 
-    @Test
-    public void testIsReadOnly() {
-        assertTrue(
-            new ObjectValueExpression(converter, "foo", Object.class)
-                .isReadOnly(null)
-        );
-    }
+  @Test
+  public void testIsReadOnly() {
+    assertTrue(
+      new ObjectValueExpression(converter, "foo", Object.class)
+        .isReadOnly(null)
+    );
+  }
 
-    @Test
-    public void testSetValue() {
-        try {
-            new ObjectValueExpression(converter, "foo", Object.class)
-                .setValue(null, "bar");
-            fail();
-        } catch (ELException e) {}
+  @Test
+  public void testSetValue() {
+    try {
+      new ObjectValueExpression(converter, "foo", Object.class)
+        .setValue(null, "bar");
+      fail();
+    } catch (ELException e) {
     }
+  }
 
-    @Test
-    public void testSerialize() throws Exception {
-        ObjectValueExpression expression = new ObjectValueExpression(
-            converter,
-            "foo",
-            Object.class
-        );
-        assertEquals(expression, deserialize(serialize(expression)));
-    }
+  @Test
+  public void testSerialize() throws Exception {
+    ObjectValueExpression expression = new ObjectValueExpression(
+      converter,
+      "foo",
+      Object.class
+    );
+    assertEquals(expression, deserialize(serialize(expression)));
+  }
 }

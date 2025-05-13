@@ -21,8 +21,8 @@ import java.util.List;
 
 public class PageImpl<T> implements Page<T> {
 
-    private List<T> content;
-    private int totalItems;
+    private final List<T> content;
+    private final int totalItems;
 
     public PageImpl(List<T> content,
                     int totalItems) {

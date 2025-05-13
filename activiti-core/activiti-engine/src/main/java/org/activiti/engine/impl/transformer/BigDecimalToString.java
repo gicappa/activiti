@@ -32,6 +32,6 @@ public class BigDecimalToString extends AbstractTransformer {
    */
   @Override
   protected Object primTransform(Object anObject) throws Exception {
-    return format.format((BigDecimal) anObject);
+    return format.format(anObject);
   }
 }

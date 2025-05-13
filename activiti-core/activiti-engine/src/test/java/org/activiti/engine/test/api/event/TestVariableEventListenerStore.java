@@ -29,10 +29,10 @@ import org.activiti.engine.impl.persistence.entity.EventLogEntryEntityImpl;
 
 public class TestVariableEventListenerStore implements ActivitiEventListener {
 
-  private List<ActivitiEvent> eventsReceived;
+  private final List<ActivitiEvent> eventsReceived;
 
   public TestVariableEventListenerStore() {
-    eventsReceived = new ArrayList<ActivitiEvent>();
+    eventsReceived = new ArrayList<>();
   }
 
   public List<ActivitiEvent> getEventsReceived() {
@@ -55,6 +55,7 @@ public class TestVariableEventListenerStore implements ActivitiEventListener {
       eventLogEntry.setType(event.getType().name());
       eventLogEntry.setTimeStamp(new Date());
       CommandContext commandContext = Context.getCommandContext();
+      assert commandContext != null;
       commandContext.getEventLogEntryEntityManager().insert(eventLogEntry);
     }
   }

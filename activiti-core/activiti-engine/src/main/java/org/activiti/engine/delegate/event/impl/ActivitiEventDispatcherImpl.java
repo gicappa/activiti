@@ -69,8 +69,7 @@ public class ActivitiEventDispatcherImpl implements ActivitiEventDispatcher {
       eventSupport.dispatchEvent(event);
     }
 
-    if (event.getType() == ActivitiEventType.ENTITY_DELETED && event instanceof ActivitiEntityEvent) {
-      ActivitiEntityEvent entityEvent = (ActivitiEntityEvent) event;
+    if (event.getType() == ActivitiEventType.ENTITY_DELETED && event instanceof ActivitiEntityEvent entityEvent) {
       if (entityEvent.getEntity() instanceof ProcessDefinition) {
         // process definition deleted event doesn't need to be dispatched to event listeners
         return;
@@ -101,8 +100,8 @@ public class ActivitiEventDispatcherImpl implements ActivitiEventDispatcher {
   protected BpmnModel extractBpmnModelFromEvent(ActivitiEvent event) {
     BpmnModel result = null;
 
-    if (result == null && event.getProcessDefinitionId() != null) {
-      ProcessDefinition processDefinition = ProcessDefinitionUtil.getProcessDefinition(event.getProcessDefinitionId(), true);
+    if (event.getProcessDefinitionId() != null) {
+      var processDefinition = ProcessDefinitionUtil.getProcessDefinition(event.getProcessDefinitionId(), true);
       if (processDefinition != null) {
         result = Context.getProcessEngineConfiguration().getDeploymentManager().resolveProcessDefinition(processDefinition).getBpmnModel();
       }

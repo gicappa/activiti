@@ -26,9 +26,9 @@ import java.util.List;
 
 public class SequenceFlowTakenListenerDelegate implements ActivitiEventListener {
 
-    private List<BPMNElementEventListener<BPMNSequenceFlowTakenEvent>> listeners;
+    private final List<BPMNElementEventListener<BPMNSequenceFlowTakenEvent>> listeners;
 
-    private ToSequenceFlowTakenConverter converter;
+    private final ToSequenceFlowTakenConverter converter;
 
     public SequenceFlowTakenListenerDelegate(List<BPMNElementEventListener<BPMNSequenceFlowTakenEvent>> listeners,
                                              ToSequenceFlowTakenConverter converter) {

@@ -24,51 +24,50 @@ import org.junit.jupiter.api.Test;
 
 public class ExpressionFactoryImplTest extends TestCase {
 
-    public static long bar() {
-        return 1;
-    }
+  public static long bar() {
+    return 1;
+  }
 
-    private ExpressionFactoryImpl factory = new ExpressionFactoryImpl();
+  private final ExpressionFactoryImpl factory = new ExpressionFactoryImpl();
 
-    @Test
-    public void testCoerceToType() {
-        assertEquals("1", factory.coerceToType(1l, String.class));
-    }
+  @Test
+  public void testCoerceToType() {
+    assertEquals("1", factory.coerceToType(1L, String.class));
+  }
 
-    @Test
-    public void testCreateTreeValueExpression() {
-        SimpleContext context = new SimpleContext(new SimpleResolver());
-        assertEquals(
-            1l,
-            factory
-                .createValueExpression(context, "${1}", Object.class)
-                .getValue(context)
-        );
-    }
+  @Test
+  public void testCreateTreeValueExpression() {
+    SimpleContext context = new SimpleContext(new SimpleResolver());
+    assertEquals(
+      1L, factory
+        .createValueExpression(context, "${1}", Object.class)
+        .getValue(context)
+    );
+  }
 
-    @Test
-    public void testCreateObjectValueExpression() {
-        SimpleContext context = new SimpleContext(new SimpleResolver());
-        assertEquals(
-            "1",
-            factory.createValueExpression("1", Object.class).getValue(context)
-        );
-    }
+  @Test
+  public void testCreateObjectValueExpression() {
+    SimpleContext context = new SimpleContext(new SimpleResolver());
+    assertEquals(
+      "1",
+      factory.createValueExpression("1", Object.class).getValue(context)
+    );
+  }
 
-    @Test
-    public void testCreateMethodExpression() throws NoSuchMethodException {
-        SimpleContext context = new SimpleContext(new SimpleResolver());
-        context.getELResolver().setValue(context, null, "foo", this);
-        assertEquals(
-            bar(),
-            factory
-                .createMethodExpression(
-                    context,
-                    "${foo.bar}",
-                    null,
-                    new Class[0]
-                )
-                .invoke(context, null)
-        );
-    }
+  @Test
+  public void testCreateMethodExpression() {
+    SimpleContext context = new SimpleContext(new SimpleResolver());
+    context.getELResolver().setValue(context, null, "foo", this);
+    assertEquals(
+      bar(),
+      factory
+        .createMethodExpression(
+          context,
+          "${foo.bar}",
+          null,
+          new Class[0]
+        )
+        .invoke(context, null)
+    );
+  }
 }

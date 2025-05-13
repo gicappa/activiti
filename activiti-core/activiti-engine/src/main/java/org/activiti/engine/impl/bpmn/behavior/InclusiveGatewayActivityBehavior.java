@@ -39,7 +39,7 @@ public class InclusiveGatewayActivityBehavior extends GatewayActivityBehavior im
 
   private static final long serialVersionUID = 1L;
 
-  private static Logger logger = LoggerFactory.getLogger(InclusiveGatewayActivityBehavior.class.getName());
+  private static final Logger logger = LoggerFactory.getLogger(InclusiveGatewayActivityBehavior.class.getName());
 
   @Override
   public void execute(DelegateExecution execution) {

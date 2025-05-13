@@ -17,15 +17,11 @@ package org.activiti.engine.impl;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.activiti.engine.query.QueryProperty;
 import org.activiti.engine.repository.ModelQuery;
 
 /**
  * Contains the possible properties that can be used in a {@link ModelQuery}.
- *
-
-
  */
 public class ModelQueryProperty implements QueryProperty {
 
@@ -37,12 +33,14 @@ public class ModelQueryProperty implements QueryProperty {
   public static final ModelQueryProperty MODEL_ID = new ModelQueryProperty("RES.ID_");
   public static final ModelQueryProperty MODEL_VERSION = new ModelQueryProperty("RES.VERSION_");
   public static final ModelQueryProperty MODEL_NAME = new ModelQueryProperty("RES.NAME_");
-  public static final ModelQueryProperty MODEL_CREATE_TIME = new ModelQueryProperty("RES.CREATE_TIME_");
-  public static final ModelQueryProperty MODEL_LAST_UPDATE_TIME = new ModelQueryProperty("RES.LAST_UPDATE_TIME_");
+  public static final ModelQueryProperty MODEL_CREATE_TIME = new ModelQueryProperty(
+    "RES.CREATE_TIME_");
+  public static final ModelQueryProperty MODEL_LAST_UPDATE_TIME = new ModelQueryProperty(
+    "RES.LAST_UPDATE_TIME_");
   public static final ModelQueryProperty MODEL_KEY = new ModelQueryProperty("RES.KEY_");
   public static final ModelQueryProperty MODEL_TENANT_ID = new ModelQueryProperty("RES.TENANT_ID_");
 
-  private String name;
+  private final String name;
 
   public ModelQueryProperty(String name) {
     this.name = name;

@@ -17,6 +17,7 @@ package org.activiti.editor.language.xml;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.nio.charset.StandardCharsets;
 import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.Event;
@@ -104,7 +105,7 @@ public class IntermediateThrowCatchSignalEventConverterTest extends AbstractConv
   private void checkXml(BpmnModel model) throws Exception {
 
       String xml = new String(new BpmnXMLConverter().convertToXML(model),
-                              "UTF-8");
+        StandardCharsets.UTF_8);
 
       assertThat(xml).contains("incoming>SequenceFlow_0wsx2cf<",
                                "outgoing>SequenceFlow_1fmvq3w<",

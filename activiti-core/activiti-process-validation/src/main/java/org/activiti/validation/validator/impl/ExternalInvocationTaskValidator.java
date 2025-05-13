@@ -66,7 +66,7 @@ public abstract class ExternalInvocationTaskValidator extends ProcessLevelValida
         shellCommandDefined = true;
       }
 
-      if ((fieldName.equals("wait") || fieldName.equals("redirectError") || fieldName.equals("cleanEnv")) && !fieldValue.toLowerCase().equals("true") && !fieldValue.toLowerCase().equals("false")) {
+      if ((fieldName.equals("wait") || fieldName.equals("redirectError") || fieldName.equals("cleanEnv")) && !fieldValue.equalsIgnoreCase("true") && !fieldValue.equalsIgnoreCase("false")) {
         addError(errors, Problems.SHELL_TASK_INVALID_PARAM, process, task);
       }
 
@@ -84,8 +84,10 @@ public abstract class ExternalInvocationTaskValidator extends ProcessLevelValida
       String fieldName = fieldExtension.getFieldName();
       String fieldValue = fieldExtension.getStringValue();
 
-      if (fieldName.equals("decisionTableReferenceKey") && fieldValue != null && fieldValue.length() > 0) {
+      if (fieldName.equals("decisionTableReferenceKey") && fieldValue != null
+        && fieldValue.length() > 0) {
         keyDefined = true;
+        break;
       }
     }
 

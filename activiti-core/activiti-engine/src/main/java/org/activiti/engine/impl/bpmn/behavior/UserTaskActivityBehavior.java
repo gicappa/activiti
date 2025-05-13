@@ -18,6 +18,7 @@ package org.activiti.engine.impl.bpmn.behavior;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyMap;
 
+import java.io.Serial;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -53,12 +54,13 @@ import org.slf4j.LoggerFactory;
 
 public class UserTaskActivityBehavior extends TaskActivityBehavior {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   private static final Logger LOGGER = LoggerFactory.getLogger(UserTaskActivityBehavior.class);
 
   protected UserTask userTask;
-  private VariablesPropagator variablesPropagator;
+  private final VariablesPropagator variablesPropagator;
 
   public UserTaskActivityBehavior(UserTask userTask) {
       this(userTask, new VariablesPropagator(new CopyVariablesCalculator()));

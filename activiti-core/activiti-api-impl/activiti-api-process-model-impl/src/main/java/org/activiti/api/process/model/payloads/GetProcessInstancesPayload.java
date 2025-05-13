@@ -22,7 +22,7 @@ import org.activiti.api.model.shared.Payload;
 
 public class GetProcessInstancesPayload implements Payload {
 
-    private String id;
+    private final String id;
     private Set<String> processDefinitionKeys = new HashSet<>();
     private String businessKey;
     private boolean suspendedOnly;

@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
  */
 public class MockEmailTransport extends Transport {
 
-  private static Logger logger = LoggerFactory.getLogger(MockEmailTransport.class);
+  private static final Logger logger = LoggerFactory.getLogger(MockEmailTransport.class);
 
   public MockEmailTransport(Session smtpSession, URLName urlName) {
     super(smtpSession, urlName);
@@ -48,7 +48,7 @@ public class MockEmailTransport extends Transport {
   }
 
   @Override
-  public void connect() throws MessagingException {
+  public void connect() {
   }
 
   @Override

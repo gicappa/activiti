@@ -34,6 +34,6 @@ public class DateToString extends AbstractTransformer {
    */
   @Override
   protected Object primTransform(Object anObject) throws Exception {
-    return format.format((Date) anObject);
+    return format.format(anObject);
   }
 }

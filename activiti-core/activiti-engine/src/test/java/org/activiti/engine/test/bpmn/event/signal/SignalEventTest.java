@@ -116,7 +116,7 @@ public class SignalEventTest extends PluggableActivitiTestCase {
 
     try {
       processEngineConfiguration.getClock().setCurrentTime(new Date(System.currentTimeMillis() + 1000));
-      waitForJobExecutorToProcessAllJobs(10000, 100l);
+      waitForJobExecutorToProcessAllJobs(10000, 100L);
 
       assertThat(createEventSubscriptionQuery().count()).isEqualTo(0);
       assertThat(runtimeService.createProcessInstanceQuery().count()).isEqualTo(0);
@@ -205,7 +205,7 @@ public class SignalEventTest extends PluggableActivitiTestCase {
 
     List<Task> tasks = taskService.createTaskQuery().processInstanceId(pi.getProcessInstanceId()).list();
     assertThat(tasks).hasSize(1);
-    Task currentTask = tasks.get(0);
+    Task currentTask = tasks.getFirst();
     assertThat(currentTask.getName()).isEqualTo("My User Task");
 
     runtimeService.signalEventReceived("alert");
@@ -221,7 +221,7 @@ public class SignalEventTest extends PluggableActivitiTestCase {
 
     tasks = taskService.createTaskQuery().processInstanceId(pi.getProcessInstanceId()).list();
     assertThat(tasks).hasSize(1);
-    currentTask = tasks.get(0);
+    currentTask = tasks.getFirst();
     assertThat(currentTask.getName()).isEqualTo("My Second User Task");
   }
 
@@ -234,7 +234,7 @@ public class SignalEventTest extends PluggableActivitiTestCase {
     List<Task> tasks = taskService.createTaskQuery().processInstanceId(pi.getProcessInstanceId()).list();
     assertThat(tasks).hasSize(1);
 
-    Task currentTask = tasks.get(0);
+    Task currentTask = tasks.getFirst();
     assertThat(currentTask.getName()).isEqualTo("Approve");
 
     runtimeService.signalEventReceived("alert");
@@ -251,7 +251,7 @@ public class SignalEventTest extends PluggableActivitiTestCase {
     tasks = taskService.createTaskQuery().processInstanceId(pi.getProcessInstanceId()).list();
     assertThat(tasks).hasSize(1);
 
-    currentTask = tasks.get(0);
+    currentTask = tasks.getFirst();
     assertThat(currentTask.getName()).isEqualTo("Review");
 
     taskService.complete(taskService.createTaskQuery().taskName("Review").singleResult().getId());
@@ -311,7 +311,7 @@ public class SignalEventTest extends PluggableActivitiTestCase {
     ProcessInstance processInstanceCatch = runtimeService.startProcessInstanceByKey("processWithSignalCatch");
     assertThat(taskService.createTaskQuery().processInstanceId(processInstanceCatch.getId()).singleResult().getName()).isEqualTo("userTaskWithSignalCatch");
 
-    // Then start the process that will throw thee signal
+    // Then start the process that will throw the signal
     runtimeService.startProcessInstanceByKey("processWithSignalThrow");
 
     // Since the signal is process instance scoped, the second process
@@ -615,7 +615,7 @@ public class SignalEventTest extends PluggableActivitiTestCase {
     assertThat(firstTask.getName()).isEqualTo("Add a file");
 
     Map<String, Object> vars = runtimeService.getVariables(firstTask.getExecutionId());
-    // file does not exists
+    // file does not exist
     assertThat(vars.get(fileExistsVar)).isEqualTo(false);
 
     // create second instance
@@ -631,7 +631,7 @@ public class SignalEventTest extends PluggableActivitiTestCase {
     // must be also in "add a file"
     assertThat(secondTask.getName()).isEqualTo("Add a file");
 
-    // file does not exists yet
+    // file does not exist yet
     vars = runtimeService.getVariables(secondTask.getExecutionId());
     assertThat(vars.get(fileExistsVar)).isEqualTo(false);
 

@@ -66,7 +66,7 @@ import org.slf4j.LoggerFactory;
 
 public class DefaultJobManager implements JobManager {
 
-  private static Logger logger = LoggerFactory.getLogger(DefaultJobManager.class);
+  private static final Logger logger = LoggerFactory.getLogger(DefaultJobManager.class);
 
   protected ProcessEngineConfigurationImpl processEngineConfiguration;
 
@@ -244,8 +244,7 @@ public class DefaultJobManager implements JobManager {
     // Deleting the old job and inserting it again with another id,
     // will avoid that the job is immediately is picked up again (for example
     // when doing lots of exclusive jobs for the same process instance)
-    if (job instanceof JobEntity) {
-      JobEntity jobEntity = (JobEntity) job;
+    if (job instanceof JobEntity jobEntity) {
       processEngineConfiguration.getJobEntityManager().delete(jobEntity.getId());
 
       JobEntity newJobEntity = processEngineConfiguration.getJobEntityManager().create();
@@ -371,16 +370,14 @@ public class DefaultJobManager implements JobManager {
   protected int getMaxIterations(org.activiti.bpmn.model.Process process, String activityId) {
     FlowElement flowElement = process.getFlowElement(activityId, true);
     if (flowElement != null) {
-      if (flowElement instanceof Event) {
+      if (flowElement instanceof Event event) {
 
-        Event event = (Event) flowElement;
         List<EventDefinition> eventDefinitions = event.getEventDefinitions();
 
         if (eventDefinitions != null) {
 
           for (EventDefinition eventDefinition : eventDefinitions) {
-            if (eventDefinition instanceof TimerEventDefinition) {
-              TimerEventDefinition timerEventDefinition = (TimerEventDefinition) eventDefinition;
+            if (eventDefinition instanceof TimerEventDefinition timerEventDefinition) {
               if (timerEventDefinition.getTimeCycle() != null) {
                 return calculateMaxIterationsValue(timerEventDefinition.getTimeCycle());
               }

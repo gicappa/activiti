@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
  */
 public class MockProcessDefinitionBuilder {
 
-    private ProcessDefinition processDefinition;
+    private final ProcessDefinition processDefinition;
 
     private MockProcessDefinitionBuilder(Class<? extends ProcessDefinition> processDefinitionClass) {
         processDefinition = mock(processDefinitionClass);

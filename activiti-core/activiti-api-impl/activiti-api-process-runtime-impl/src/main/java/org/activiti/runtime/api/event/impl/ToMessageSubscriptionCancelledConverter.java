@@ -24,7 +24,7 @@ import org.activiti.engine.impl.persistence.entity.MessageEventSubscriptionEntit
 
 public class ToMessageSubscriptionCancelledConverter implements EventConverter<MessageSubscriptionCancelledEvent, ActivitiEntityEvent> {
 
-    private MessageSubscriptionConverter converter;
+    private final MessageSubscriptionConverter converter;
 
     public ToMessageSubscriptionCancelledConverter(MessageSubscriptionConverter converter) {
         this.converter = converter;

@@ -24,8 +24,8 @@ import java.util.Optional;
 
 public class ToAPITaskCandidateGroupAddedEventConverter implements EventConverter<TaskCandidateGroupAddedEvent, ActivitiEntityEvent> {
 
-    private APITaskCandidateGroupConverter converter;
-    private TaskCandidateEventConverterHelper taskCandidateEventConverterHelper = new TaskCandidateEventConverterHelper();
+    private final APITaskCandidateGroupConverter converter;
+    private final TaskCandidateEventConverterHelper taskCandidateEventConverterHelper = new TaskCandidateEventConverterHelper();
 
     public ToAPITaskCandidateGroupAddedEventConverter(APITaskCandidateGroupConverter converter) {
         this.converter = converter;
@@ -34,9 +34,8 @@ public class ToAPITaskCandidateGroupAddedEventConverter implements EventConverte
     @Override
     public Optional<TaskCandidateGroupAddedEvent> from(ActivitiEntityEvent internalEvent) {
         TaskCandidateGroupAddedEventImpl event = null;
-        if (internalEvent.getEntity() instanceof IdentityLink) {
-            IdentityLink identityLink = (IdentityLink) internalEvent.getEntity();
-            if (taskCandidateEventConverterHelper.isTaskCandidateGroupLink(identityLink)) {
+        if (internalEvent.getEntity() instanceof IdentityLink identityLink) {
+          if (taskCandidateEventConverterHelper.isTaskCandidateGroupLink(identityLink)) {
                 event = new TaskCandidateGroupAddedEventImpl(converter.from(identityLink));
             }
         }

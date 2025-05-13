@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 
 class ToVariableCreatedConverterTest {
 
-    private ToVariableCreatedConverter converter = new ToVariableCreatedConverter();
+    private final ToVariableCreatedConverter converter = new ToVariableCreatedConverter();
 
     @Test
     void should_convertToVariableCreatedEvent() {

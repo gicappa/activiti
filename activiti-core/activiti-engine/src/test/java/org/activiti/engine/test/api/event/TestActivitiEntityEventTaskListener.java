@@ -29,7 +29,7 @@ import org.activiti.engine.task.Task;
  */
 public class TestActivitiEntityEventTaskListener extends TestActivitiEntityEventListener {
 
-	private List<Task> tasks;
+	private final List<Task> tasks;
 
 	public TestActivitiEntityEventTaskListener(Class<?> entityClass) {
 		super(entityClass);

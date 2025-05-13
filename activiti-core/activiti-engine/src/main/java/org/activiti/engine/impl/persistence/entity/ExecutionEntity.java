@@ -57,7 +57,7 @@ public interface ExecutionEntity extends DelegateExecution, Execution, ProcessIn
 
   void setRootProcessInstanceId(String rootProcessInstanceId);
 
-  public void setParentProcessInstanceId(String parentProcessInstanceId);
+  void setParentProcessInstanceId(String parentProcessInstanceId);
 
   ExecutionEntity getRootProcessInstance();
 

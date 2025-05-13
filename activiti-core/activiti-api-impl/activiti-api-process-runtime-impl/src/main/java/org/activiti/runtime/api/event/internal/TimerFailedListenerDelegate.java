@@ -25,9 +25,9 @@ import java.util.List;
 
 public class TimerFailedListenerDelegate implements ActivitiEventListener {
 
-    private List<BPMNElementEventListener<BPMNTimerFailedEvent>> processRuntimeEventListeners;
+    private final List<BPMNElementEventListener<BPMNTimerFailedEvent>> processRuntimeEventListeners;
 
-    private ToTimerFailedConverter converter;
+    private final ToTimerFailedConverter converter;
 
     public TimerFailedListenerDelegate(List<BPMNElementEventListener<BPMNTimerFailedEvent>> processRuntimeEventListeners,
                                        ToTimerFailedConverter converter) {

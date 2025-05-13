@@ -59,10 +59,6 @@ public abstract class ValuedDataObject extends DataObject {
         if (!otherObject.getName().equals(this.name)) {
             return false;
         }
-        if (!otherObject.getValue().equals(this.value.toString())) {
-            return false;
-        }
-
-        return true;
+      return otherObject.getValue().equals(this.value.toString());
     }
 }

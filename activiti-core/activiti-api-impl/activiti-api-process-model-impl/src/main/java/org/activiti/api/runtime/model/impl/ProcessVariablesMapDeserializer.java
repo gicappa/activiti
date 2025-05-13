@@ -15,73 +15,73 @@
  */
 package org.activiti.api.runtime.model.impl;
 
-import java.io.IOException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.convert.ConversionService;
-
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.convert.ConversionService;
 
-public class ProcessVariablesMapDeserializer extends JsonDeserializer<ProcessVariablesMap<String, Object>> {
-    private static final Logger logger = LoggerFactory.getLogger(ProcessVariablesMapDeserializer.class);
+public class ProcessVariablesMapDeserializer extends
+  JsonDeserializer<ProcessVariablesMap<String, Object>> {
 
-    private static final String VALUE = "value";
-    private static final String TYPE = "type";
-    private final static ObjectMapper objectMapper = new ObjectMapper();
-    private final ConversionService conversionService;
+  private static final Logger logger = LoggerFactory.getLogger(
+    ProcessVariablesMapDeserializer.class);
 
-    public ProcessVariablesMapDeserializer(ConversionService conversionService) {
-        this.conversionService = conversionService;
-    }
+  private static final String VALUE = "value";
+  private static final String TYPE = "type";
+  private final static ObjectMapper objectMapper = new ObjectMapper();
+  private final ConversionService conversionService;
 
-    @Override
-    public ProcessVariablesMap<String, Object> deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException,
-                                                                                                              JsonProcessingException {
-        ProcessVariablesMap<String, Object> map = new ProcessVariablesMap<>();
+  public ProcessVariablesMapDeserializer(ConversionService conversionService) {
+    this.conversionService = conversionService;
+  }
 
-        ObjectMapper codec = (ObjectMapper) jp.getCodec();
-        JsonNode node = codec.readTree(jp);
-        node.fields().forEachRemaining(entry -> {
-            String name = entry.getKey();
-            JsonNode entryValue = entry.getValue();
+  @Override
+  public ProcessVariablesMap<String, Object> deserialize(JsonParser jp, DeserializationContext ctxt)
+    throws IOException {
 
-            if(!entryValue.isNull()) {
-                if (entryValue.get(TYPE) != null && entryValue.get(VALUE) != null) {
-                    String type = entryValue.get(TYPE).textValue();
-                    String value = entryValue.get(VALUE).asText();
+    var map = new ProcessVariablesMap<String, Object>();
+    var codec = (ObjectMapper) jp.getCodec();
+    JsonNode node = codec.readTree(jp);
+    node.fields().forEachRemaining(entry -> {
+      var name = entry.getKey();
+      var entryValue = entry.getValue();
 
-                    Class<?> clazz = ProcessVariablesMapTypeRegistry.forType(type);
-                    Object result = conversionService.convert(value, clazz);
+      if (!entryValue.isNull()) {
+        if (entryValue.get(TYPE) != null && entryValue.get(VALUE) != null) {
+          var type = entryValue.get(TYPE).textValue();
+          var value = entryValue.get(VALUE).asText();
 
-                    if(ObjectValue.class.isInstance(result)) {
-                        result = ObjectValue.class.cast(result)
-                                                  .getObject();
-                    }
+          var clazz = ProcessVariablesMapTypeRegistry.forType(type);
+          var result = conversionService.convert(value, clazz);
 
-                    map.put(name, result);
-                }
-                else {
-                    Object value = null;
-                    try {
-                        value = objectMapper.treeToValue(entryValue,
-                                                         Object.class);
-                    } catch (JsonProcessingException e) {
-                        logger.error("Unexpected Json Processing Exception: ", e);
-                    }
-                    map.put(name, value);
-                }
+          if (result instanceof ObjectValue) {
+            result = ((ObjectValue) result)
+              .getObject();
+          }
 
-            } else {
-                map.put(name, null);
-            }
-        });
+          map.put(name, result);
+        } else {
+          Object value = null;
+          try {
+            value = objectMapper.treeToValue(entryValue,
+              Object.class);
+          } catch (JsonProcessingException e) {
+            logger.error("Unexpected Json Processing Exception: ", e);
+          }
+          map.put(name, value);
+        }
 
-        return map;
-    }
+      } else {
+        map.put(name, null);
+      }
+    });
+
+    return map;
+  }
 }

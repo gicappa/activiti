@@ -26,20 +26,17 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.core.io.UrlResource;
 
-/**
-
- */
 public class SpringConfigurationHelper {
 
-  private static Logger log = LoggerFactory.getLogger(SpringConfigurationHelper.class);
+  private static final Logger log = LoggerFactory.getLogger(SpringConfigurationHelper.class);
 
   public static ProcessEngine buildProcessEngine(URL resource) {
     log.debug("==== BUILDING SPRING APPLICATION CONTEXT AND PROCESS ENGINE =========================================");
 
     ApplicationContext applicationContext = new GenericXmlApplicationContext(new UrlResource(resource));
     Map<String, ProcessEngine> beansOfType = applicationContext.getBeansOfType(ProcessEngine.class);
-    if ((beansOfType == null) || (beansOfType.isEmpty())) {
-      throw new ActivitiException("no " + ProcessEngine.class.getName() + " defined in the application context " + resource.toString());
+    if (beansOfType.isEmpty()) {
+      throw new ActivitiException("no " + ProcessEngine.class.getName() + " defined in the application context " + resource);
     }
 
     ProcessEngine processEngine = beansOfType.values().iterator().next();

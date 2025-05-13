@@ -152,9 +152,9 @@ public class TakeOutgoingSequenceFlowsOperation extends AbstractOperation {
             if (!SkipExpressionUtil.isSkipExpressionEnabled(execution,
                                                             skipExpressionString)) {
 
-                if (!evaluateConditions
-                        || (evaluateConditions && ConditionUtil.hasTrueCondition(sequenceFlow,
-                                                                                 execution) && (defaultSequenceFlowId == null || !defaultSequenceFlowId.equals(sequenceFlow.getId())))) {
+                if (!evaluateConditions || ConditionUtil.hasTrueCondition(sequenceFlow,
+                  execution) && (defaultSequenceFlowId == null || !defaultSequenceFlowId.equals(
+                  sequenceFlow.getId()))) {
                     outgoingSequenceFlows.add(sequenceFlow);
                 }
             } else if (flowNode.getOutgoingFlows().size() == 1 || SkipExpressionUtil.shouldSkipFlowElement(commandContext,
@@ -166,7 +166,7 @@ public class TakeOutgoingSequenceFlowsOperation extends AbstractOperation {
         }
 
         // Check if there is a default sequence flow
-        if (outgoingSequenceFlows.size() == 0 && evaluateConditions) { // The elements that set this to false also have no support for default sequence flow
+        if (outgoingSequenceFlows.isEmpty() && evaluateConditions) { // The elements that set this to false also have no support for default sequence flow
             if (defaultSequenceFlowId != null) {
                 for (SequenceFlow sequenceFlow : flowNode.getOutgoingFlows()) {
                     if (defaultSequenceFlowId.equals(sequenceFlow.getId())) {
@@ -178,7 +178,7 @@ public class TakeOutgoingSequenceFlowsOperation extends AbstractOperation {
         }
 
         // No outgoing found. Ending the execution
-        if (outgoingSequenceFlows.size() == 0) {
+        if (outgoingSequenceFlows.isEmpty()) {
             if (flowNode.getOutgoingFlows() == null || flowNode.getOutgoingFlows().size() == 0) {
                 logger.debug("No outgoing sequence flow found for flow node '{}'.",
                              flowNode.getId());
@@ -198,7 +198,7 @@ public class TakeOutgoingSequenceFlowsOperation extends AbstractOperation {
             // Reuse existing one
             execution.setCurrentFlowElement(sequenceFlow);
             execution.setActive(true);
-            outgoingExecutions.add((ExecutionEntity) execution);
+            outgoingExecutions.add(execution);
 
             // Executions for all the other one
             if (outgoingSequenceFlows.size() > 1) {
@@ -234,7 +234,7 @@ public class TakeOutgoingSequenceFlowsOperation extends AbstractOperation {
             }
         }
 
-        if (flowNode.getOutgoingFlows().size() > 0) {
+        if (!flowNode.getOutgoingFlows().isEmpty()) {
             leaveFlowNode(flowNode);
         } else {
             commandContext.getExecutionEntityManager().deleteExecutionAndRelatedData(execution, null);
@@ -307,18 +307,17 @@ public class TakeOutgoingSequenceFlowsOperation extends AbstractOperation {
             // destroyed before we can continue and follow the sequence flow
 
             Context.getAgenda().planDestroyScopeOperation(execution);
-        } else if (currentFlowElement instanceof Activity) {
+        } else if (currentFlowElement instanceof Activity activity) {
 
             // If the current activity is an activity, we need to remove any currently active boundary events
 
-            Activity activity = (Activity) currentFlowElement;
-            if (CollectionUtil.isNotEmpty(activity.getBoundaryEvents())) {
+          if (CollectionUtil.isNotEmpty(activity.getBoundaryEvents())) {
 
                 // Cancel events are not removed
                 List<String> notToDeleteEvents = new ArrayList<String>();
                 for (BoundaryEvent event : activity.getBoundaryEvents()) {
                     if (CollectionUtil.isNotEmpty(event.getEventDefinitions()) &&
-                            event.getEventDefinitions().get(0) instanceof CancelEventDefinition) {
+                            event.getEventDefinitions().getFirst() instanceof CancelEventDefinition) {
                         notToDeleteEvents.add(event.getId());
                     }
                 }
@@ -366,7 +365,8 @@ public class TakeOutgoingSequenceFlowsOperation extends AbstractOperation {
                 if (!childExecutionEntity.isEnded()) {
                     return false;
                 }
-                if (childExecutionEntity.getExecutions() != null && childExecutionEntity.getExecutions().size() > 0) {
+                if (childExecutionEntity.getExecutions() != null && !childExecutionEntity.getExecutions()
+                  .isEmpty()) {
                     if (!allChildExecutionsEnded(childExecutionEntity,
                                                  executionEntityToIgnore)) {
                         return false;
@@ -378,9 +378,8 @@ public class TakeOutgoingSequenceFlowsOperation extends AbstractOperation {
     }
 
     private void handleBoundaryEvent(FlowNode flowNode) {
-        if (flowNode instanceof BoundaryEvent) {
-            BoundaryEvent event = (BoundaryEvent) flowNode;
-            final Activity activity = event.getAttachedToRef();
+        if (flowNode instanceof BoundaryEvent event) {
+          final Activity activity = event.getAttachedToRef();
             if (CollectionUtil.isNotEmpty(activity.getExecutionListeners())) {
                 executeExecutionListeners(activity, ExecutionListener.EVENTNAME_END);
             }

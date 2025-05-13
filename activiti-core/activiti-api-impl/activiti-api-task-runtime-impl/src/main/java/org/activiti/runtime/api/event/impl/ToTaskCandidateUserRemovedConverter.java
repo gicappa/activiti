@@ -24,8 +24,8 @@ import java.util.Optional;
 
 public class ToTaskCandidateUserRemovedConverter implements EventConverter<TaskCandidateUserRemovedEvent, ActivitiEntityEvent> {
 
-    private APITaskCandidateUserConverter converter;
-    private TaskCandidateEventConverterHelper taskCandidateEventConverterHelper = new TaskCandidateEventConverterHelper();
+    private final APITaskCandidateUserConverter converter;
+    private final TaskCandidateEventConverterHelper taskCandidateEventConverterHelper = new TaskCandidateEventConverterHelper();
 
     public ToTaskCandidateUserRemovedConverter(APITaskCandidateUserConverter converter) {
         this.converter = converter;
@@ -34,9 +34,8 @@ public class ToTaskCandidateUserRemovedConverter implements EventConverter<TaskC
     @Override
     public Optional<TaskCandidateUserRemovedEvent> from(ActivitiEntityEvent internalEvent) {
         TaskCandidateUserRemovedEvent event = null;
-        if (internalEvent.getEntity() instanceof IdentityLink) {
-            IdentityLink entity = (IdentityLink) internalEvent.getEntity();
-            if (taskCandidateEventConverterHelper.isTaskCandidateUserLink(entity)) {
+        if (internalEvent.getEntity() instanceof IdentityLink entity) {
+          if (taskCandidateEventConverterHelper.isTaskCandidateUserLink(entity)) {
                 event = new TaskCandidateUserRemovedImpl(converter.from(entity));
             }
         }

@@ -24,7 +24,7 @@ import java.util.Optional;
 
 public class ToActivityCancelledConverter implements EventConverter<BPMNActivityCancelledEvent, ActivitiActivityEvent> {
 
-    private ToActivityConverter toActivityConverter;
+    private final ToActivityConverter toActivityConverter;
 
     public ToActivityCancelledConverter(ToActivityConverter toActivityConverter) {
         this.toActivityConverter = toActivityConverter;

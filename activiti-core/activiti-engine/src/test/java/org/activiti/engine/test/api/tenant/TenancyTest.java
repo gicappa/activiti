@@ -41,7 +41,7 @@ public class TenancyTest extends PluggableActivitiTestCase {
 
     private static final String TEST_TENANT_ID = "myTenantId";
 
-    private List<String> autoCleanedUpDeploymentIds = new ArrayList<String>();
+    private final List<String> autoCleanedUpDeploymentIds = new ArrayList<String>();
 
     @Override
     protected void setUp() throws Exception {
@@ -87,13 +87,13 @@ public class TenancyTest extends PluggableActivitiTestCase {
         return repositoryService.createProcessDefinitionQuery().deploymentId(id).singleResult().getId();
     }
 
-    private String deployTestProcessWithTwoTasksNoTenant() {
-        String id = repositoryService.createDeployment().addBpmnModel("testProcess.bpmn20.xml",
+    private void deployTestProcessWithTwoTasksNoTenant() {
+        var id = repositoryService.createDeployment().addBpmnModel("testProcess.bpmn20.xml",
                                                                       createTwoTasksTestProcess()).deploy().getId();
 
         autoCleanedUpDeploymentIds.add(id);
 
-        return repositoryService.createProcessDefinitionQuery().deploymentId(id).singleResult().getId();
+      repositoryService.createProcessDefinitionQuery().deploymentId(id).singleResult().getId();
     }
 
     public void testDeploymentTenancy() {

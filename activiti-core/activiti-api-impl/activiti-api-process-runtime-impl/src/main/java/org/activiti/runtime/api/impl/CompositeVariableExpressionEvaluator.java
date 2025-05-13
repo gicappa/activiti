@@ -22,8 +22,8 @@ import org.activiti.engine.impl.interceptor.DelegateInterceptor;
 
 public class CompositeVariableExpressionEvaluator implements ExpressionEvaluator {
 
-    private SimpleMapExpressionEvaluator simpleMapExpressionEvaluator;
-    private VariableScopeExpressionEvaluator variableScopeExpressionEvaluator;
+    private final SimpleMapExpressionEvaluator simpleMapExpressionEvaluator;
+    private final VariableScopeExpressionEvaluator variableScopeExpressionEvaluator;
 
     public CompositeVariableExpressionEvaluator(SimpleMapExpressionEvaluator simpleMapExpressionEvaluator,
                                                 VariableScopeExpressionEvaluator variableScopeExpressionEvaluator) {

@@ -529,7 +529,7 @@ public class DatabaseEventLoggerTest extends PluggableActivitiTestCase {
 
   }
 
-  public void testStandaloneTaskEvents() throws JsonParseException, JsonMappingException, IOException {
+  public void testStandaloneTaskEvents() throws IOException {
 
     Task task = taskService.newTask();
     task.setAssignee("kermit");

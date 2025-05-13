@@ -22,9 +22,9 @@ import org.springframework.context.SmartLifecycle;
 
 public abstract class AbstractActivitiSmartLifeCycle implements SmartLifecycle, DisposableBean {
 
-    private static Logger logger = LoggerFactory.getLogger(AbstractActivitiSmartLifeCycle.class);
+    private static final Logger logger = LoggerFactory.getLogger(AbstractActivitiSmartLifeCycle.class);
 
-    private Object lifeCycleMonitor = new Object();
+    private final Object lifeCycleMonitor = new Object();
     private boolean autoStartup = true;
     private int phase = DEFAULT_PHASE;
     private volatile boolean running = false;

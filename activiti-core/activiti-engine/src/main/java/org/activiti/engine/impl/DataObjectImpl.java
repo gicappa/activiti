@@ -22,7 +22,7 @@ public class DataObjectImpl implements DataObject {
   private Object value;
   private String description;
   private String localizedName;
-  private String localizedDescription;
+  private final String localizedDescription;
   private String dataObjectDefinitionKey;
 
   private String type;
@@ -48,7 +48,7 @@ public class DataObjectImpl implements DataObject {
   }
 
   public String getLocalizedName() {
-    if (localizedName != null && localizedName.length() > 0) {
+    if (localizedName != null && !localizedName.isEmpty()) {
       return localizedName;
     } else {
       return name;
@@ -60,7 +60,7 @@ public class DataObjectImpl implements DataObject {
   }
 
   public String getDescription() {
-    if (localizedDescription != null && localizedDescription.length() > 0) {
+    if (localizedDescription != null && !localizedDescription.isEmpty()) {
       return localizedDescription;
     } else {
       return description;

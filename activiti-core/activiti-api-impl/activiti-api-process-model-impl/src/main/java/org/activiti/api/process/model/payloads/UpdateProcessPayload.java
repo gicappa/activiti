@@ -20,7 +20,7 @@ import org.activiti.api.model.shared.Payload;
 
 public class UpdateProcessPayload implements Payload {
 
-    private String id;
+    private final String id;
     private String processInstanceId;
     private String name;
     private String description;

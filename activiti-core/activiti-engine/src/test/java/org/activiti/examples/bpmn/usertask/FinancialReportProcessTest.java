@@ -29,10 +29,10 @@ public class FinancialReportProcessTest extends PluggableActivitiTestCase {
 
 
   private static final String KERMIT = "kermit";
-  private static final List<String> KERMITSGROUPS = asList("management");
+  private static final List<String> KERMITSGROUPS = List.of("management");
 
   private static final String FOZZIE = "fozzie";
-  private static final List<String> FOZZIESGROUPS = asList("accountancy");
+  private static final List<String> FOZZIESGROUPS = List.of("accountancy");
 
 
   @Deployment(resources = { "org/activiti/examples/bpmn/usertask/FinancialReportProcess.bpmn20.xml" })
@@ -42,7 +42,7 @@ public class FinancialReportProcessTest extends PluggableActivitiTestCase {
 
     List<Task> tasks = taskService.createTaskQuery().taskCandidateUser("fozzie",FOZZIESGROUPS).list();
     assertThat(tasks).hasSize(1);
-    Task task = tasks.get(0);
+    Task task = tasks.getFirst();
     assertThat(task.getName()).isEqualTo("Write monthly financial report");
 
     taskService.claim(task.getId(), FOZZIE);
@@ -55,8 +55,8 @@ public class FinancialReportProcessTest extends PluggableActivitiTestCase {
     assertThat(tasks).hasSize(0);
     tasks = taskService.createTaskQuery().taskCandidateUser(KERMIT,KERMITSGROUPS).list();
     assertThat(tasks).hasSize(1);
-    assertThat(tasks.get(0).getName()).isEqualTo("Verify monthly financial report");
-    taskService.complete(tasks.get(0).getId());
+    assertThat(tasks.getFirst().getName()).isEqualTo("Verify monthly financial report");
+    taskService.complete(tasks.getFirst().getId());
 
     assertProcessEnded(processInstance.getId());
   }

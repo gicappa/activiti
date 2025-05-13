@@ -29,7 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class Delegate2 implements JavaDelegate {
 
-  private Logger log = LoggerFactory.getLogger(getClass());
+  private final Logger log = LoggerFactory.getLogger(getClass());
 
   @Autowired
   private StatefulObject statefulObject;

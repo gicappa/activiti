@@ -89,9 +89,7 @@ public class TerminateEndEventActivityBehavior extends FlowNodeActivityBehavior 
       commandContext.getHistoryManager().recordProcessInstanceEnd(scopeExecutionEntity.getId(), deleteReason, execution.getCurrentActivityId());
 
     } else if (scopeExecutionEntity.getCurrentFlowElement() != null
-        && scopeExecutionEntity.getCurrentFlowElement() instanceof SubProcess) { // SubProcess
-
-      SubProcess subProcess = (SubProcess) scopeExecutionEntity.getCurrentFlowElement();
+        && scopeExecutionEntity.getCurrentFlowElement() instanceof SubProcess subProcess) { // SubProcess
 
       scopeExecutionEntity.setDeleteReason(deleteReason);
       if (subProcess.hasMultiInstanceLoopCharacteristics()) {

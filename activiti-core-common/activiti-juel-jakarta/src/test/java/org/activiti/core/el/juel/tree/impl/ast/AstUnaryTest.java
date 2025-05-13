@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 
 public class AstUnaryTest extends TestCase {
 
-    private Bindings bindings = new Bindings(null, null, null);
+    private final Bindings bindings = new Bindings(null, null, null);
 
     AstUnary parseNode(String expression) {
         return (AstUnary) parse(expression).getRoot().getChild(0);
@@ -40,7 +40,7 @@ public class AstUnaryTest extends TestCase {
         assertEquals(false, parseNode("${!true}").eval(bindings, null));
         assertEquals(false, parseNode("${empty 1}").eval(bindings, null));
         assertEquals(true, parseNode("${empty null}").eval(bindings, null));
-        assertEquals(-1l, parseNode("${-1}").eval(bindings, null));
+        assertEquals(-1L, parseNode("${-1}").eval(bindings, null));
     }
 
     @Test
@@ -83,7 +83,7 @@ public class AstUnaryTest extends TestCase {
     @Test
     public void testGetValue() {
         assertEquals(
-            Long.valueOf(-1l),
+            Long.valueOf(-1L),
             parseNode("${-1}").getValue(bindings, null, null)
         );
         assertEquals(

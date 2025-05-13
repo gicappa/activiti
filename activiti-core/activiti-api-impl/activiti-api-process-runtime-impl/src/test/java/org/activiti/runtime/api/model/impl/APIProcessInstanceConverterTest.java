@@ -42,7 +42,7 @@ public class APIProcessInstanceConverterTest {
     private static final Date START_TIME = new Date();
     private static final String PROCESS_DEFINITION_NAME = "processDefinitionName";
 
-    private APIProcessInstanceConverter subject = new APIProcessInstanceConverter();
+    private final APIProcessInstanceConverter subject = new APIProcessInstanceConverter();
 
     @Test
     public void should_convertFromInternalProcessInstance_when_withRunningStatus() {

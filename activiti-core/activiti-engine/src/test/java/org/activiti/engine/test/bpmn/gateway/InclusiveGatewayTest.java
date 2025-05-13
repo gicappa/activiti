@@ -140,7 +140,7 @@ public class InclusiveGatewayTest extends PluggableActivitiTestCase {
     Task lastTask = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
     taskService.complete(lastTask.getId());
 
-    assertThat(runtimeService.createProcessInstanceQuery().active().count()).isEqualTo(0l);
+    assertThat(runtimeService.createProcessInstanceQuery().active().count()).isEqualTo(0L);
   }
 
   /**

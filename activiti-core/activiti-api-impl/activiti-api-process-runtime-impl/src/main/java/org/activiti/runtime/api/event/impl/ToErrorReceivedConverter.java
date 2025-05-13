@@ -23,7 +23,7 @@ import org.activiti.engine.delegate.event.ActivitiErrorEvent;
 
 public class ToErrorReceivedConverter implements EventConverter<BPMNErrorReceivedEvent, ActivitiErrorEvent> {
 
-    private BPMNErrorConverter bpmnErrorConverter;
+    private final BPMNErrorConverter bpmnErrorConverter;
 
     public ToErrorReceivedConverter(BPMNErrorConverter bpmnErrorConverter) {
         this.bpmnErrorConverter = bpmnErrorConverter;

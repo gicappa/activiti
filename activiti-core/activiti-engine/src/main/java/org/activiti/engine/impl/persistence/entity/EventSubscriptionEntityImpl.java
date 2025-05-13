@@ -161,11 +161,9 @@ public abstract class EventSubscriptionEntityImpl extends AbstractEntity impleme
       return false;
     EventSubscriptionEntityImpl other = (EventSubscriptionEntityImpl) obj;
     if (id == null) {
-      if (other.id != null)
-        return false;
-    } else if (!id.equals(other.id))
-      return false;
-    return true;
+      return other.id == null;
+    } else
+      return id.equals(other.id);
   }
 
 }

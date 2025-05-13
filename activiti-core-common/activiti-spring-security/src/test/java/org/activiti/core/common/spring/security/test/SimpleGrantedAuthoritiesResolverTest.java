@@ -30,7 +30,7 @@ import java.util.List;
 
 public class SimpleGrantedAuthoritiesResolverTest {
 
-    private SimpleGrantedAuthoritiesResolver subject = new SimpleGrantedAuthoritiesResolver();
+    private final SimpleGrantedAuthoritiesResolver subject = new SimpleGrantedAuthoritiesResolver();
 
     @Test
     public void testGetAuthorities() {

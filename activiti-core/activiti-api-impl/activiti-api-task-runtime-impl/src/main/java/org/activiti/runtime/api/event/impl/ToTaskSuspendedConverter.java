@@ -24,7 +24,7 @@ import java.util.Optional;
 
 public class ToTaskSuspendedConverter implements EventConverter<TaskSuspendedEvent, ActivitiEntityEvent> {
 
-    private APITaskConverter taskConverter;
+    private final APITaskConverter taskConverter;
 
     public ToTaskSuspendedConverter(APITaskConverter taskConverter) {
         this.taskConverter = taskConverter;

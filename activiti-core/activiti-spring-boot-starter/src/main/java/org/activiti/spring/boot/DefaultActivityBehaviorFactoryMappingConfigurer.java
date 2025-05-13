@@ -24,9 +24,9 @@ import org.activiti.spring.process.ProcessVariablesInitiator;
 
 public class DefaultActivityBehaviorFactoryMappingConfigurer implements ProcessEngineConfigurationConfigurer {
 
-    private ExtensionsVariablesMappingProvider variablesMappingProvider;
+    private final ExtensionsVariablesMappingProvider variablesMappingProvider;
 
-    private ProcessVariablesInitiator processVariablesInitiator;
+    private final ProcessVariablesInitiator processVariablesInitiator;
 
     private final EventSubscriptionPayloadMappingProvider eventSubscriptionPayloadMappingProvider;
 

@@ -39,7 +39,7 @@ public abstract class AbstractAutoDeploymentStrategy implements AutoDeploymentSt
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractAutoDeploymentStrategy.class);
 
-    private ApplicationUpgradeContextService applicationUpgradeContextService;
+    private final ApplicationUpgradeContextService applicationUpgradeContextService;
 
     public AbstractAutoDeploymentStrategy(ApplicationUpgradeContextService applicationUpgradeContextService) {
         this.applicationUpgradeContextService = applicationUpgradeContextService;
@@ -98,21 +98,21 @@ public abstract class AbstractAutoDeploymentStrategy implements AutoDeploymentSt
 
                 for (ValidationError error : validationErrors) {
                     if ( error.isWarning() ) {
-                        warningBuilder.append(error.toString());
+                        warningBuilder.append(error);
                         warningBuilder.append("\n");
                     } else {
-                        errorBuilder.append(error.toString());
+                        errorBuilder.append(error);
                         errorBuilder.append("\n");
                     }
 
                     // Write out warnings (if any)
-                    if ( warningBuilder.length() > 0 ) {
+                    if (!warningBuilder.isEmpty()) {
                         LOGGER.warn("Following warnings encountered during process validation: "
-                                + warningBuilder.toString());
+                                + warningBuilder);
                     }
 
-                    if ( errorBuilder.length() > 0 ) {
-                        LOGGER.error("Errors while parsing:\n" + errorBuilder.toString());
+                    if (!errorBuilder.isEmpty()) {
+                        LOGGER.error("Errors while parsing:\n" + errorBuilder);
                         return false;
                     }
                 }

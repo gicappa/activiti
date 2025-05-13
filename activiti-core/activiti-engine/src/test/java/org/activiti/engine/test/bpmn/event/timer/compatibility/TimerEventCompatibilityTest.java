@@ -66,7 +66,8 @@ public abstract class TimerEventCompatibilityTest extends PluggableActivitiTestC
     });
   }
 
-  protected void moveByMinutes(int minutes) throws Exception {
-    processEngineConfiguration.getClock().setCurrentTime(new Date(processEngineConfiguration.getClock().getCurrentTime().getTime() + ((minutes * 60 * 1000))));
+  protected void moveByMinutes(int minutes) {
+    processEngineConfiguration.getClock().setCurrentTime(new Date(processEngineConfiguration.getClock().getCurrentTime().getTime() + ((
+      (long) minutes * 60 * 1000))));
   }
 }

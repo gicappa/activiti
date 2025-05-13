@@ -25,10 +25,6 @@ import org.activiti.engine.impl.persistence.entity.data.DataManager;
 import org.activiti.engine.impl.persistence.entity.data.ModelDataManager;
 import org.activiti.engine.repository.Model;
 
-/**
-
-
- */
 public class ModelEntityManagerImpl extends AbstractEntityManager<ModelEntity> implements ModelEntityManager {
 
   protected ModelDataManager modelDataManager;
@@ -50,8 +46,8 @@ public class ModelEntityManagerImpl extends AbstractEntityManager<ModelEntity> i
 
   @Override
   public void insert(ModelEntity model) {
-    ((ModelEntity) model).setCreateTime(getClock().getCurrentTime());
-    ((ModelEntity) model).setLastUpdateTime(getClock().getCurrentTime());
+    model.setCreateTime(getClock().getCurrentTime());
+    model.setLastUpdateTime(getClock().getCurrentTime());
 
     super.insert(model);
   }
@@ -64,7 +60,7 @@ public class ModelEntityManagerImpl extends AbstractEntityManager<ModelEntity> i
 
   @Override
   public void delete(String modelId) {
-    ModelEntity modelEntity = findById(modelId);
+    var modelEntity = findById(modelId);
     super.delete(modelEntity);
     deleteEditorSource(modelEntity);
     deleteEditorSourceExtra(modelEntity);
@@ -72,9 +68,9 @@ public class ModelEntityManagerImpl extends AbstractEntityManager<ModelEntity> i
 
   @Override
   public void insertEditorSourceForModel(String modelId, byte[] modelSource) {
-    ModelEntity model = findById(modelId);
+    var model = findById(modelId);
     if (model != null) {
-      ByteArrayRef ref = new ByteArrayRef(model.getEditorSourceValueId());
+      var ref = new ByteArrayRef(model.getEditorSourceValueId());
       ref.setValue("source", modelSource);
 
       if (model.getEditorSourceValueId() == null) {
@@ -87,7 +83,7 @@ public class ModelEntityManagerImpl extends AbstractEntityManager<ModelEntity> i
   @Override
   public void deleteEditorSource(ModelEntity model) {
     if (model.getEditorSourceValueId() != null) {
-      ByteArrayRef ref = new ByteArrayRef(model.getEditorSourceValueId());
+      var ref = new ByteArrayRef(model.getEditorSourceValueId());
       ref.delete();
     }
   }
@@ -95,16 +91,16 @@ public class ModelEntityManagerImpl extends AbstractEntityManager<ModelEntity> i
   @Override
   public void deleteEditorSourceExtra(ModelEntity model) {
     if (model.getEditorSourceExtraValueId() != null) {
-      ByteArrayRef ref = new ByteArrayRef(model.getEditorSourceExtraValueId());
+      var ref = new ByteArrayRef(model.getEditorSourceExtraValueId());
       ref.delete();
     }
   }
 
   @Override
   public void insertEditorSourceExtraForModel(String modelId, byte[] modelSource) {
-    ModelEntity model = findById(modelId);
+    var model = findById(modelId);
     if (model != null) {
-      ByteArrayRef ref = new ByteArrayRef(model.getEditorSourceExtraValueId());
+      var ref = new ByteArrayRef(model.getEditorSourceExtraValueId());
       ref.setValue("source-extra", modelSource);
 
       if (model.getEditorSourceExtraValueId() == null) {
@@ -126,23 +122,23 @@ public class ModelEntityManagerImpl extends AbstractEntityManager<ModelEntity> i
 
   @Override
   public byte[] findEditorSourceByModelId(String modelId) {
-    ModelEntity model = findById(modelId);
+    var model = findById(modelId);
     if (model == null || model.getEditorSourceValueId() == null) {
       return null;
     }
 
-    ByteArrayRef ref = new ByteArrayRef(model.getEditorSourceValueId());
+    var ref = new ByteArrayRef(model.getEditorSourceValueId());
     return ref.getBytes();
   }
 
   @Override
   public byte[] findEditorSourceExtraByModelId(String modelId) {
-    ModelEntity model = findById(modelId);
+    var model = findById(modelId);
     if (model == null || model.getEditorSourceExtraValueId() == null) {
       return null;
     }
 
-    ByteArrayRef ref = new ByteArrayRef(model.getEditorSourceExtraValueId());
+    var ref = new ByteArrayRef(model.getEditorSourceExtraValueId());
     return ref.getBytes();
   }
 

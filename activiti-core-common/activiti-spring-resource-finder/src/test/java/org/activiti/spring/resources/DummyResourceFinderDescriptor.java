@@ -24,9 +24,9 @@ import org.springframework.core.io.Resource;
 
 public class DummyResourceFinderDescriptor implements ResourceFinderDescriptor {
 
-    private List<String> suffixes;
+    private final List<String> suffixes;
 
-    private String locationPrefix;
+    private final String locationPrefix;
 
     public DummyResourceFinderDescriptor(String locationPrefix,
                                          String ... suffixes) {

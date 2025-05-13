@@ -43,9 +43,8 @@ public class VariableCreatedListenerDelegate implements ActivitiEventListener {
 
     @Override
     public void onEvent(ActivitiEvent event) {
-        if (event instanceof ActivitiVariableEvent) {
-            ActivitiVariableEvent internalEvent = (ActivitiVariableEvent) event;
-            if (variableEventFilter.shouldEmmitEvent(internalEvent)) {
+        if (event instanceof ActivitiVariableEvent internalEvent) {
+          if (variableEventFilter.shouldEmmitEvent(internalEvent)) {
                 converter.from(internalEvent)
                     .ifPresent(convertedEvent -> {
                         if (listeners != null) {

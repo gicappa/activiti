@@ -24,7 +24,7 @@ import static org.mockito.Mockito.mock;
 
 public class APITaskCandidateUserConverterTest {
 
-    private APITaskCandidateUserConverter taskCandidateUserConverter = new APITaskCandidateUserConverter();
+    private final APITaskCandidateUserConverter taskCandidateUserConverter = new APITaskCandidateUserConverter();
 
     @Test
     public void fromShouldConvertEngineObjectToModelObject() {

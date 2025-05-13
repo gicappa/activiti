@@ -145,7 +145,7 @@ public class TaskRuntimeMultiInstanceIT {
                 );
 
         //given
-        Task taskToComplete = tasks.get(0);
+        Task taskToComplete = tasks.getFirst();
 
         //when first multi instance is completed: 3 remaining / completion condition not reached
         localEventSource.clearEvents();
@@ -516,7 +516,7 @@ public class TaskRuntimeMultiInstanceIT {
 
         //complete second iteration, multi-instance should not complete
         localEventSource.clearEvents();
-        taskBaseRuntime.completeTask(tasks.get(0));
+        taskBaseRuntime.completeTask(tasks.getFirst());
 
         assertActivityEvents( "miTasks",
                         BPMNActivityEvent.ActivityEvents.ACTIVITY_COMPLETED
@@ -585,7 +585,7 @@ public class TaskRuntimeMultiInstanceIT {
 
         //complete first iteration, multi-instance should not complete yet
         localEventSource.clearEvents();
-        taskBaseRuntime.completeTask(tasks.get(0));
+        taskBaseRuntime.completeTask(tasks.getFirst());
 
         assertActivityEvents("miSubProcess",
                         BPMNActivityEvent.ActivityEvents.ACTIVITY_COMPLETED,
@@ -617,7 +617,7 @@ public class TaskRuntimeMultiInstanceIT {
 
         //complete second iteration, multi-instance should not complete
         localEventSource.clearEvents();
-        taskBaseRuntime.completeTask(tasks.get(0));
+        taskBaseRuntime.completeTask(tasks.getFirst());
 
         assertActivityEvents("miSubProcess",
                         BPMNActivityEvent.ActivityEvents.ACTIVITY_COMPLETED
@@ -650,7 +650,7 @@ public class TaskRuntimeMultiInstanceIT {
 
         List<ProcessInstance> childrenProcessInstances = processBaseRuntime.getChildrenProcessInstances(parentProcessInstance.getId()).getContent();
         assertThat(childrenProcessInstances).hasSize(1);
-        ProcessInstance firstChildProcInst = childrenProcessInstances.get(0);
+        ProcessInstance firstChildProcInst = childrenProcessInstances.getFirst();
 
         assertThat(localEventSource.getProcessInstanceEvents())
                 .extracting(
@@ -693,7 +693,7 @@ public class TaskRuntimeMultiInstanceIT {
 
         //complete first iteration, multi-instance should not complete yet
         localEventSource.clearEvents();
-        taskBaseRuntime.completeTask(tasks.get(0));
+        taskBaseRuntime.completeTask(tasks.getFirst());
 
         assertActivityEvents("miCallActivity",
                         BPMNActivityEvent.ActivityEvents.ACTIVITY_COMPLETED,
@@ -741,7 +741,7 @@ public class TaskRuntimeMultiInstanceIT {
 
         //complete second iteration, multi-instance should not complete
         localEventSource.clearEvents();
-        taskBaseRuntime.completeTask(tasks.get(0));
+        taskBaseRuntime.completeTask(tasks.getFirst());
 
         assertActivityEvents("miCallActivity",
                         BPMNActivityEvent.ActivityEvents.ACTIVITY_COMPLETED
@@ -825,7 +825,7 @@ public class TaskRuntimeMultiInstanceIT {
 
         //complete first iteration: multi instance should not complete yet
         localEventSource.clearEvents();
-        taskBaseRuntime.completeTask(tasks.get(0));
+        taskBaseRuntime.completeTask(tasks.getFirst());
 
 
         assertActivityEvents("miTasks",
@@ -840,7 +840,7 @@ public class TaskRuntimeMultiInstanceIT {
                 )
                 .containsExactly(
                         tuple(TaskRuntimeEvent.TaskEvents.TASK_COMPLETED,
-                              tasks.get(0).getName(),
+                              tasks.getFirst().getName(),
                               processInstance.getId())
                 );
 
@@ -910,7 +910,7 @@ public class TaskRuntimeMultiInstanceIT {
 
 
         //when
-        long waitTime = 1 * 60 * 1000;
+        long waitTime = 60 * 1000;
         Date startTime = new Date();
         Date dueDate = new Date(startTime.getTime() + waitTime);
 

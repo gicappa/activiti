@@ -33,7 +33,7 @@ import org.activiti.engine.test.Deployment;
 public class TaskCandidateTest extends PluggableActivitiTestCase {
 
   private static final String KERMIT = "kermit";
-  private static final List<String> KERMITSGROUPS = asList("accountancy");
+  private static final List<String> KERMITSGROUPS = List.of("accountancy");
 
   private static final String GONZO = "gonzo";
   private static final List<String> GONZOSGROUPS = asList("management","accountancy","sales");
@@ -53,7 +53,7 @@ public class TaskCandidateTest extends PluggableActivitiTestCase {
     // The task should be visible in the candidate task list
     tasks = taskService.createTaskQuery().taskCandidateUser(KERMIT,KERMITSGROUPS).list();
     assertThat(tasks).hasSize(1);
-    Task task = tasks.get(0);
+    Task task = tasks.getFirst();
     assertThat(task.getName()).isEqualTo("Pay out expenses");
 
     // Claim the task
@@ -66,7 +66,7 @@ public class TaskCandidateTest extends PluggableActivitiTestCase {
     // The task will be visible on the personal task list
     tasks = taskService.createTaskQuery().taskAssignee(KERMIT).list();
     assertThat(tasks).hasSize(1);
-    task = tasks.get(0);
+    task = tasks.getFirst();
     assertThat(task.getName()).isEqualTo("Pay out expenses");
 
     // Completing the task ends the process
@@ -100,7 +100,7 @@ public class TaskCandidateTest extends PluggableActivitiTestCase {
 
     // Gonzo claims the task
     tasks = taskService.createTaskQuery().taskCandidateUser(GONZO,GONZOSGROUPS).list();
-    Task task = tasks.get(0);
+    Task task = tasks.getFirst();
     assertThat(task.getName()).isEqualTo("Approve expenses");
     taskService.claim(task.getId(), GONZO);
 
@@ -123,7 +123,8 @@ public class TaskCandidateTest extends PluggableActivitiTestCase {
 
   @Deployment
   public void testMultipleCandidateUsers() {
-    runtimeService.startProcessInstanceByKey("multipleCandidateUsersExample", singletonMap("Variable", (Object) "var"));
+    runtimeService.startProcessInstanceByKey("multipleCandidateUsersExample", singletonMap("Variable",
+      "var"));
 
     assertThat(taskService.createTaskQuery().taskCandidateUser(GONZO,GONZOSGROUPS).list()).hasSize(1);
     assertThat(taskService.createTaskQuery().taskCandidateUser(KERMIT,KERMITSGROUPS).list()).hasSize(1);
@@ -131,10 +132,10 @@ public class TaskCandidateTest extends PluggableActivitiTestCase {
     List<Task> tasks = taskService.createTaskQuery().taskInvolvedUser(KERMIT).list();
     assertThat(tasks).hasSize(1);
 
-    Task task = tasks.get(0);
+    Task task = tasks.getFirst();
     taskService.setVariableLocal(task.getId(), "taskVar", 123);
     tasks = taskService.createTaskQuery().taskInvolvedUser(KERMIT).includeProcessVariables().includeTaskLocalVariables().list();
-    task = tasks.get(0);
+    task = tasks.getFirst();
 
     assertThat(task.getProcessVariables()).hasSize(1);
     assertThat(task.getTaskLocalVariables()).hasSize(1);
@@ -158,7 +159,7 @@ public class TaskCandidateTest extends PluggableActivitiTestCase {
   // with one parameter
   @Deployment
   public void testCandidateExpressionOneParam() {
-    Map<String, Object> params = new HashMap<String, Object>();
+    Map<String, Object> params = new HashMap<>();
     params.put("testBean", new TestBean());
 
     runtimeService.startProcessInstanceByKey("candidateWithExpression", params);
@@ -170,7 +171,7 @@ public class TaskCandidateTest extends PluggableActivitiTestCase {
   // with two parameters
   @Deployment
   public void testCandidateExpressionTwoParams() {
-    Map<String, Object> params = new HashMap<String, Object>();
+    Map<String, Object> params = new HashMap<>();
     params.put("testBean", new TestBean());
 
     runtimeService.startProcessInstanceByKey("candidateWithExpression", params);

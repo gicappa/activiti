@@ -23,10 +23,10 @@ import org.activiti.engine.delegate.event.ActivitiEventListener;
 
 public class TestActivitiEventListener implements ActivitiEventListener {
 
-  private List<ActivitiEvent> eventsReceived;
+  private final List<ActivitiEvent> eventsReceived;
 
   public TestActivitiEventListener() {
-    eventsReceived = new ArrayList<ActivitiEvent>();
+    eventsReceived = new ArrayList<>();
   }
 
   public List<ActivitiEvent> getEventsReceived() {

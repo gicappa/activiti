@@ -147,11 +147,7 @@ public class VariableInstanceEntityManagerImpl extends AbstractEntityManager<Var
     }
 
     Object variableValue=null;
-    boolean getValue=true;
-
-    if (variableInstance.getType().getTypeName().equals("jpa-entity")) {
-        getValue=false;
-    }
+    boolean getValue= !variableInstance.getType().getTypeName().equals("jpa-entity");
 
     if (getValue) variableValue=variableInstance.getValue();
 

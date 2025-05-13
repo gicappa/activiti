@@ -22,7 +22,7 @@ import org.activiti.api.model.shared.Payload;
 
 public class MessageEventPayload implements Payload {
 
-    private String id;
+    private final String id;
     private String name;
     private String correlationKey;
     private String businessKey;
@@ -66,19 +66,18 @@ public class MessageEventPayload implements Payload {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("MessageEventPayload [id=");
-        builder.append(id);
-        builder.append(", messageName=");
-        builder.append(name);
-        builder.append(", correlationKey=");
-        builder.append(correlationKey);
-        builder.append(", businessKey=");
-        builder.append(businessKey);
-        builder.append(", variables=");
-        builder.append(variables);
-        builder.append("]");
-        return builder.toString();
+      var builder = "MessageEventPayload [id="
+        + id
+        + ", messageName="
+        + name
+        + ", correlationKey="
+        + correlationKey
+        + ", businessKey="
+        + businessKey
+        + ", variables="
+        + variables
+        + "]";
+        return builder;
     }
 
     @Override

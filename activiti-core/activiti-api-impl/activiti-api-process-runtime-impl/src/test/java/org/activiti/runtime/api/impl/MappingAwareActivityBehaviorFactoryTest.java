@@ -25,30 +25,31 @@ import org.junit.jupiter.api.Test;
 
 public class MappingAwareActivityBehaviorFactoryTest {
 
-    private MappingAwareActivityBehaviorFactory factory = new MappingAwareActivityBehaviorFactory(null, null, null);
+  private final MappingAwareActivityBehaviorFactory factory = new MappingAwareActivityBehaviorFactory(
+    null, null, null);
 
-    @Test
-    public void createUserTaskActivityBehaviorShouldReturnMappingAwareUserTaskBehavior() {
-        assertThat(factory.createUserTaskActivityBehavior(mock(UserTask.class)))
-                .isInstanceOf(MappingAwareUserTaskBehavior.class);
-    }
+  @Test
+  public void createUserTaskActivityBehaviorShouldReturnMappingAwareUserTaskBehavior() {
+    assertThat(factory.createUserTaskActivityBehavior(mock(UserTask.class)))
+      .isInstanceOf(MappingAwareUserTaskBehavior.class);
+  }
 
-    @Test
-    public void createCallActivityBehaviorShouldReturnMappingAwareCallActivityBehavior() {
-        assertThat(factory.createCallActivityBehavior("element", emptyList()))
-                .isInstanceOf(MappingAwareCallActivityBehavior.class);
-    }
+  @Test
+  public void createCallActivityBehaviorShouldReturnMappingAwareCallActivityBehavior() {
+    assertThat(factory.createCallActivityBehavior("element", emptyList()))
+      .isInstanceOf(MappingAwareCallActivityBehavior.class);
+  }
 
-    @Test
-    public void createCallActivityBehaviorWithExpressionShouldReturnMappingAwareCallActivityBehavior() {
-        assertThat(factory.createCallActivityBehavior(mock(Expression.class), emptyList()))
-                .isInstanceOf(MappingAwareCallActivityBehavior.class);
-    }
+  @Test
+  public void createCallActivityBehaviorWithExpressionShouldReturnMappingAwareCallActivityBehavior() {
+    assertThat(factory.createCallActivityBehavior(mock(Expression.class), emptyList()))
+      .isInstanceOf(MappingAwareCallActivityBehavior.class);
+  }
 
-    @Test
-    public void getMessagePayloadMappingProviderFactoryShouldReturnJsonMessagePayloadMappingProvider() {
-        assertThat(factory.getMessagePayloadMappingProviderFactory())
-                .isInstanceOf(JsonMessagePayloadMappingProviderFactory.class);
-    }
+  @Test
+  public void getMessagePayloadMappingProviderFactoryShouldReturnJsonMessagePayloadMappingProvider() {
+    assertThat(factory.getMessagePayloadMappingProviderFactory())
+      .isInstanceOf(JsonMessagePayloadMappingProviderFactory.class);
+  }
 
 }

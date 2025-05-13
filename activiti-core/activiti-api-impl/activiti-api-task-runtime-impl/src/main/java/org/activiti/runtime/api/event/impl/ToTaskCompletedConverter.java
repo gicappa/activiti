@@ -25,7 +25,7 @@ import java.util.Optional;
 
 public class ToTaskCompletedConverter implements EventConverter<TaskCompletedEvent, ActivitiEntityEvent> {
 
-    private APITaskConverter converter;
+    private final APITaskConverter converter;
 
     private final SecurityManager securityManager;
 

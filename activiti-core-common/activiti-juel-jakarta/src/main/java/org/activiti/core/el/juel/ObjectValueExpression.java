@@ -19,6 +19,7 @@ import jakarta.el.ELContext;
 import jakarta.el.ELException;
 import jakarta.el.ValueExpression;
 import java.io.Serial;
+import java.util.Objects;
 import org.activiti.core.el.juel.misc.LocalMessages;
 import org.activiti.core.el.juel.misc.TypeConverter;
 
@@ -72,9 +73,7 @@ public final class ObjectValueExpression extends ValueExpression {
         return false;
       }
       return (
-        object == other.object ||
-          object != null &&
-            object.equals(other.object)
+        Objects.equals(object, other.object)
       );
     }
     return false;

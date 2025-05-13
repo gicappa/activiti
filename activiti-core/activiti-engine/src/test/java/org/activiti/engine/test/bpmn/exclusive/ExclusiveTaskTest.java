@@ -35,7 +35,7 @@ public class ExclusiveTaskTest extends PluggableActivitiTestCase {
     // now there should be 1 non-exclusive job in the database:
     Job job = managementService.createJobQuery().singleResult();
     assertThat(job).isNotNull();
-    assertThat(((JobEntity) job).isExclusive()).isFalse();
+    assertThat(job.isExclusive()).isFalse();
 
     waitForJobExecutorToProcessAllJobs(6000L, 100L);
 
@@ -50,7 +50,7 @@ public class ExclusiveTaskTest extends PluggableActivitiTestCase {
     // now there should be 1 exclusive job in the database:
     Job job = managementService.createJobQuery().singleResult();
     assertThat(job).isNotNull();
-    assertThat(((JobEntity) job).isExclusive()).isTrue();
+    assertThat(job.isExclusive()).isTrue();
 
     waitForJobExecutorToProcessAllJobs(6000L, 100L);
 

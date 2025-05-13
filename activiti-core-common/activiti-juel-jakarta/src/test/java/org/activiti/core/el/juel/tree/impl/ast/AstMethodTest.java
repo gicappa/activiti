@@ -42,7 +42,7 @@ public class AstMethodTest extends TestCase {
     SimpleContext context;
     Bindings bindings;
 
-    long foo = 1l;
+    long foo = 1L;
 
     public long getFoo() {
         return foo;
@@ -53,7 +53,7 @@ public class AstMethodTest extends TestCase {
     }
 
     public long bar() {
-        return 1l;
+        return 1L;
     }
 
     public long bar(long value) {
@@ -78,8 +78,8 @@ public class AstMethodTest extends TestCase {
             parseNode("${base.bad()}").eval(bindings, context);
             fail();
         } catch (MethodNotFoundException e) {}
-        assertEquals(1l, parseNode("${base.bar()}").eval(bindings, context));
-        assertEquals(3l, parseNode("${base.bar(3)}").eval(bindings, context));
+        assertEquals(1L, parseNode("${base.bar()}").eval(bindings, context));
+        assertEquals(3L, parseNode("${base.bar(3)}").eval(bindings, context));
     }
 
     @Test
@@ -146,19 +146,19 @@ public class AstMethodTest extends TestCase {
     @Test
     public void testInvoke() {
         assertEquals(
-            1l,
+          1L,
             parseNode("${base.bar()}")
-                .invoke(bindings, context, null, null, new Object[] { 999l })
+                .invoke(bindings, context, null, null, new Object[] {999L})
         );
         assertEquals(
-            3l,
+          3L,
             parseNode("${base.bar(3)}")
                 .invoke(
                     bindings,
                     context,
                     null,
                     new Class[] { long.class },
-                    new Object[] { 999l }
+                    new Object[] {999L}
                 )
         );
 

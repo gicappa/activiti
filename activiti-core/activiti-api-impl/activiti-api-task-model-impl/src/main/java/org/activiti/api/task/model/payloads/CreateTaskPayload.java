@@ -22,7 +22,7 @@ import org.activiti.api.model.shared.Payload;
 
 public class CreateTaskPayload implements Payload {
 
-    private String id;
+    private final String id;
     private String name;
     private String description;
     private Date dueDate;

@@ -15,39 +15,35 @@
  */
 package org.activiti.engine.test.db;
 
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-
 import org.activiti.engine.impl.ProcessEngineImpl;
-import org.activiti.engine.impl.interceptor.Command;
-import org.activiti.engine.impl.interceptor.CommandContext;
 import org.activiti.engine.impl.test.PluggableActivitiTestCase;
-import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
-
+ *
  */
 public class MetaDataTest extends PluggableActivitiTestCase {
 
-  private static Logger log = LoggerFactory.getLogger(MetaDataTest.class);
+  private static final Logger log = LoggerFactory.getLogger(MetaDataTest.class);
 
   public void testMetaData() {
-    ((ProcessEngineImpl) processEngine).getProcessEngineConfiguration().getCommandExecutor().execute(new Command<Object>() {
-      public Object execute(CommandContext commandContext) {
+    ((ProcessEngineImpl) processEngine).getProcessEngineConfiguration().getCommandExecutor()
+      .execute(commandContext -> {
         // PRINT THE TABLE NAMES TO CHECK IF WE CAN USE METADATA INSTEAD
         // THIS IS INTENDED FOR TEST THAT SHOULD RUN ON OUR QA
         // INFRASTRUCTURE TO SEE IF METADATA
         // CAN BE USED INSTEAD OF PERFORMING A QUERY THAT MIGHT FAIL
         try {
-          SqlSession sqlSession = commandContext.getDbSqlSession().getSqlSession();
-          ResultSet tables = sqlSession.getConnection().getMetaData().getTables(null, null, null, null);
+          var sqlSession = commandContext.getDbSqlSession().getSqlSession();
+          var tables = sqlSession.getConnection().getMetaData()
+            .getTables(null, null, null, null);
           while (tables.next()) {
-            ResultSetMetaData resultSetMetaData = tables.getMetaData();
+            var resultSetMetaData = tables.getMetaData();
             int columnCount = resultSetMetaData.getColumnCount();
             for (int i = 1; i <= columnCount; i++) {
-              log.info("result set column {}|{}|{}|{}", i, resultSetMetaData.getColumnName(i), resultSetMetaData.getColumnLabel(i), tables.getString(i));
+              log.info("result set column {}|{}|{}|{}", i, resultSetMetaData.getColumnName(i),
+                resultSetMetaData.getColumnLabel(i), tables.getString(i));
             }
             log.info("-------------------------------------------------------");
           }
@@ -55,7 +51,6 @@ public class MetaDataTest extends PluggableActivitiTestCase {
           e.printStackTrace();
         }
         return null;
-      }
-    });
+      });
   }
 }

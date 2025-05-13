@@ -50,12 +50,12 @@ public class ValuedDataObjectWithExtensionsConverterTest extends AbstractConvert
   protected static final String ATTRIBUTE_DATA_LABELED_ENTITY_ID_FOR_NAME = "labeledEntityIdForName";
   protected static final String ATTRIBUTE_DATA_LABELED_ENTITY_ID_FOR_DESCRIPTION = "labeledEntityIdForDescription";
 
-  private Localization localization = new Localization();
+  private final Localization localization = new Localization();
 
   /*
    * Inner class used to hold localization DataObject extension values
    */
-  public class Localization {
+  public static class Localization {
 
     private String resourceBundleKeyForName;
     private String resourceBundleKeyForDescription;
@@ -96,14 +96,13 @@ public class ValuedDataObjectWithExtensionsConverterTest extends AbstractConvert
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder(100);
-      sb.append("Localization: [");
-      sb.append("resourceBundleKeyForName=").append(resourceBundleKeyForName);
-      sb.append(", resourceBundleKeyForDescription=").append(resourceBundleKeyForDescription);
-      sb.append(", labeledEntityIdForName=").append(labeledEntityIdForName);
-      sb.append(", labeledEntityIdForDescription=").append(labeledEntityIdForDescription);
-      sb.append("]");
-      return sb.toString();
+      var sb = "Localization: ["
+        + "resourceBundleKeyForName=" + resourceBundleKeyForName
+        + ", resourceBundleKeyForDescription=" + resourceBundleKeyForDescription
+        + ", labeledEntityIdForName=" + labeledEntityIdForName
+        + ", labeledEntityIdForDescription=" + labeledEntityIdForDescription
+        + "]";
+      return sb;
     }
   }
 
@@ -180,7 +179,7 @@ public class ValuedDataObjectWithExtensionsConverterTest extends AbstractConvert
     dataObjects = subProcess.getDataObjects();
     assertThat(dataObjects).hasSize(1);
 
-    objectMap = new HashMap<String, ValuedDataObject>();
+    objectMap = new HashMap<>();
     for (ValuedDataObject valueObj : dataObjects) {
       objectMap.put(valueObj.getId(), valueObj);
     }
@@ -224,7 +223,7 @@ public class ValuedDataObjectWithExtensionsConverterTest extends AbstractConvert
     Map<String, List<ExtensionElement>> extensionElements = dataObj.getExtensionElements();
 
     if (!extensionElements.isEmpty()) {
-      return extensionElements.get(key).get(0);
+      return extensionElements.get(key).getFirst();
     }
     return null;
   }
@@ -236,8 +235,8 @@ public class ValuedDataObjectWithExtensionsConverterTest extends AbstractConvert
       List<ExtensionElement> attributesExtension = dObj.getExtensionElements().get(ELEMENT_DATA_ATTRIBUTES);
 
       if (null != attributesExtension && !attributesExtension.isEmpty()) {
-        attributes = new HashMap<String, String>();
-        List<ExtensionElement> attributeExtensions = attributesExtension.get(0).getChildElements().get(ELEMENT_DATA_ATTRIBUTE);
+        attributes = new HashMap<>();
+        List<ExtensionElement> attributeExtensions = attributesExtension.getFirst().getChildElements().get(ELEMENT_DATA_ATTRIBUTE);
 
         for (ExtensionElement attributeExtension : attributeExtensions) {
           attributes.put(attributeExtension.getAttributeValue(YOURCO_EXTENSIONS_NAMESPACE, ATTRIBUTE_NAME), attributeExtension.getAttributeValue(YOURCO_EXTENSIONS_NAMESPACE, ATTRIBUTE_VALUE));
@@ -251,7 +250,7 @@ public class ValuedDataObjectWithExtensionsConverterTest extends AbstractConvert
     List<ExtensionElement> i18lnExtension = dObj.getExtensionElements().get(ELEMENT_I18LN_LOCALIZATION);
 
     if (!i18lnExtension.isEmpty()) {
-      Map<String, List<ExtensionAttribute>> extensionAttributes = i18lnExtension.get(0).getAttributes();
+      Map<String, List<ExtensionAttribute>> extensionAttributes = i18lnExtension.getFirst().getAttributes();
       localization.setLabeledEntityIdForName(extensionAttributes.get(ATTRIBUTE_DATA_LABELED_ENTITY_ID_FOR_NAME).get(0).getValue());
       localization.setLabeledEntityIdForDescription(extensionAttributes.get(ATTRIBUTE_DATA_LABELED_ENTITY_ID_FOR_DESCRIPTION).get(0).getValue());
       localization.setResourceBundleKeyForName(extensionAttributes.get(ATTRIBUTE_DATA_RESOURCE_BUNDLE_KEY_FOR_NAME).get(0).getValue());

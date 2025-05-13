@@ -21,7 +21,7 @@ import org.activiti.api.model.shared.Payload;
 
 public class CompleteTaskPayload implements Payload {
 
-    private String id;
+    private final String id;
     private String taskId;
     private Map<String, Object> variables;
 

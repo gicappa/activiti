@@ -111,7 +111,8 @@ public class VariableScopeTest extends PluggableActivitiTestCase {
     runtimeService.setVariableLocal(subProcessTask.getExecutionId(), "subProcessLocalVariable", "Hello SubProcess");
 
     // Returns a set of local variablenames of pi
-    List<String> result = processEngineConfiguration.getCommandExecutor().execute(new GetVariableNamesCommand(pi.getProcessInstanceId(), true));
+    List<String> result = processEngineConfiguration.getCommandExecutor().execute(
+      new GetVariableNamesCommand(pi.getProcessInstanceId(), true));
 
     // pi contains local the variablenames "test", "helloWorld" and
     // "mainProcessLocalVariable" but not "subProcessLocalVariable"
@@ -121,7 +122,8 @@ public class VariableScopeTest extends PluggableActivitiTestCase {
     assertThat(result.contains("subProcessLocalVariable")).isFalse();
 
     // Returns a set of global variablenames of pi
-    result = processEngineConfiguration.getCommandExecutor().execute(new GetVariableNamesCommand(pi.getProcessInstanceId(), false));
+    result = processEngineConfiguration.getCommandExecutor().execute(
+      new GetVariableNamesCommand(pi.getProcessInstanceId(), false));
 
     // pi contains global the variablenames "test", "helloWorld" and
     // "mainProcessLocalVariable" but not "subProcessLocalVariable"
@@ -131,7 +133,8 @@ public class VariableScopeTest extends PluggableActivitiTestCase {
     assertThat(result.contains("subProcessLocalVariable")).isFalse();
 
     // Returns a set of local variablenames of subProcessTask execution
-    result = processEngineConfiguration.getCommandExecutor().execute(new GetVariableNamesCommand(subProcessTask.getExecutionId(), true));
+    result = processEngineConfiguration.getCommandExecutor().execute(
+      new GetVariableNamesCommand(subProcessTask.getExecutionId(), true));
 
     // subProcessTask execution contains local the variablenames "test",
     // "subProcessLocalVariable" but not "helloWorld" and
@@ -143,7 +146,8 @@ public class VariableScopeTest extends PluggableActivitiTestCase {
     assertThat(result.contains("mainProcessLocalVariable")).isFalse();
 
     // Returns a set of global variablenames of subProcessTask execution
-    result = processEngineConfiguration.getCommandExecutor().execute(new GetVariableNamesCommand(subProcessTask.getExecutionId(), false));
+    result = processEngineConfiguration.getCommandExecutor().execute(
+      new GetVariableNamesCommand(subProcessTask.getExecutionId(), false));
 
     // subProcessTask execution contains global all defined variablenames
     assertThat(result.contains("test")).isTrue(); // the variable "test" was set
@@ -257,14 +261,11 @@ public class VariableScopeTest extends PluggableActivitiTestCase {
 
   /**
    * A command to get the names of the variables
-   *
-
-
    */
-  private class GetVariableNamesCommand implements Command<List<String>> {
+  private static class GetVariableNamesCommand implements Command<List<String>> {
 
-    private String executionId;
-    private boolean isLocal;
+    private final String executionId;
+    private final boolean isLocal;
 
     public GetVariableNamesCommand(String executionId, boolean isLocal) {
       this.executionId = executionId;

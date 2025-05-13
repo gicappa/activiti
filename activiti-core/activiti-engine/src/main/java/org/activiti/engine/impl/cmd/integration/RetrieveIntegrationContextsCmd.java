@@ -21,7 +21,7 @@ import org.activiti.engine.impl.persistence.entity.integration.IntegrationContex
 
 public class RetrieveIntegrationContextsCmd implements Command<IntegrationContextEntity> {
 
-    private String integrationContextId;
+    private final String integrationContextId;
 
     public RetrieveIntegrationContextsCmd(String integrationContextId) {
         this.integrationContextId = integrationContextId;

@@ -343,8 +343,7 @@ public class ExecutionEntityManagerImpl extends AbstractEntityManager<ExecutionE
 
     // Inherits the 'count' feature from the parent.
     // If the parent was not 'counting', we can't make the child 'counting' again.
-    if (parentExecutionEntity instanceof CountingExecutionEntity) {
-      CountingExecutionEntity countingParentExecutionEntity = (CountingExecutionEntity) parentExecutionEntity;
+    if (parentExecutionEntity instanceof CountingExecutionEntity countingParentExecutionEntity) {
       ((CountingExecutionEntity) childExecution).setCountEnabled(countingParentExecutionEntity.isCountEnabled());
     }
 
@@ -628,9 +627,9 @@ public class ExecutionEntityManagerImpl extends AbstractEntityManager<ExecutionE
 
     boolean enableExecutionRelationshipCounts = isExecutionRelatedEntityCountEnabled(executionEntity);
 
-    if (executionEntity.getId().equals(executionEntity.getProcessInstanceId())
-        && (!enableExecutionRelationshipCounts
-            || (enableExecutionRelationshipCounts && ((CountingExecutionEntity) executionEntity).getIdentityLinkCount() > 0))) {
+    if (executionEntity.getId().equals(executionEntity.getProcessInstanceId()) && (
+      !enableExecutionRelationshipCounts
+        || ((CountingExecutionEntity) executionEntity).getIdentityLinkCount() > 0)) {
       IdentityLinkEntityManager identityLinkEntityManager = getIdentityLinkEntityManager();
       Collection<IdentityLinkEntity> identityLinks = identityLinkEntityManager.findIdentityLinksByProcessInstanceId(executionEntity.getProcessInstanceId());
       for (IdentityLinkEntity identityLink : identityLinks) {
@@ -639,12 +638,11 @@ public class ExecutionEntityManagerImpl extends AbstractEntityManager<ExecutionE
     }
 
     // Get variables related to execution and delete them
-    if (!enableExecutionRelationshipCounts ||
-        (enableExecutionRelationshipCounts && ((CountingExecutionEntity) executionEntity).getVariableCount() > 0)) {
+    if (!enableExecutionRelationshipCounts
+      || ((CountingExecutionEntity) executionEntity).getVariableCount() > 0) {
       Collection<VariableInstance> executionVariables = executionEntity.getVariableInstancesLocal().values();
       for (VariableInstance variableInstance : executionVariables) {
-        if (variableInstance instanceof VariableInstanceEntity) {
-          VariableInstanceEntity variableInstanceEntity = (VariableInstanceEntity) variableInstance;
+        if (variableInstance instanceof VariableInstanceEntity variableInstanceEntity) {
 
           VariableInstanceEntityManager variableInstanceEntityManager = getVariableInstanceEntityManager();
           variableInstanceEntityManager.delete(variableInstanceEntity);
@@ -658,7 +656,7 @@ public class ExecutionEntityManagerImpl extends AbstractEntityManager<ExecutionE
     // Delete jobs
 
     if (!enableExecutionRelationshipCounts
-        || (enableExecutionRelationshipCounts && ((CountingExecutionEntity) executionEntity).getTimerJobCount() > 0)) {
+      || ((CountingExecutionEntity) executionEntity).getTimerJobCount() > 0) {
       TimerJobEntityManager timerJobEntityManager = getTimerJobEntityManager();
       Collection<TimerJobEntity> timerJobsForExecution = timerJobEntityManager.findJobsByExecutionId(executionEntity.getId());
       for (TimerJobEntity job : timerJobsForExecution) {
@@ -670,7 +668,7 @@ public class ExecutionEntityManagerImpl extends AbstractEntityManager<ExecutionE
     }
 
     if (!enableExecutionRelationshipCounts
-        || (enableExecutionRelationshipCounts && ((CountingExecutionEntity) executionEntity).getJobCount() > 0)) {
+      || ((CountingExecutionEntity) executionEntity).getJobCount() > 0) {
       JobEntityManager jobEntityManager = getJobEntityManager();
       Collection<JobEntity> jobsForExecution = jobEntityManager.findJobsByExecutionId(executionEntity.getId());
       for (JobEntity job : jobsForExecution) {
@@ -682,7 +680,7 @@ public class ExecutionEntityManagerImpl extends AbstractEntityManager<ExecutionE
     }
 
     if (!enableExecutionRelationshipCounts
-        || (enableExecutionRelationshipCounts && ((CountingExecutionEntity) executionEntity).getSuspendedJobCount() > 0)) {
+      || ((CountingExecutionEntity) executionEntity).getSuspendedJobCount() > 0) {
       SuspendedJobEntityManager suspendedJobEntityManager = getSuspendedJobEntityManager();
       Collection<SuspendedJobEntity> suspendedJobsForExecution = suspendedJobEntityManager.findJobsByExecutionId(executionEntity.getId());
       for (SuspendedJobEntity job : suspendedJobsForExecution) {
@@ -694,7 +692,7 @@ public class ExecutionEntityManagerImpl extends AbstractEntityManager<ExecutionE
     }
 
     if (!enableExecutionRelationshipCounts
-        || (enableExecutionRelationshipCounts && ((CountingExecutionEntity) executionEntity).getDeadLetterJobCount() > 0)) {
+      || ((CountingExecutionEntity) executionEntity).getDeadLetterJobCount() > 0) {
       DeadLetterJobEntityManager deadLetterJobEntityManager = getDeadLetterJobEntityManager();
       Collection<DeadLetterJobEntity> deadLetterJobsForExecution = deadLetterJobEntityManager.findJobsByExecutionId(executionEntity.getId());
       for (DeadLetterJobEntity job : deadLetterJobsForExecution) {
@@ -707,7 +705,7 @@ public class ExecutionEntityManagerImpl extends AbstractEntityManager<ExecutionE
 
     // Delete event subscriptions
     if (!enableExecutionRelationshipCounts
-        || (enableExecutionRelationshipCounts && ((CountingExecutionEntity) executionEntity).getEventSubscriptionCount() > 0)) {
+      || ((CountingExecutionEntity) executionEntity).getEventSubscriptionCount() > 0) {
       EventSubscriptionEntityManager eventSubscriptionEntityManager = getEventSubscriptionEntityManager();
       List<EventSubscriptionEntity> eventSubscriptions = eventSubscriptionEntityManager.findEventSubscriptionsByExecution(executionEntity.getId());
       for (EventSubscriptionEntity eventSubscription : eventSubscriptions) {
@@ -720,8 +718,8 @@ public class ExecutionEntityManagerImpl extends AbstractEntityManager<ExecutionE
   private void deleteUserTask(ExecutionEntity executionEntity, String deleteReason){
       boolean enableExecutionRelationshipCounts = isExecutionRelatedEntityCountEnabled(executionEntity);
 
-      if (!enableExecutionRelationshipCounts ||
-          (enableExecutionRelationshipCounts && ((CountingExecutionEntity) executionEntity).getTaskCount() > 0)) {
+      if (!enableExecutionRelationshipCounts
+        || ((CountingExecutionEntity) executionEntity).getTaskCount() > 0) {
           TaskEntityManager taskEntityManager = getTaskEntityManager();
           Collection<TaskEntity> tasksForExecution = taskEntityManager.findTasksByExecutionId(executionEntity.getId());
           for (TaskEntity taskEntity : tasksForExecution) {
@@ -733,8 +731,8 @@ public class ExecutionEntityManagerImpl extends AbstractEntityManager<ExecutionE
     private void cancelUserTask(ExecutionEntity executionEntity, String deleteReason){
         boolean enableExecutionRelationshipCounts = isExecutionRelatedEntityCountEnabled(executionEntity);
 
-        if (!enableExecutionRelationshipCounts ||
-            (enableExecutionRelationshipCounts && ((CountingExecutionEntity) executionEntity).getTaskCount() > 0)) {
+        if (!enableExecutionRelationshipCounts
+          || ((CountingExecutionEntity) executionEntity).getTaskCount() > 0) {
             TaskEntityManager taskEntityManager = getTaskEntityManager();
             Collection<TaskEntity> tasksForExecution = taskEntityManager.findTasksByExecutionId(executionEntity.getId());
             for (TaskEntity taskEntity : tasksForExecution) {

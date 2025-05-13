@@ -29,7 +29,7 @@ import java.util.UUID;
 
 public class Delegate1 implements JavaDelegate, InitializingBean {
 
-  private Logger log = LoggerFactory.getLogger(getClass());
+  private final Logger log = LoggerFactory.getLogger(getClass());
 
   @Autowired
   private ProcessInstance processInstance;
@@ -51,7 +51,7 @@ public class Delegate1 implements JavaDelegate, InitializingBean {
     this.statefulObject.increment();
   }
 
-  public void afterPropertiesSet() throws Exception {
+  public void afterPropertiesSet() {
     assertThat(this.processInstance).as("the processInstance must not be null").isNotNull();
   }
 }

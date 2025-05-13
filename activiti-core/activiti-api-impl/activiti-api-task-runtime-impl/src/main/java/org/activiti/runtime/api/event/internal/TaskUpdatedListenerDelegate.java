@@ -26,9 +26,9 @@ import java.util.List;
 
 public class TaskUpdatedListenerDelegate implements ActivitiEventListener {
 
-    private List<TaskRuntimeEventListener<TaskUpdatedEvent>> taskUpdatedListeners;
+    private final List<TaskRuntimeEventListener<TaskUpdatedEvent>> taskUpdatedListeners;
 
-    private ToAPITaskUpdatedEventConverter taskUpdatedEventConverter;
+    private final ToAPITaskUpdatedEventConverter taskUpdatedEventConverter;
 
     public TaskUpdatedListenerDelegate(List<TaskRuntimeEventListener<TaskUpdatedEvent>> taskCreatedListeners,
                                        ToAPITaskUpdatedEventConverter taskCreatedEventConverter) {

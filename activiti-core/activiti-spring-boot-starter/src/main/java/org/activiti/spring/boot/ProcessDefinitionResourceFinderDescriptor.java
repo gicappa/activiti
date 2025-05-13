@@ -22,7 +22,7 @@ import org.springframework.core.io.Resource;
 
 public class ProcessDefinitionResourceFinderDescriptor implements ResourceFinderDescriptor {
 
-    private ActivitiProperties activitiProperties;
+    private final ActivitiProperties activitiProperties;
 
     public ProcessDefinitionResourceFinderDescriptor(ActivitiProperties activitiProperties) {
        this.activitiProperties = activitiProperties;

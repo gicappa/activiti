@@ -35,7 +35,7 @@ public class AstNestedTest extends TestCase {
 
     @Test
     public void testEval() {
-        assertEquals(1l, parseNode("${(1)}").eval(null, null));
+        assertEquals(1L, parseNode("${(1)}").eval(null, null));
     }
 
     @Test

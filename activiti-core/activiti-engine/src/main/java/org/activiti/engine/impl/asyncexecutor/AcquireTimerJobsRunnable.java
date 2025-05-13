@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
  */
 public class AcquireTimerJobsRunnable implements Runnable {
 
-  private static Logger log = LoggerFactory.getLogger(AcquireTimerJobsRunnable.class);
+  private static final Logger log = LoggerFactory.getLogger(AcquireTimerJobsRunnable.class);
 
   protected final AsyncExecutor asyncExecutor;
   protected final JobManager jobManager;
@@ -49,7 +49,7 @@ public class AcquireTimerJobsRunnable implements Runnable {
   }
 
   public synchronized void run() {
-    log.info("{} starting to acquire async jobs due");
+    log.info("starting to acquire async jobs due");
     Thread.currentThread().setName("activiti-acquire-timer-jobs");
 
     final CommandExecutor commandExecutor = asyncExecutor.getProcessEngineConfiguration().getCommandExecutor();
@@ -115,7 +115,7 @@ public class AcquireTimerJobsRunnable implements Runnable {
       }
     }
 
-    log.info("{} stopped async job due acquisition");
+    log.info("stopped async job due acquisition");
   }
 
   public void stop() {
@@ -125,13 +125,5 @@ public class AcquireTimerJobsRunnable implements Runnable {
         MONITOR.notifyAll();
       }
     }
-  }
-
-  public long getMillisToWait() {
-    return millisToWait;
-  }
-
-  public void setMillisToWait(long millisToWait) {
-    this.millisToWait = millisToWait;
   }
 }

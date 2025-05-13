@@ -15,6 +15,7 @@
  */
 package org.activiti.engine.impl.cmd;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import org.activiti.engine.ActivitiIllegalArgumentException;
@@ -31,9 +32,10 @@ import org.slf4j.LoggerFactory;
  */
 public class MoveJobToDeadLetterJobCmd implements Command<DeadLetterJobEntity>, Serializable {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
-  private static Logger log = LoggerFactory.getLogger(MoveJobToDeadLetterJobCmd.class);
+  private static final Logger log = LoggerFactory.getLogger(MoveJobToDeadLetterJobCmd.class);
 
   protected String jobId;
 
@@ -60,9 +62,7 @@ public class MoveJobToDeadLetterJobCmd implements Command<DeadLetterJobEntity>, 
       log.debug("Moving job to deadletter job table {}", job.getId());
     }
 
-    DeadLetterJobEntity deadLetterJob = commandContext.getJobManager().moveJobToDeadLetterJob(job);
-
-    return deadLetterJob;
+    return commandContext.getJobManager().moveJobToDeadLetterJob(job);
   }
 
   public String getJobId() {

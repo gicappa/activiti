@@ -15,6 +15,7 @@
  */
 package org.activiti.engine.test.api.repository;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
@@ -24,8 +25,6 @@ import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.zip.ZipInputStream;
-
-import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.EndEvent;
 import org.activiti.bpmn.model.ParallelGateway;
 import org.activiti.bpmn.model.StartEvent;
@@ -39,39 +38,44 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.test.Deployment;
 
 /**
+ *
  */
 public class RepositoryServiceTest extends PluggableActivitiTestCase {
 
-  @Deployment(resources = { "org/activiti/engine/test/api/oneTaskProcess.bpmn20.xml" })
+  @Deployment(resources = {"org/activiti/engine/test/api/oneTaskProcess.bpmn20.xml"})
   public void testStartProcessInstanceById() {
-    List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery().list();
+    List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery()
+      .list();
     assertThat(processDefinitions).hasSize(1);
 
-    ProcessDefinition processDefinition = processDefinitions.get(0);
+    ProcessDefinition processDefinition = processDefinitions.getFirst();
     assertThat(processDefinition.getKey()).isEqualTo("oneTaskProcess");
     assertThat(processDefinition.getId()).isNotNull();
   }
 
-  @Deployment(resources = { "org/activiti/engine/test/api/oneTaskProcess.bpmn20.xml" })
+  @Deployment(resources = {"org/activiti/engine/test/api/oneTaskProcess.bpmn20.xml"})
   public void testFindProcessDefinitionById() {
     List<ProcessDefinition> definitions = repositoryService.createProcessDefinitionQuery().list();
     assertThat(definitions).hasSize(1);
 
-    ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionId(definitions.get(0).getId()).singleResult();
+    ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+      .processDefinitionId(definitions.get(0).getId()).singleResult();
     runtimeService.startProcessInstanceByKey("oneTaskProcess");
     assertThat(processDefinition).isNotNull();
     assertThat(processDefinition.getKey()).isEqualTo("oneTaskProcess");
     assertThat(processDefinition.getName()).isEqualTo("The One Task Process");
 
-    processDefinition = repositoryService.getProcessDefinition(definitions.get(0).getId());
-    assertThat(processDefinition.getDescription()).isEqualTo("This is a process for testing purposes");
+    processDefinition = repositoryService.getProcessDefinition(definitions.getFirst().getId());
+    assertThat(processDefinition.getDescription()).isEqualTo(
+      "This is a process for testing purposes");
   }
 
-  @Deployment(resources = { "org/activiti/engine/test/api/oneTaskProcess.bpmn20.xml" })
+  @Deployment(resources = {"org/activiti/engine/test/api/oneTaskProcess.bpmn20.xml"})
   public void testDeleteDeploymentWithRunningInstances() {
-    List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery().list();
+    List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery()
+      .list();
     assertThat(processDefinitions).hasSize(1);
-    ProcessDefinition processDefinition = processDefinitions.get(0);
+    ProcessDefinition processDefinition = processDefinitions.getFirst();
 
     runtimeService.startProcessInstanceById(processDefinition.getId());
 
@@ -104,11 +108,12 @@ public class RepositoryServiceTest extends PluggableActivitiTestCase {
       .withMessageContaining("Could not find a deployment with id 'foobar'.");
   }
 
-  @Deployment(resources = { "org/activiti/engine/test/api/oneTaskProcess.bpmn20.xml" })
+  @Deployment(resources = {"org/activiti/engine/test/api/oneTaskProcess.bpmn20.xml"})
   public void testDeleteDeploymentCascadeWithRunningInstances() {
-    List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery().list();
+    List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery()
+      .list();
     assertThat(processDefinitions).hasSize(1);
-    ProcessDefinition processDefinition = processDefinitions.get(0);
+    ProcessDefinition processDefinition = processDefinitions.getFirst();
 
     runtimeService.startProcessInstanceById(processDefinition.getId());
 
@@ -129,8 +134,10 @@ public class RepositoryServiceTest extends PluggableActivitiTestCase {
     Date inThreeDays = new Date(startTime.getTime() + (3 * 24 * 60 * 60 * 1000));
 
     // Deploy process, but activate after three days
-    org.activiti.engine.repository.Deployment deployment = repositoryService.createDeployment().addClasspathResource("org/activiti/engine/test/api/oneTaskProcess.bpmn20.xml")
-        .addClasspathResource("org/activiti/engine/test/api/twoTasksProcess.bpmn20.xml").activateProcessDefinitionsOn(inThreeDays).deploy();
+    org.activiti.engine.repository.Deployment deployment = repositoryService.createDeployment()
+      .addClasspathResource("org/activiti/engine/test/api/oneTaskProcess.bpmn20.xml")
+      .addClasspathResource("org/activiti/engine/test/api/twoTasksProcess.bpmn20.xml")
+      .activateProcessDefinitionsOn(inThreeDays).deploy();
 
     assertThat(repositoryService.createDeploymentQuery().count()).isEqualTo(1);
     assertThat(repositoryService.createProcessDefinitionQuery().count()).isEqualTo(2);
@@ -161,23 +168,27 @@ public class RepositoryServiceTest extends PluggableActivitiTestCase {
     repositoryService.deleteDeployment(deployment.getId(), true);
   }
 
-  @Deployment(resources = { "org/activiti/engine/test/api/oneTaskProcess.bpmn20.xml" })
+  @Deployment(resources = {"org/activiti/engine/test/api/oneTaskProcess.bpmn20.xml"})
   public void testGetResourceAsStreamUnexistingResourceInExistingDeployment() {
     // Get hold of the deployment id
-    org.activiti.engine.repository.Deployment deployment = repositoryService.createDeploymentQuery().singleResult();
+    org.activiti.engine.repository.Deployment deployment = repositoryService.createDeploymentQuery()
+      .singleResult();
 
     assertThatExceptionOfType(ActivitiObjectNotFoundException.class)
-      .isThrownBy(() -> repositoryService.getResourceAsStream(deployment.getId(), "org/activiti/engine/test/api/unexistingProcess.bpmn.xml"))
+      .isThrownBy(() -> repositoryService.getResourceAsStream(deployment.getId(),
+        "org/activiti/engine/test/api/unexistingProcess.bpmn.xml"))
       .withMessageContaining("no resource found with name")
       .satisfies(ae -> assertThat(ae.getObjectClass()).isEqualTo(InputStream.class));
   }
 
-  @Deployment(resources = { "org/activiti/engine/test/api/oneTaskProcess.bpmn20.xml" })
+  @Deployment(resources = {"org/activiti/engine/test/api/oneTaskProcess.bpmn20.xml"})
   public void testGetResourceAsStreamUnexistingDeployment() {
     assertThatExceptionOfType(ActivitiObjectNotFoundException.class)
-      .isThrownBy(() -> repositoryService.getResourceAsStream("unexistingdeployment", "org/activiti/engine/test/api/unexistingProcess.bpmn.xml"))
+      .isThrownBy(() -> repositoryService.getResourceAsStream("unexistingdeployment",
+        "org/activiti/engine/test/api/unexistingProcess.bpmn.xml"))
       .withMessageContaining("deployment does not exist")
-      .satisfies(ae -> assertThat(ae.getObjectClass()).isEqualTo(org.activiti.engine.repository.Deployment.class));
+      .satisfies(ae -> assertThat(ae.getObjectClass()).isEqualTo(
+        org.activiti.engine.repository.Deployment.class));
   }
 
   public void testGetResourceAsStreamNullArguments() {
@@ -211,10 +222,10 @@ public class RepositoryServiceTest extends PluggableActivitiTestCase {
     repositoryService.deleteModel(model.getId());
   }
 
-  public void testNewModelWithSource() throws Exception {
+  public void testNewModelWithSource() {
     Model model = repositoryService.newModel();
     model.setName("Test model");
-    byte[] testSource = "modelsource".getBytes("utf-8");
+    byte[] testSource = "modelsource".getBytes(UTF_8);
     repositoryService.saveModel(model);
 
     assertThat(model.getId()).isNotNull();
@@ -225,12 +236,12 @@ public class RepositoryServiceTest extends PluggableActivitiTestCase {
     assertThat(model.getName()).isEqualTo("Test model");
 
     byte[] editorSourceBytes = repositoryService.getModelEditorSource(model.getId());
-    assertThat(new String(editorSourceBytes, "utf-8")).isEqualTo("modelsource");
+    assertThat(new String(editorSourceBytes, UTF_8)).isEqualTo("modelsource");
 
     repositoryService.deleteModel(model.getId());
   }
 
-  public void testUpdateModelPersistence() throws Exception {
+  public void testUpdateModelPersistence() {
     Model model = repositoryService.newModel();
     assertThat(model).isNotNull();
 
@@ -250,8 +261,8 @@ public class RepositoryServiceTest extends PluggableActivitiTestCase {
     repositoryService.saveModel(model);
 
     assertThat(model.getId()).isNotNull();
-    repositoryService.addModelEditorSource(model.getId(), "new".getBytes("utf-8"));
-    repositoryService.addModelEditorSourceExtra(model.getId(), "new".getBytes("utf-8"));
+    repositoryService.addModelEditorSource(model.getId(), "new".getBytes(UTF_8));
+    repositoryService.addModelEditorSourceExtra(model.getId(), "new".getBytes(UTF_8));
 
     model = repositoryService.getModel(model.getId());
 
@@ -260,88 +271,89 @@ public class RepositoryServiceTest extends PluggableActivitiTestCase {
     assertThat(model.getMetaInfo()).isEqualTo("test");
     assertThat(model.getCreateTime()).isNotNull();
     assertThat(model.getVersion()).isEqualTo(Integer.valueOf(2));
-    assertThat(new String(repositoryService.getModelEditorSource(model.getId()), "utf-8")).isEqualTo("new");
-    assertThat(new String(repositoryService.getModelEditorSourceExtra(model.getId()), "utf-8")).isEqualTo("new");
+    assertThat(new String(repositoryService.getModelEditorSource(model.getId()), UTF_8)).isEqualTo(
+      "new");
+    assertThat(new String(repositoryService.getModelEditorSourceExtra(model.getId()),
+      UTF_8)).isEqualTo("new");
 
     repositoryService.deleteModel(model.getId());
   }
 
-  @Deployment(resources = { "org/activiti/engine/test/api/oneTaskProcess.bpmn20.xml" })
+  @Deployment(resources = {"org/activiti/engine/test/api/oneTaskProcess.bpmn20.xml"})
   public void testProcessDefinitionEntitySerializable() throws Exception {
-    String procDefId = repositoryService.createProcessDefinitionQuery().singleResult().getId();
-    ProcessDefinition processDefinition = repositoryService.getProcessDefinition(procDefId);
+    var procDefId = repositoryService.createProcessDefinitionQuery().singleResult().getId();
+    var processDefinition = repositoryService.getProcessDefinition(procDefId);
+    var baos = new ByteArrayOutputStream();
 
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
     new ObjectOutputStream(baos).writeObject(processDefinition);
 
     byte[] bytes = baos.toByteArray();
+
     assertThat(bytes).isNotEmpty();
   }
 
   @Deployment
   public void testGetBpmnModel() {
-    ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().singleResult();
+    var processDefinition = repositoryService.createProcessDefinitionQuery()
+      .singleResult();
 
     // Some basic assertions
-    BpmnModel bpmnModel = repositoryService.getBpmnModel(processDefinition.getId());
+    var bpmnModel = repositoryService.getBpmnModel(processDefinition.getId());
     assertThat(bpmnModel).isNotNull();
     assertThat(bpmnModel.getProcesses()).hasSize(1);
     assertThat(!bpmnModel.getLocationMap().isEmpty()).isTrue();
     assertThat(!bpmnModel.getFlowLocationMap().isEmpty()).isTrue();
 
     // Test the flow
-    org.activiti.bpmn.model.Process process = bpmnModel.getProcesses().get(0);
-    List<StartEvent> startEvents = process.findFlowElementsOfType(StartEvent.class);
+    var process = bpmnModel.getProcesses().getFirst();
+    var startEvents = process.findFlowElementsOfType(StartEvent.class);
     assertThat(startEvents).hasSize(1);
-    StartEvent startEvent = startEvents.get(0);
+    var startEvent = startEvents.getFirst();
     assertThat(startEvent.getOutgoingFlows()).hasSize(1);
     assertThat(startEvent.getIncomingFlows()).hasSize(0);
-
-    String nextElementId = startEvent.getOutgoingFlows().get(0).getTargetRef();
-    UserTask userTask = (UserTask) process.getFlowElement(nextElementId);
+    var nextElementId = startEvent.getOutgoingFlows().get(0).getTargetRef();
+    var userTask = (UserTask) process.getFlowElement(nextElementId);
     assertThat(userTask.getName()).isEqualTo("First Task");
-
     assertThat(userTask.getOutgoingFlows()).hasSize(1);
     assertThat(userTask.getIncomingFlows()).hasSize(1);
-    nextElementId = userTask.getOutgoingFlows().get(0).getTargetRef();
-    ParallelGateway parallelGateway = (ParallelGateway) process.getFlowElement(nextElementId);
+    nextElementId = userTask.getOutgoingFlows().getFirst().getTargetRef();
+    var parallelGateway = (ParallelGateway) process.getFlowElement(nextElementId);
     assertThat(parallelGateway.getOutgoingFlows()).hasSize(2);
-
-    nextElementId = parallelGateway.getOutgoingFlows().get(0).getTargetRef();
+    nextElementId = parallelGateway.getOutgoingFlows().getFirst().getTargetRef();
     assertThat(parallelGateway.getIncomingFlows()).hasSize(1);
     userTask = (UserTask) process.getFlowElement(nextElementId);
     assertThat(userTask.getOutgoingFlows()).hasSize(1);
-
-    nextElementId = userTask.getOutgoingFlows().get(0).getTargetRef();
+    nextElementId = userTask.getOutgoingFlows().getFirst().getTargetRef();
     parallelGateway = (ParallelGateway) process.getFlowElement(nextElementId);
     assertThat(parallelGateway.getOutgoingFlows()).hasSize(1);
     assertThat(parallelGateway.getIncomingFlows()).hasSize(2);
-
-    nextElementId = parallelGateway.getOutgoingFlows().get(0).getTargetRef();
-    EndEvent endEvent = (EndEvent) process.getFlowElement(nextElementId);
+    nextElementId = parallelGateway.getOutgoingFlows().getFirst().getTargetRef();
+    var endEvent = (EndEvent) process.getFlowElement(nextElementId);
     assertThat(endEvent.getOutgoingFlows()).hasSize(0);
     assertThat(endEvent.getIncomingFlows()).hasSize(1);
   }
 
   /**
-   * This test was added due to issues with unzip of JDK 7, where the default is changed to UTF8 instead of the platform encoding (which is, in fact, good). However, some platforms do not create
-   * UTF8-compatible ZIP files.
-   *
+   * This test was added due to issues with unzip of JDK 7, where the default is changed to UTF8
+   * instead of the platform encoding (which is, in fact, good). However, some platforms do not
+   * create UTF8-compatible ZIP files.
+   * <p>
    * The tested zip file is created on OS X (non-UTF-8).
-   *
+   * <p>
    * See https://blogs.oracle.com/xuemingshen/entry/non_utf_8_encoding_in
    */
   public void testDeployZipFile() {
-    InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("org/activiti/engine/test/api/repository/test-processes.zip");
+    var inputStream = this.getClass().getClassLoader()
+      .getResourceAsStream("org/activiti/engine/test/api/repository/test-processes.zip");
     assertThat(inputStream).isNotNull();
-    ZipInputStream zipInputStream = new ZipInputStream(inputStream);
+    var zipInputStream = new ZipInputStream(inputStream);
     assertThat(zipInputStream).isNotNull();
     repositoryService.createDeployment().addZipInputStream(zipInputStream).deploy();
 
     assertThat(repositoryService.createProcessDefinitionQuery().count()).isEqualTo(6);
 
     // Delete
-    for (org.activiti.engine.repository.Deployment deployment : repositoryService.createDeploymentQuery().list()) {
+    for (var deployment : repositoryService.createDeploymentQuery().list()) {
       repositoryService.deleteDeployment(deployment.getId(), true);
     }
   }

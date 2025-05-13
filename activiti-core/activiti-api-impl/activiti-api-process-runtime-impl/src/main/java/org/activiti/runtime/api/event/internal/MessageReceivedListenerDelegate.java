@@ -16,7 +16,6 @@
 package org.activiti.runtime.api.event.internal;
 
 import java.util.List;
-
 import org.activiti.api.process.model.events.BPMNMessageReceivedEvent;
 import org.activiti.api.process.runtime.events.listener.BPMNElementEventListener;
 import org.activiti.engine.delegate.event.ActivitiEvent;
@@ -26,30 +25,30 @@ import org.activiti.runtime.api.event.impl.ToMessageReceivedConverter;
 
 public class MessageReceivedListenerDelegate implements ActivitiEventListener {
 
-    private List<BPMNElementEventListener<BPMNMessageReceivedEvent>> processRuntimeEventListeners;
+  private final List<BPMNElementEventListener<BPMNMessageReceivedEvent>> processRuntimeEventListeners;
+  private final ToMessageReceivedConverter converter;
 
-    private ToMessageReceivedConverter converter;
+  public MessageReceivedListenerDelegate(
+    List<BPMNElementEventListener<BPMNMessageReceivedEvent>> processRuntimeEventListeners,
+    ToMessageReceivedConverter converter) {
+    this.processRuntimeEventListeners = processRuntimeEventListeners;
+    this.converter = converter;
+  }
 
-    public MessageReceivedListenerDelegate(List<BPMNElementEventListener<BPMNMessageReceivedEvent>> processRuntimeEventListeners,
-                                           ToMessageReceivedConverter converter) {
-        this.processRuntimeEventListeners = processRuntimeEventListeners;
-        this.converter = converter;
+  @Override
+  public void onEvent(ActivitiEvent event) {
+    if (event instanceof ActivitiMessageEvent) {
+      converter.from((ActivitiMessageEvent) event)
+        .ifPresent(convertedEvent -> {
+          for (BPMNElementEventListener<BPMNMessageReceivedEvent> listener : processRuntimeEventListeners) {
+            listener.onEvent(convertedEvent);
+          }
+        });
     }
+  }
 
-    @Override
-    public void onEvent(ActivitiEvent event) {
-        if (event instanceof ActivitiMessageEvent) {
-            converter.from((ActivitiMessageEvent) event)
-                    .ifPresent(convertedEvent -> {
-                        for (BPMNElementEventListener<BPMNMessageReceivedEvent> listener : processRuntimeEventListeners) {
-                            listener.onEvent(convertedEvent);
-                        }
-                    });
-        }
-    }
-
-    @Override
-    public boolean isFailOnException() {
-        return false;
-    }
+  @Override
+  public boolean isFailOnException() {
+    return false;
+  }
 }

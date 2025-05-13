@@ -21,7 +21,7 @@ import org.activiti.api.model.shared.Payload;
 
 public class UpdateTaskPayload implements Payload {
 
-    private String id;
+    private final String id;
     private String taskId;
     private String name;
     private String description;

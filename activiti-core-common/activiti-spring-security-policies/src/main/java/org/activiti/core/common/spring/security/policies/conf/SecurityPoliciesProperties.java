@@ -24,9 +24,9 @@ import java.util.List;
 @ConfigurationProperties("activiti.security")
 public class SecurityPoliciesProperties {
 
-    private List<SecurityPolicy> policies = new ArrayList<>();
+    private final List<SecurityPolicy> policies = new ArrayList<>();
 
-    private String wildcard = "*";
+    private final String wildcard = "*";
 
 
     public List<SecurityPolicy> getPolicies() {

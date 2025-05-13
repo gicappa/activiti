@@ -22,7 +22,7 @@ public interface TypeConverter extends Serializable {
     /**
      * Default conversions as from JSR245.
      */
-    public static final TypeConverter DEFAULT = new TypeConverterImpl();
+    TypeConverter DEFAULT = new TypeConverterImpl();
 
     /**
      * Convert the given input value to the specified target type.
@@ -30,5 +30,5 @@ public interface TypeConverter extends Serializable {
      * @param type target type
      * @return conversion result
      */
-    public <T> T convert(Object value, Class<T> type) throws ELException;
+    <T> T convert(Object value, Class<T> type) throws ELException;
 }

@@ -116,7 +116,7 @@ public class TaskRuntimeImplTest {
                 .withTaskId(taskId)
                 .withAssignee(newAssignee)
                 .build();
-        List<String> userCandidates = Arrays.asList(newAssignee);
+        List<String> userCandidates = List.of(newAssignee);
         doReturn(userCandidates).when(taskRuntime).userCandidates(taskId);
         TaskImpl task =  mock(TaskImpl.class);
         given(task.getAssignee()).willReturn("user");

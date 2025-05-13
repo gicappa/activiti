@@ -15,6 +15,8 @@
  */
 package org.activiti.spring.test.components.scope;
 
+import java.io.Serial;
+import java.util.Objects;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,9 +33,10 @@ import java.io.Serializable;
  */
 public class StatefulObject implements Serializable, InitializingBean {
 
-  private transient Logger logger = LoggerFactory.getLogger(getClass());
+  private final transient Logger logger = LoggerFactory.getLogger(getClass());
 
-  public static final long serialVersionUID = 1L;
+  @Serial
+  private static final long serialVersionUID = 1L;
 
   private String name;
   private int visitedCount = 0;
@@ -73,10 +76,7 @@ public class StatefulObject implements Serializable, InitializingBean {
 
     if (visitedCount != that.visitedCount)
       return false;
-    if (name != null ? !name.equals(that.name) : that.name != null)
-      return false;
-
-    return true;
+    return Objects.equals(name, that.name);
   }
 
   @Override
@@ -107,7 +107,7 @@ public class StatefulObject implements Serializable, InitializingBean {
     this.name = name;
   }
 
-  public void afterPropertiesSet() throws Exception {
+  public void afterPropertiesSet() {
     Assert.notNull(this.processInstance, "the processInstance should be equal to the currently active processInstance!");
     logger.info("the 'processInstance' property is non-null: PI ID#{}", this.processInstance.getId());
   }

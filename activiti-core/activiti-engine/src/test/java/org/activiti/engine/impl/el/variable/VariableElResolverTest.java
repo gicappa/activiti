@@ -28,8 +28,8 @@ import org.junit.Test;
 
 public class VariableElResolverTest {
 
-    private ObjectMapper objectMapper = new ObjectMapper();
-    private VariableElResolver resolver = new VariableElResolver(objectMapper);
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final VariableElResolver resolver = new VariableElResolver(objectMapper);
 
     @Test
     public void canResolve_should_returnTrueWhenVariableScopeHasVariableForProperty() {

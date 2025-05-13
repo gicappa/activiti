@@ -27,10 +27,10 @@ import org.activiti.engine.delegate.event.ActivitiEventType;
  */
 public class TestHistoricActivityEventListener implements ActivitiEventListener {
 
-	private List<ActivitiEvent> eventsReceived;
+	private final List<ActivitiEvent> eventsReceived;
 
 	public TestHistoricActivityEventListener() {
-		eventsReceived = new ArrayList<ActivitiEvent>();
+		eventsReceived = new ArrayList<>();
   }
 
 	public List<ActivitiEvent> getEventsReceived() {

@@ -38,10 +38,10 @@ public class ApplicationDeployedEventProducer extends AbstractActivitiSmartLifeC
 
     private static final String APPLICATION_DEPLOYMENT_NAME= "SpringAutoDeployment";
 
-    private RepositoryService repositoryService;
-    private APIDeploymentConverter deploymentConverter;
-    private List<ProcessRuntimeEventListener<ApplicationDeployedEvent>> listeners;
-    private ApplicationEventPublisher eventPublisher;
+    private final RepositoryService repositoryService;
+    private final APIDeploymentConverter deploymentConverter;
+    private final List<ProcessRuntimeEventListener<ApplicationDeployedEvent>> listeners;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Value("${activiti.deploy.after-rollback:false}")
     private boolean afterRollback;

@@ -17,39 +17,38 @@ package org.activiti.api.runtime.model.impl;
 
 import static org.activiti.api.runtime.model.impl.ProcessVariablesMapTypeRegistry.OBJECT_TYPE_KEY;
 
-import java.util.Map;
-
-import org.springframework.core.convert.converter.Converter;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Map;
+import org.springframework.core.convert.converter.Converter;
 
 @ProcessVariableTypeConverter
 public class ObjectValueToStringConverter implements Converter<ObjectValue, String> {
-    private static final String CLASS = "@class";
-    private final ObjectMapper objectMapper;
 
-    public ObjectValueToStringConverter(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
+  private static final String CLASS = "@class";
+  private final ObjectMapper objectMapper;
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public String convert(ObjectValue source) {
+  public ObjectValueToStringConverter(ObjectMapper objectMapper) {
+    this.objectMapper = objectMapper;
+  }
 
-        try {
-            Map<String, Object> value = objectMapper.convertValue(source, Map.class);
+  @SuppressWarnings("unchecked")
+  @Override
+  public String convert(ObjectValue source) {
 
-            if (Map.class.isInstance(value.get(OBJECT_TYPE_KEY))) {
-                Map<String, Object> object = objectMapper.convertValue(source.getObject(), Map.class);
+    try {
+      Map<String, Object> value = objectMapper.convertValue(source, Map.class);
 
-                if (object.containsKey(CLASS)) {
-                    Map.class.cast(value.get(OBJECT_TYPE_KEY)).put(CLASS, object.get(CLASS));
-                }
-            }
+      if (value.get(OBJECT_TYPE_KEY) instanceof Map) {
+        var object = objectMapper.convertValue(source.getObject(), Map.class);
 
-            return objectMapper.writeValueAsString(value);
-        } catch (Exception cause) {
-            throw new RuntimeException(cause);
+        if (object.containsKey(CLASS)) {
+          ((Map) value.get(OBJECT_TYPE_KEY)).put(CLASS, object.get(CLASS));
         }
+      }
+
+      return objectMapper.writeValueAsString(value);
+    } catch (Exception cause) {
+      throw new RuntimeException(cause);
     }
+  }
 }

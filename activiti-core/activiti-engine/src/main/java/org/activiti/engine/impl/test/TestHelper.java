@@ -49,14 +49,14 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class TestHelper {
 
-  private static Logger log = LoggerFactory.getLogger(TestHelper.class);
+  private static final Logger log = LoggerFactory.getLogger(TestHelper.class);
 
   public static final String EMPTY_LINE = "\n";
 
   public static final List<String> TABLENAMES_EXCLUDED_FROM_DB_CLEAN_CHECK = singletonList(
     "ACT_GE_PROPERTY");
 
-  static Map<String, ProcessEngine> processEngines = new HashMap<String, ProcessEngine>();
+  static Map<String, ProcessEngine> processEngines = new HashMap<>();
 
   // Assertion methods ///////////////////////////////////////////////////
 
@@ -182,19 +182,19 @@ public abstract class TestHelper {
         mockSupport.setAllServiceTasksNoOp();
       } else {
 
-        if (ids != null && ids.length > 0) {
+        if (ids != null) {
           for (String id : ids) {
             mockSupport.addNoOpServiceTaskById(id);
           }
         }
 
-        if (classes != null && classes.length > 0) {
+        if (classes != null) {
           for (Class<?> clazz : classes) {
             mockSupport.addNoOpServiceTaskByClassName(clazz.getName());
           }
         }
 
-        if (classNames != null && classNames.length > 0) {
+        if (classNames != null) {
           for (String className : classNames) {
             mockSupport.addNoOpServiceTaskByClassName(className);
           }
@@ -216,12 +216,10 @@ public abstract class TestHelper {
    * suffix will be returned.
    */
   public static String getBpmnProcessDefinitionResource(Class<?> type, String name) {
-    for (String suffix : ResourceNameUtil.BPMN_RESOURCE_SUFFIXES) {
-      String resource = type.getName().replace('.', '/') + "." + name + "." + suffix;
-      InputStream inputStream = ReflectUtil.getResourceAsStream(resource);
-      if (inputStream == null) {
-        continue;
-      } else {
+    for (var suffix : ResourceNameUtil.BPMN_RESOURCE_SUFFIXES) {
+      var resource = type.getName().replace('.', '/') + "." + name + "." + suffix;
+      var inputStream = ReflectUtil.getResourceAsStream(resource);
+      if (inputStream != null) {
         return resource;
       }
     }
@@ -271,19 +269,17 @@ public abstract class TestHelper {
         }
       }
     }
-    if (outputMessage.length() > 0) {
+    if (!outputMessage.isEmpty()) {
       outputMessage.insert(0, "DB NOT CLEAN: \n");
       log.error(EMPTY_LINE);
       log.error(outputMessage.toString());
 
       ((ProcessEngineImpl) processEngine).getProcessEngineConfiguration().getCommandExecutor()
-        .execute(new Command<Object>() {
-          public Object execute(CommandContext commandContext) {
-            DbSqlSession dbSqlSession = commandContext.getDbSqlSession();
-            dbSqlSession.dbSchemaDrop();
-            dbSqlSession.dbSchemaCreate();
-            return null;
-          }
+        .execute(commandContext -> {
+          DbSqlSession dbSqlSession = commandContext.getDbSqlSession();
+          dbSqlSession.dbSchemaDrop();
+          dbSqlSession.dbSchemaCreate();
+          return null;
         });
 
       throw new AssertionError(outputMessage.toString());

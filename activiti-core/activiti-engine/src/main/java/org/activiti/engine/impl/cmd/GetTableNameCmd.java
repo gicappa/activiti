@@ -15,6 +15,7 @@
  */
 package org.activiti.engine.impl.cmd;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import org.activiti.engine.ActivitiIllegalArgumentException;
@@ -23,9 +24,10 @@ import org.activiti.engine.impl.interceptor.CommandContext;
 
 public class GetTableNameCmd implements Command<String>, Serializable {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
-  private Class<?> entityClass;
+  private final Class<?> entityClass;
 
   public GetTableNameCmd(Class<?> entityClass) {
     this.entityClass = entityClass;

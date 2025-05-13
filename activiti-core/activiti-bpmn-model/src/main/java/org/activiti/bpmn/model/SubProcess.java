@@ -25,10 +25,10 @@ import org.apache.commons.lang3.StringUtils;
 
 public class SubProcess extends Activity implements FlowElementsContainer {
 
-  protected Map<String, FlowElement> flowElementMap = new LinkedHashMap<String, FlowElement>();
-  protected List<FlowElement> flowElementList = new ArrayList<FlowElement>();
-  protected List<Artifact> artifactList = new ArrayList<Artifact>();
-  protected List<ValuedDataObject> dataObjects = new ArrayList<ValuedDataObject>();
+  protected Map<String, FlowElement> flowElementMap = new LinkedHashMap<>();
+  protected List<FlowElement> flowElementList = new ArrayList<>();
+  protected List<Artifact> artifactList = new ArrayList<>();
+  protected List<ValuedDataObject> dataObjects = new ArrayList<>();
 
   public FlowElement getFlowElement(String id) {
     FlowElement foundElement = null;
@@ -66,7 +66,7 @@ public class SubProcess extends Activity implements FlowElementsContainer {
   }
 
   public void removeFlowElement(String elementId) {
-    FlowElement element = getFlowElement(elementId);
+    var element = getFlowElement(elementId);
     if (element != null) {
       flowElementList.remove(element);
       flowElementMap.remove(elementId);
@@ -96,7 +96,7 @@ public class SubProcess extends Activity implements FlowElementsContainer {
 
   public Artifact getArtifact(String id) {
     Artifact foundArtifact = null;
-    for (Artifact artifact : artifactList) {
+    for (var artifact : artifactList) {
       if (id.equals(artifact.getId())) {
         foundArtifact = artifact;
         break;
@@ -121,7 +121,7 @@ public class SubProcess extends Activity implements FlowElementsContainer {
   }
 
   public SubProcess clone() {
-    SubProcess clone = new SubProcess();
+    var clone = new SubProcess();
     clone.setValues(this);
     return clone;
   }
@@ -134,11 +134,12 @@ public class SubProcess extends Activity implements FlowElementsContainer {
      *
      * Determine the differences between the 2 elements' data object
      */
-    for (ValuedDataObject thisObject : getDataObjects()) {
+    for (var thisObject : getDataObjects()) {
       boolean exists = false;
-      for (ValuedDataObject otherObject : otherElement.getDataObjects()) {
+      for (var otherObject : otherElement.getDataObjects()) {
         if (thisObject.getId().equals(otherObject.getId())) {
           exists = true;
+          break;
         }
       }
       if (!exists) {
@@ -149,8 +150,8 @@ public class SubProcess extends Activity implements FlowElementsContainer {
 
     dataObjects = new ArrayList<ValuedDataObject>();
     if (otherElement.getDataObjects() != null && !otherElement.getDataObjects().isEmpty()) {
-      for (ValuedDataObject dataObject : otherElement.getDataObjects()) {
-        ValuedDataObject clone = dataObject.clone();
+      for (var dataObject : otherElement.getDataObjects()) {
+        var clone = dataObject.clone();
         dataObjects.add(clone);
         // add it to the list of FlowElements
         // if it is already there, remove it first so order is same as
@@ -161,12 +162,12 @@ public class SubProcess extends Activity implements FlowElementsContainer {
     }
 
     flowElementList.clear();
-    for (FlowElement flowElement : otherElement.getFlowElements()) {
+    for (var flowElement : otherElement.getFlowElements()) {
       addFlowElement(flowElement);
     }
 
     artifactList.clear();
-    for (Artifact artifact : otherElement.getArtifacts()) {
+    for (var artifact : otherElement.getArtifacts()) {
       addArtifact(artifact);
     }
   }

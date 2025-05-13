@@ -37,7 +37,7 @@ public class ExecutionQueryProperty implements QueryProperty {
   public static final ExecutionQueryProperty PROCESS_DEFINITION_ID = new ExecutionQueryProperty("ProcessDefinitionId");
   public static final ExecutionQueryProperty TENANT_ID = new ExecutionQueryProperty("RES.TENANT_ID_");
 
-  private String name;
+  private final String name;
 
   public ExecutionQueryProperty(String name) {
     this.name = name;

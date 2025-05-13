@@ -23,20 +23,20 @@ import org.slf4j.LoggerFactory;
 
 public class JsonType implements VariableType {
 
-    private static final Logger logger = LoggerFactory.getLogger(JsonType.class);
-    public static final String JSON = "json";
+  private static final Logger logger = LoggerFactory.getLogger(JsonType.class);
+  public static final String JSON = "json";
 
-    private final int maxLength;
-  private ObjectMapper objectMapper;
-  private boolean serializePOJOsInVariablesToJson;
-    private JsonTypeConverter jsonTypeConverter;
+  private final int maxLength;
+  private final ObjectMapper objectMapper;
+  private final boolean serializePOJOsInVariablesToJson;
+  private final JsonTypeConverter jsonTypeConverter;
 
   public JsonType(int maxLength, ObjectMapper objectMapper, boolean serializePOJOsInVariablesToJson,
-      JsonTypeConverter jsonTypeConverter) {
+    JsonTypeConverter jsonTypeConverter) {
     this.maxLength = maxLength;
     this.objectMapper = objectMapper;
     this.serializePOJOsInVariablesToJson = serializePOJOsInVariablesToJson;
-      this.jsonTypeConverter = jsonTypeConverter;
+    this.jsonTypeConverter = jsonTypeConverter;
   }
 
   public String getTypeName() {
@@ -49,15 +49,15 @@ public class JsonType implements VariableType {
 
   public Object getValue(ValueFields valueFields) {
     Object loadedValue = null;
-    if (valueFields.getTextValue() != null && valueFields.getTextValue().length() > 0) {
-        try {
-            loadedValue = jsonTypeConverter.convertToValue(
-                objectMapper.readTree(valueFields.getTextValue()), valueFields);
+    if (valueFields.getTextValue() != null && !valueFields.getTextValue().isEmpty()) {
+      try {
+        loadedValue = jsonTypeConverter.convertToValue(
+          objectMapper.readTree(valueFields.getTextValue()), valueFields);
 
-        } catch (Exception e) {
-          logger.error("Error reading json variable " + valueFields.getName(), e);
-        }
+      } catch (Exception e) {
+        logger.error("Error reading json variable " + valueFields.getName(), e);
       }
+    }
     return loadedValue;
   }
 
@@ -65,10 +65,10 @@ public class JsonType implements VariableType {
     try {
       valueFields.setTextValue(objectMapper.writeValueAsString(value));
       if (value != null) {
-          valueFields.setTextValue2(value.getClass().getName());
+        valueFields.setTextValue2(value.getClass().getName());
       }
     } catch (JsonProcessingException e) {
-    logger.error("Error writing json variable " + valueFields.getName(), e);
+      logger.error("Error writing json variable " + valueFields.getName(), e);
     }
   }
 
@@ -77,7 +77,8 @@ public class JsonType implements VariableType {
       return true;
     }
 
-    if (JsonNode.class.isAssignableFrom(value.getClass()) || (objectMapper.canSerialize(value.getClass()) && serializePOJOsInVariablesToJson)) {
+    if (JsonNode.class.isAssignableFrom(value.getClass()) || (
+      objectMapper.canSerialize(value.getClass()) && serializePOJOsInVariablesToJson)) {
       try {
         return objectMapper.writeValueAsString(value).length() <= maxLength;
       } catch (JsonProcessingException e) {

@@ -91,7 +91,7 @@ public class VerifyDatabaseOperationsTest extends PluggableActivitiTestCase {
     processEngineConfiguration.setEnableProcessDefinitionInfoCache(oldenableProcessDefinitionInfoCacheValue);
     ((DefaultHistoryManager) processEngineConfiguration.getHistoryManager()).setHistoryLevel(oldHistoryLevel);
 
-    ((CommandExecutorImpl) processEngineConfiguration.getCommandExecutor()).setFirst(oldFirstCommandInterceptor);;
+    ((CommandExecutorImpl) processEngineConfiguration.getCommandExecutor()).setFirst(oldFirstCommandInterceptor);
 
     processEngineConfiguration.addSessionFactory(oldDbSqlSessionFactory);
 
@@ -393,7 +393,7 @@ public class VerifyDatabaseOperationsTest extends PluggableActivitiTestCase {
   protected void stopProfiling() {
     ActivitiProfiler profiler = ActivitiProfiler.getInstance();
     profiler.stopCurrentProfileSession();
-    new ConsoleLogger(profiler).log();;
+    new ConsoleLogger(profiler).log();
   }
 
 }

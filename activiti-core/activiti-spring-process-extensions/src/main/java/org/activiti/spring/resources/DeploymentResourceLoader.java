@@ -28,7 +28,7 @@ public class DeploymentResourceLoader<T> {
 
     private RepositoryService repositoryService;
 
-    private Map<String, List<T>> loadedResources = new HashMap<>();
+    private final Map<String, List<T>> loadedResources = new HashMap<>();
 
     public List<T> loadResourcesForDeployment(String deploymentId, ResourceReader<T> resourceLoaderDescriptor) {
         List<T> resources = loadedResources.get(deploymentId);

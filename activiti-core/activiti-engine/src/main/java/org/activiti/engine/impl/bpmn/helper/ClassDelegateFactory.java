@@ -25,8 +25,8 @@ import org.activiti.engine.impl.bpmn.parser.FieldDeclaration;
 /** Constructs {@link ClassDelegate}s. */
 @Internal
 public interface ClassDelegateFactory {
-  public ClassDelegate create(String id, String className, List<FieldDeclaration> fieldDeclarations,
-      Expression skipExpression, List<MapExceptionEntry> mapExceptions);
+  ClassDelegate create(String id, String className, List<FieldDeclaration> fieldDeclarations,
+    Expression skipExpression, List<MapExceptionEntry> mapExceptions);
 
-  public ClassDelegate create(String className, List<FieldDeclaration> fieldDeclarations);
+  ClassDelegate create(String className, List<FieldDeclaration> fieldDeclarations);
 }

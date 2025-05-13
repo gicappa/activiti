@@ -44,6 +44,7 @@ public class ProcessExtensionService {
   private Map<String, Extension> getProcessExtensionsForDeploymentId(String deploymentId) {
 
     var processExtensionModelMap = processExtensionModelDeploymentMap.get(deploymentId);
+
     if (processExtensionModelMap != null) {
       return processExtensionModelMap;
     }

@@ -28,7 +28,7 @@ import org.activiti.engine.task.Task;
  */
 public class MockTaskBuilder {
 
-    private Task task;
+    private final Task task;
 
     private MockTaskBuilder(Class<? extends Task> taskClass) {
         task = mock(taskClass);

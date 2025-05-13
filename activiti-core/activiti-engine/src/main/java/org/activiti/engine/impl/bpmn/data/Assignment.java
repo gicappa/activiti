@@ -36,7 +36,7 @@ public class Assignment {
   }
 
   public void evaluate(DelegateExecution execution) {
-    VariableScope variableScope = (VariableScope) execution;
+    VariableScope variableScope = execution;
     Object value = this.fromExpression.getValue(variableScope);
     this.toExpression.setValue(value, variableScope);
   }

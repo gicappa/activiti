@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 
 public class AstTextTest extends TestCase {
 
-    private Bindings bindings = new Bindings(null, null, null);
+    private final Bindings bindings = new Bindings(null, null, null);
 
     AstText parseNode(String expression) {
         return (AstText) parse(expression).getRoot();
@@ -77,7 +77,7 @@ public class AstTextTest extends TestCase {
     @Test
     public void testGetValue() {
         assertEquals("1", parseNode("1").getValue(bindings, null, null));
-        assertEquals(1l, parseNode("1").getValue(bindings, null, Long.class));
+        assertEquals(1L, parseNode("1").getValue(bindings, null, Long.class));
     }
 
     @Test
@@ -92,7 +92,7 @@ public class AstTextTest extends TestCase {
             parseNode("1").invoke(bindings, null, null, null, null)
         );
         assertEquals(
-            1l,
+          1L,
             parseNode("1").invoke(bindings, null, Long.class, null, null)
         );
     }

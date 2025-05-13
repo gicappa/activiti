@@ -18,7 +18,7 @@ package org.activiti.test.matchers;
 public class OperationScopeImpl implements OperationScope {
 
   private String processInstanceId;
-  private String taskId;
+  private final String taskId;
 
   public OperationScopeImpl(String processInstanceId, String taskId) {
     this.processInstanceId = processInstanceId;

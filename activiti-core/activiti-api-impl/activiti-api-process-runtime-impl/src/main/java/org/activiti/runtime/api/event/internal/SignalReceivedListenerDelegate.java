@@ -26,9 +26,9 @@ import java.util.List;
 
 public class SignalReceivedListenerDelegate implements ActivitiEventListener {
 
-    private List<BPMNElementEventListener<BPMNSignalReceivedEvent>> processRuntimeEventListeners;
+    private final List<BPMNElementEventListener<BPMNSignalReceivedEvent>> processRuntimeEventListeners;
 
-    private ToSignalReceivedConverter converter;
+    private final ToSignalReceivedConverter converter;
 
     public SignalReceivedListenerDelegate(List<BPMNElementEventListener<BPMNSignalReceivedEvent>> processRuntimeEventListeners,
                                             ToSignalReceivedConverter converter) {

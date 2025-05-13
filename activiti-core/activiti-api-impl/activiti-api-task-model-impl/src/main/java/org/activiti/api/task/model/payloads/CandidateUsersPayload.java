@@ -21,7 +21,7 @@ import org.activiti.api.model.shared.Payload;
 
 public class CandidateUsersPayload implements Payload {
 
-    private String id;
+    private final String id;
     private String taskId;
     private List<String> candidateUsers;
 

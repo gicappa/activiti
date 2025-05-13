@@ -52,7 +52,8 @@ public class DuplicateVariableInsertTest extends PluggableActivitiTestCase {
       @Override
       public void run() {
         try {
-          managementService.executeCommand(new SetVariableWithBarriersCommand(startBarrier, endBarrier, processInstance.getId()));
+          managementService.executeCommand(
+            new SetVariableWithBarriersCommand(startBarrier, endBarrier, processInstance.getId()));
         } catch (Exception e) {
           exceptions.add(e);
         }
@@ -63,7 +64,8 @@ public class DuplicateVariableInsertTest extends PluggableActivitiTestCase {
       @Override
       public void run() {
         try {
-          managementService.executeCommand(new SetVariableWithBarriersCommand(startBarrier, endBarrier, processInstance.getId()));
+          managementService.executeCommand(
+            new SetVariableWithBarriersCommand(startBarrier, endBarrier, processInstance.getId()));
         } catch (Exception e) {
           exceptions.add(e);
         }
@@ -105,7 +107,8 @@ public class DuplicateVariableInsertTest extends PluggableActivitiTestCase {
       @Override
       public void run() {
         try {
-          managementService.executeCommand(new SetTaskVariableWithBarriersCommand(startBarrier, endBarrier, task.getId()));
+          managementService.executeCommand(
+            new SetTaskVariableWithBarriersCommand(startBarrier, endBarrier, task.getId()));
         } catch (Exception e) {
           exceptions.add(e);
         }
@@ -116,7 +119,8 @@ public class DuplicateVariableInsertTest extends PluggableActivitiTestCase {
       @Override
       public void run() {
         try {
-          managementService.executeCommand(new SetTaskVariableWithBarriersCommand(startBarrier, endBarrier, task.getId()));
+          managementService.executeCommand(
+            new SetTaskVariableWithBarriersCommand(startBarrier, endBarrier, task.getId()));
         } catch (Exception e) {
           exceptions.add(e);
         }
@@ -143,15 +147,12 @@ public class DuplicateVariableInsertTest extends PluggableActivitiTestCase {
 
   /**
    * Command wrapping a SetExecutionVariablesCmd, waiting in to start and end on the barriers passed in.
-   *
-
-   *
    */
-  private class SetVariableWithBarriersCommand implements Command<Void> {
+  private static class SetVariableWithBarriersCommand implements Command<Void> {
 
-    private CyclicBarrier startBarrier;
-    private CyclicBarrier endBarrier;
-    private String executionId;
+    private final CyclicBarrier startBarrier;
+    private final CyclicBarrier endBarrier;
+    private final String executionId;
 
     public SetVariableWithBarriersCommand(CyclicBarrier startBarrier, CyclicBarrier endBarrier, String executionId) {
       this.startBarrier = startBarrier;
@@ -163,9 +164,7 @@ public class DuplicateVariableInsertTest extends PluggableActivitiTestCase {
     public Void execute(CommandContext commandContext) {
       try {
         startBarrier.await();
-      } catch (InterruptedException e) {
-        throw new RuntimeException(e);
-      } catch (BrokenBarrierException e) {
+      } catch (InterruptedException | BrokenBarrierException e) {
         throw new RuntimeException(e);
       }
 
@@ -173,9 +172,7 @@ public class DuplicateVariableInsertTest extends PluggableActivitiTestCase {
 
       try {
         endBarrier.await();
-      } catch (InterruptedException e) {
-        throw new RuntimeException(e);
-      } catch (BrokenBarrierException e) {
+      } catch (InterruptedException | BrokenBarrierException e) {
         throw new RuntimeException(e);
       }
       return null;
@@ -184,15 +181,12 @@ public class DuplicateVariableInsertTest extends PluggableActivitiTestCase {
 
   /**
    * Command wrapping a SetTaskVariablesCmd, waiting in to start and end on the barriers passed in.
-   *
-
-   *
    */
-  private class SetTaskVariableWithBarriersCommand implements Command<Void> {
+  private static class SetTaskVariableWithBarriersCommand implements Command<Void> {
 
-    private CyclicBarrier startBarrier;
-    private CyclicBarrier endBarrier;
-    private String taskId;
+    private final CyclicBarrier startBarrier;
+    private final CyclicBarrier endBarrier;
+    private final String taskId;
 
     public SetTaskVariableWithBarriersCommand(CyclicBarrier startBarrier, CyclicBarrier endBarrier, String taskId) {
       this.startBarrier = startBarrier;
@@ -204,9 +198,7 @@ public class DuplicateVariableInsertTest extends PluggableActivitiTestCase {
     public Void execute(CommandContext commandContext) {
       try {
         startBarrier.await();
-      } catch (InterruptedException e) {
-        throw new RuntimeException(e);
-      } catch (BrokenBarrierException e) {
+      } catch (InterruptedException | BrokenBarrierException e) {
         throw new RuntimeException(e);
       }
 
@@ -214,9 +206,7 @@ public class DuplicateVariableInsertTest extends PluggableActivitiTestCase {
 
       try {
         endBarrier.await();
-      } catch (InterruptedException e) {
-        throw new RuntimeException(e);
-      } catch (BrokenBarrierException e) {
+      } catch (InterruptedException | BrokenBarrierException e) {
         throw new RuntimeException(e);
       }
       return null;

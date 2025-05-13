@@ -223,8 +223,7 @@ public class ActivitiEventBuilder {
     newEvent.setProcessDefinitionId(processDefinitionId);
     newEvent.setProcessInstanceId(processInstanceId);
 
-    if (flowElement instanceof FlowNode) {
-      FlowNode flowNode = (FlowNode) flowElement;
+    if (flowElement instanceof FlowNode flowNode) {
       newEvent.setActivityType(parseActivityType(flowNode));
       newEvent.setBehaviorClass(parseActivityBehavior(flowNode));
     }
@@ -439,8 +438,7 @@ public class ActivitiEventBuilder {
         event.setExecutionId(((DelegateExecution) persistedObject).getId());
         event.setProcessInstanceId(((DelegateExecution) persistedObject).getProcessInstanceId());
         event.setProcessDefinitionId(((DelegateExecution) persistedObject).getProcessDefinitionId());
-      } else if (persistedObject instanceof IdentityLinkEntity) {
-        IdentityLinkEntity idLink = (IdentityLinkEntity) persistedObject;
+      } else if (persistedObject instanceof IdentityLinkEntity idLink) {
         if (idLink.getProcessDefinitionId() != null) {
           event.setProcessDefinitionId(idLink.getProcessDefId());
         } else if (idLink.getProcessInstance() != null) {
@@ -484,9 +482,8 @@ public class ActivitiEventBuilder {
       newEvent.setProcessDefinitionId(execution.getProcessDefinitionId());
       newEvent.setProcessInstanceId(execution.getProcessInstanceId());
 
-      if (execution.getCurrentFlowElement() instanceof FlowNode) {
-          FlowNode flowNode = (FlowNode) execution.getCurrentFlowElement();
-          newEvent.setActivityType(parseActivityType(flowNode));
+      if (execution.getCurrentFlowElement() instanceof FlowNode flowNode) {
+        newEvent.setActivityType(parseActivityType(flowNode));
           newEvent.setBehaviorClass(parseActivityBehavior(flowNode));
           newEvent.setActivityName(flowNode.getName());
       }

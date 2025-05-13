@@ -20,7 +20,7 @@ import org.activiti.api.model.shared.Payload;
 
 public class TimerPayload implements Payload {
 
-    private String id;
+    private final String id;
     private Date dueDate;
     private Date endDate;
     private int retries;
@@ -135,9 +135,7 @@ public class TimerPayload implements Payload {
                 return false;
         } else if (!repeat.equals(other.repeat))
             return false;
-        if (retries != other.retries)
-            return false;
-        return true;
+      return retries == other.retries;
     }
 
 }

@@ -25,9 +25,9 @@ import java.util.List;
 
 public class TimerScheduledListenerDelegate implements ActivitiEventListener {
 
-    private List<BPMNElementEventListener<BPMNTimerScheduledEvent>> processRuntimeEventListeners;
+    private final List<BPMNElementEventListener<BPMNTimerScheduledEvent>> processRuntimeEventListeners;
 
-    private ToTimerScheduledConverter converter;
+    private final ToTimerScheduledConverter converter;
 
     public TimerScheduledListenerDelegate(List<BPMNElementEventListener<BPMNTimerScheduledEvent>> processRuntimeEventListeners,
                                           ToTimerScheduledConverter converter) {

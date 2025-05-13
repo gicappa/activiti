@@ -27,7 +27,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public class AuthenticationPrincipalIdentityProviderTest {
 
-    private AuthenticationPrincipalIdentityProvider subject = new AuthenticationPrincipalIdentityProvider();
+    private final AuthenticationPrincipalIdentityProvider subject = new AuthenticationPrincipalIdentityProvider();
 
     @Test
     public void testGetUserId() {

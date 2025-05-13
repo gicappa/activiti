@@ -20,7 +20,7 @@ import org.activiti.api.model.shared.Payload;
 
 public class GetTaskVariablesPayload implements Payload {
 
-    private String id;
+    private final String id;
     private String taskId;
     public GetTaskVariablesPayload() {
         this.id = UUID.randomUUID().toString();

@@ -234,12 +234,11 @@ public class EndExecutionOperation extends AbstractOperation {
             hasCompensation = true;
         } else {
             for (FlowElement subElement : subProcess.getFlowElements()) {
-                if (subElement instanceof Activity) {
-                    Activity subActivity = (Activity) subElement;
-                    if (CollectionUtil.isNotEmpty(subActivity.getBoundaryEvents())) {
+                if (subElement instanceof Activity subActivity) {
+                  if (CollectionUtil.isNotEmpty(subActivity.getBoundaryEvents())) {
                         for (BoundaryEvent boundaryEvent : subActivity.getBoundaryEvents()) {
                             if (CollectionUtil.isNotEmpty(boundaryEvent.getEventDefinitions()) &&
-                                    boundaryEvent.getEventDefinitions().get(0) instanceof CompensateEventDefinition) {
+                                    boundaryEvent.getEventDefinitions().getFirst() instanceof CompensateEventDefinition) {
                                 hasCompensation = true;
                                 break;
                             }
@@ -275,9 +274,8 @@ public class EndExecutionOperation extends AbstractOperation {
             parentExecution.setCurrentFlowElement(execution.getCurrentFlowElement());
         }
 
-        if (execution.getCurrentFlowElement() instanceof SubProcess) {
-            SubProcess currentSubProcess = (SubProcess) execution.getCurrentFlowElement();
-            if (currentSubProcess.getOutgoingFlows().size() > 0) {
+        if (execution.getCurrentFlowElement() instanceof SubProcess currentSubProcess) {
+          if (!currentSubProcess.getOutgoingFlows().isEmpty()) {
                 // create a new execution to take the outgoing sequence flows
                 executionToContinue = executionEntityManager.createChildExecution(parentExecution);
                 executionToContinue.setCurrentFlowElement(execution.getCurrentFlowElement());
@@ -326,7 +324,7 @@ public class EndExecutionOperation extends AbstractOperation {
 
     protected boolean isEndEventInMultiInstanceSubprocess(ExecutionEntity executionEntity) {
         if (executionEntity.getCurrentFlowElement() instanceof EndEvent) {
-            SubProcess subProcess = ((EndEvent) execution.getCurrentFlowElement()).getSubProcess();
+            SubProcess subProcess = execution.getCurrentFlowElement().getSubProcess();
             return !executionEntity.getParent().isProcessInstanceType()
                     && subProcess != null
                     && subProcess.getLoopCharacteristics() != null
@@ -398,7 +396,8 @@ public class EndExecutionOperation extends AbstractOperation {
                 if (!childExecutionEntity.isEnded()) {
                     return false;
                 }
-                if (childExecutionEntity.getExecutions() != null && childExecutionEntity.getExecutions().size() > 0) {
+                if (childExecutionEntity.getExecutions() != null && !childExecutionEntity.getExecutions()
+                  .isEmpty()) {
                     if (!allChildExecutionsEnded(childExecutionEntity,
                                                  executionEntityToIgnore)) {
                         return false;

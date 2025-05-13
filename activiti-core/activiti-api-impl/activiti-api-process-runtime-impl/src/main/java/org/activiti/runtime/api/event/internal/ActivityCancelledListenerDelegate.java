@@ -26,9 +26,9 @@ import java.util.List;
 
 public class ActivityCancelledListenerDelegate implements ActivitiEventListener {
 
-    private List<BPMNElementEventListener<BPMNActivityCancelledEvent>> processRuntimeEventListeners;
+    private final List<BPMNElementEventListener<BPMNActivityCancelledEvent>> processRuntimeEventListeners;
 
-    private ToActivityCancelledConverter converter;
+    private final ToActivityCancelledConverter converter;
 
     public ActivityCancelledListenerDelegate(List<BPMNElementEventListener<BPMNActivityCancelledEvent>> processRuntimeEventListeners,
                                              ToActivityCancelledConverter converter) {

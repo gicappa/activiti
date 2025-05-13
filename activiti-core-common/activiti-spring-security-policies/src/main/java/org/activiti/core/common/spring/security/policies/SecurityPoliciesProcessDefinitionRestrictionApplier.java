@@ -31,7 +31,7 @@ public class SecurityPoliciesProcessDefinitionRestrictionApplier implements Secu
     @Override
     public GetProcessDefinitionsPayload denyAll() {
         //user should not see anything so give unsatisfiable condition
-        return ProcessPayloadBuilder.processDefinitions().withProcessDefinitionKey("missing-" + UUID.randomUUID().toString()).build();
+        return ProcessPayloadBuilder.processDefinitions().withProcessDefinitionKey("missing-" + UUID.randomUUID()).build();
     }
 
     @Override

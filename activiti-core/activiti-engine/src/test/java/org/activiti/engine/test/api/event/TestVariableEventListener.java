@@ -24,10 +24,10 @@ import org.activiti.engine.delegate.event.ActivitiVariableEvent;
 
 public class TestVariableEventListener implements ActivitiEventListener {
 
-  private List<ActivitiEvent> eventsReceived;
+  private final List<ActivitiEvent> eventsReceived;
 
   public TestVariableEventListener() {
-    eventsReceived = new ArrayList<ActivitiEvent>();
+    eventsReceived = new ArrayList<>();
   }
 
   public List<ActivitiEvent> getEventsReceived() {

@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class StringToDateConverterTest {
 
-    private static Instant example = Instant.parse("2022-01-17T00:00:00Z");
+    private static final Instant example = Instant.parse("2022-01-17T00:00:00Z");
 
     private static Stream<Arguments> arguments() {
         return Stream.of(
@@ -38,16 +38,17 @@ class StringToDateConverterTest {
         );
     }
 
-    private StringToDateConverter subject = new StringToDateConverter();
+    private final StringToDateConverter subject = new StringToDateConverter();
 
     @ParameterizedTest
     @MethodSource("arguments")
     public void convert(String source, Instant expected) {
         //when
-        Date result = subject.convert(source);
+        var result = subject.convert(source);
 
         //then
-        assertThat(result.toInstant()).isEqualTo(expected);
+      assert result != null;
+      assertThat(result.toInstant()).isEqualTo(expected);
     }
 
 }

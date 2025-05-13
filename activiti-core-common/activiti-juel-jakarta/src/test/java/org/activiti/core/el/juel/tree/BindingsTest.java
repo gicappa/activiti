@@ -49,7 +49,7 @@ public class BindingsTest extends TestCase {
         context.setFunction(
             "",
             "g",
-            BindingsTest.class.getMethod("bar", new Class[] { int.class })
+            BindingsTest.class.getMethod("bar", int.class)
         );
 
         // variable v

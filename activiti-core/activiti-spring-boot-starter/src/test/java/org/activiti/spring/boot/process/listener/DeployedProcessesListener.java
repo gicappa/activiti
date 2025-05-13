@@ -28,8 +28,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class DeployedProcessesListener implements ProcessRuntimeEventListener<ProcessDeployedEvent> {
 
-    private List<ProcessDefinition> deployedProcesses = new ArrayList<>();
-    private Map<String, String> processModelContents = new HashMap<>();
+    private final List<ProcessDefinition> deployedProcesses = new ArrayList<>();
+    private final Map<String, String> processModelContents = new HashMap<>();
 
     @Override
     public void onEvent(ProcessDeployedEvent event) {

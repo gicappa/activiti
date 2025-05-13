@@ -20,7 +20,7 @@ import org.activiti.api.model.shared.Payload;
 
 public class GetVariablesPayload implements Payload {
 
-    private String id;
+    private final String id;
     private String processInstanceId;
 
     public GetVariablesPayload() {

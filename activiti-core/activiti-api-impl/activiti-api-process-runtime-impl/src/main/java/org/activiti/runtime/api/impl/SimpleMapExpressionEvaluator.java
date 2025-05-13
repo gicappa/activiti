@@ -22,7 +22,7 @@ import org.activiti.engine.impl.interceptor.DelegateInterceptor;
 
 public class SimpleMapExpressionEvaluator implements ExpressionEvaluator {
 
-    private Map<String, Object> context;
+    private final Map<String, Object> context;
 
     public SimpleMapExpressionEvaluator(Map<String, Object> context) {
         this.context = context;

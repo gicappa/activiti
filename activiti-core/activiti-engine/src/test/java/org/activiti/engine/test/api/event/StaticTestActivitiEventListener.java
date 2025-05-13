@@ -28,7 +28,7 @@ import org.activiti.engine.delegate.event.ActivitiEventListener;
  */
 public class StaticTestActivitiEventListener implements ActivitiEventListener {
 
-  private static List<ActivitiEvent> eventsReceived = new ArrayList<ActivitiEvent>();
+  private static final List<ActivitiEvent> eventsReceived = new ArrayList<>();
 
   public static List<ActivitiEvent> getEventsReceived() {
     return eventsReceived;

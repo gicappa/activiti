@@ -17,9 +17,9 @@ package org.activiti.api.runtime.shared.query;
 
 public class Pageable {
 
-    private int startIndex;
-    private int maxItems;
-    private Order order;
+    private final int startIndex;
+    private final int maxItems;
+    private final Order order;
 
     private Pageable(int startIndex,
                     int maxItems,

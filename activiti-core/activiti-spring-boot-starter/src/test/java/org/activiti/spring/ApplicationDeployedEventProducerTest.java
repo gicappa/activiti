@@ -99,7 +99,7 @@ public class ApplicationDeployedEventProducerTest {
         org.activiti.api.process.model.Deployment deployment = mock(org.activiti.api.process.model.Deployment.class);
         when(deployment.getProjectReleaseVersion()).thenReturn("1");
         when(deployment.getId()).thenReturn("123");
-        List<org.activiti.api.process.model.Deployment> apiDeployments = asList(deployment);
+        List<org.activiti.api.process.model.Deployment> apiDeployments = List.of(deployment);
         given(converter.from(internalDeployment)).willReturn(apiDeployments);
 
         producer.start();

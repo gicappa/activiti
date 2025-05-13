@@ -42,7 +42,7 @@ import org.junit.jupiter.api.Test;
 public class AstIdentifierTest extends TestCase {
 
     public static long method_1() {
-        return 1l;
+        return 1L;
     }
 
     class TestMethodExpression extends MethodExpression {
@@ -111,7 +111,7 @@ public class AstIdentifierTest extends TestCase {
         // variables var_long_1, indentifier_string
         context.setVariable(
             "var_long_1",
-            new ObjectValueExpression(converter, 1l, long.class)
+            new ObjectValueExpression(converter, 1L, long.class)
         );
         context.setVariable(
             "indentifier_string",
@@ -135,7 +135,7 @@ public class AstIdentifierTest extends TestCase {
         );
 
         // properties property_long_1, indentifier_string
-        context.getELResolver().setValue(context, null, "property_long_1", 1l);
+        context.getELResolver().setValue(context, null, "property_long_1", 1L);
         context
             .getELResolver()
             .setValue(context, null, "indentifier_string", "bar"); // shadowed by variable indentifier_string
@@ -195,11 +195,11 @@ public class AstIdentifierTest extends TestCase {
 
         tree = parse("${var_long_1}");
         bindings = tree.bind(null, context.getVariableMapper());
-        assertEquals(1l, getNode(tree).eval(bindings, context));
+        assertEquals(1L, getNode(tree).eval(bindings, context));
 
         tree = parse("${property_long_1}");
         bindings = tree.bind(null, context.getVariableMapper());
-        assertEquals(1l, getNode(tree).eval(bindings, context));
+        assertEquals(1L, getNode(tree).eval(bindings, context));
 
         tree = parse("${indentifier_string}");
         bindings = tree.bind(null, context.getVariableMapper());
@@ -207,11 +207,11 @@ public class AstIdentifierTest extends TestCase {
 
         tree = parse("${var_var_long_1}");
         bindings = tree.bind(null, context.getVariableMapper());
-        assertEquals(1l, getNode(tree).eval(bindings, context));
+        assertEquals(1L, getNode(tree).eval(bindings, context));
 
         tree = parse("${var_property_long_1}");
         bindings = tree.bind(null, context.getVariableMapper());
-        assertEquals(1l, getNode(tree).eval(bindings, context));
+        assertEquals(1L, getNode(tree).eval(bindings, context));
     }
 
     @Test
@@ -298,35 +298,35 @@ public class AstIdentifierTest extends TestCase {
         tree = parse("${var_long_1}");
         bindings = tree.bind(null, context.getVariableMapper());
         try {
-            getNode(tree).setValue(bindings, context, 2l);
+            getNode(tree).setValue(bindings, context, 2L);
             fail();
         } catch (ELException e) {}
 
         tree = parse("${property_long_1}");
         bindings = tree.bind(null, context.getVariableMapper());
-        assertEquals(1l, getNode(tree).getValue(bindings, context, null));
-        getNode(tree).setValue(bindings, context, 2l);
-        assertEquals(2l, getNode(tree).getValue(bindings, context, null));
+        assertEquals(1L, getNode(tree).getValue(bindings, context, null));
+        getNode(tree).setValue(bindings, context, 2L);
+        assertEquals(2L, getNode(tree).getValue(bindings, context, null));
 
         tree = parse("${var_var_long_1}");
         bindings = tree.bind(null, context.getVariableMapper());
         try {
-            getNode(tree).setValue(bindings, context, 2l);
+            getNode(tree).setValue(bindings, context, 2L);
             fail();
-        } catch (ELException e) {}
+        } catch (ELException ignored) {}
 
         tree = parse("${var_property_long_1}");
         bindings = tree.bind(null, context.getVariableMapper());
-        assertEquals(2l, getNode(tree).getValue(bindings, context, null));
-        getNode(tree).setValue(bindings, context, 1l);
-        assertEquals(1l, getNode(tree).getValue(bindings, context, null));
+        assertEquals(2L, getNode(tree).getValue(bindings, context, null));
+        getNode(tree).setValue(bindings, context, 1L);
+        assertEquals(1L, getNode(tree).getValue(bindings, context, null));
 
         tree = parse("${indentifier_string}");
         bindings = tree.bind(null, context.getVariableMapper());
         try {
             getNode(tree).setValue(bindings, context, "bar");
             fail();
-        } catch (ELException e) {}
+        } catch (ELException ignored) {}
     }
 
     @Test
@@ -343,7 +343,7 @@ public class AstIdentifierTest extends TestCase {
 
         tree = parse("${var_long_1}");
         bindings = tree.bind(null, context.getVariableMapper());
-        assertEquals(1l, getNode(tree).getValue(bindings, context, null));
+        assertEquals(1L, getNode(tree).getValue(bindings, context, null));
         assertEquals(
             "1",
             getNode(tree).getValue(bindings, context, String.class)
@@ -380,7 +380,7 @@ public class AstIdentifierTest extends TestCase {
         tree = parse("${var_method_1}");
         bindings = tree.bind(null, context.getVariableMapper());
         assertEquals(
-            1l,
+          1L,
             getNode(tree)
                 .invoke(bindings, context, long.class, new Class[0], null)
         );
@@ -388,13 +388,13 @@ public class AstIdentifierTest extends TestCase {
         tree = parse("${property_method_1}");
         bindings = tree.bind(null, context.getVariableMapper());
         assertEquals(
-            1l,
+          1L,
             getNode(tree).invoke(bindings, context, null, new Class[0], null)
         );
 
         // no return type - ok
         assertEquals(
-            1l,
+          1L,
             getNode(tree)
                 .invoke(bindings, context, long.class, new Class[0], null)
         );
@@ -415,7 +415,7 @@ public class AstIdentifierTest extends TestCase {
                     null
                 );
             fail();
-        } catch (ELException e) {}
+        } catch (ELException ignored) {}
         // bad args
         try {
             getNode(tree)
@@ -427,12 +427,12 @@ public class AstIdentifierTest extends TestCase {
                     new Object[] { "" }
                 );
             fail();
-        } catch (ELException e) {}
+        } catch (ELException ignored) {}
 
         tree = parse("${var_method_1_expr}");
         bindings = tree.bind(null, context.getVariableMapper());
         assertEquals(
-            1l,
+          1L,
             getNode(tree)
                 .invoke(bindings, context, long.class, new Class[0], null)
         );
@@ -440,7 +440,7 @@ public class AstIdentifierTest extends TestCase {
         tree = parse("${property_method_1_expr}");
         bindings = tree.bind(null, context.getVariableMapper());
         assertEquals(
-            1l,
+          1L,
             getNode(tree).invoke(bindings, context, null, new Class[0], null)
         );
     }
@@ -488,7 +488,7 @@ public class AstIdentifierTest extends TestCase {
             getNode(tree)
                 .getMethodInfo(bindings, context, int.class, new Class[0]);
             fail();
-        } catch (ELException e) {}
+        } catch (ELException ignored) {}
         // bad arg types
         try {
             getNode(tree)
@@ -499,6 +499,6 @@ public class AstIdentifierTest extends TestCase {
                     new Class[] { String.class }
                 );
             fail();
-        } catch (ELException e) {}
+        } catch (ELException ignored) {}
     }
 }

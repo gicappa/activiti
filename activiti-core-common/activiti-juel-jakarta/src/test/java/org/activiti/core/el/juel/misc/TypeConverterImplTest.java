@@ -104,7 +104,7 @@ public class TypeConverterImplTest extends TestCase {
     /**
      * Test enum type
      */
-    static enum Foo {
+    enum Foo {
         BAR,
         BAZ {
             @Override
@@ -147,12 +147,12 @@ public class TypeConverterImplTest extends TestCase {
             converter.coerceToCharacter(Boolean.FALSE);
             fail();
         } catch (ELException e) {}
-        assertEquals(c, converter.coerceToCharacter(Byte.valueOf((byte) 99)));
-        assertEquals(c, converter.coerceToCharacter(Short.valueOf((short) 99)));
-        assertEquals(c, converter.coerceToCharacter(Integer.valueOf(99)));
-        assertEquals(c, converter.coerceToCharacter(Long.valueOf(99)));
-        assertEquals(c, converter.coerceToCharacter(Float.valueOf((float) 99.5)));
-        assertEquals(c, converter.coerceToCharacter(Double.valueOf(99.5)));
+        assertEquals(c, converter.coerceToCharacter((byte) 99));
+        assertEquals(c, converter.coerceToCharacter((short) 99));
+        assertEquals(c, converter.coerceToCharacter(99));
+        assertEquals(c, converter.coerceToCharacter(99L));
+        assertEquals(c, converter.coerceToCharacter((float) 99.5));
+        assertEquals(c, converter.coerceToCharacter(99.5));
         assertEquals(c, converter.coerceToCharacter(new BigDecimal("99.5")));
         assertEquals(c, converter.coerceToCharacter(new BigInteger("99")));
         assertEquals(c, converter.coerceToCharacter("c#"));
@@ -164,51 +164,51 @@ public class TypeConverterImplTest extends TestCase {
 
     @Test
     public <T extends Number> void testToLong() {
-        Number zero = Long.valueOf(0l);
-        Number ninetynine = Long.valueOf(99l);
+        Number zero = 0L;
+        Number ninetynine = 99L;
         assertEquals(zero, converter.coerceToLong(null));
         assertEquals(zero, converter.coerceToLong(""));
         assertEquals(
             ninetynine,
-            converter.coerceToLong(Character.valueOf('c'))
+            converter.coerceToLong('c')
         );
-        assertEquals(ninetynine, converter.coerceToLong(Byte.valueOf((byte) 99)));
-        assertEquals(ninetynine, converter.coerceToLong(Short.valueOf((short) 99)));
-        assertEquals(ninetynine, converter.coerceToLong(Integer.valueOf(99)));
-        assertEquals(ninetynine, converter.coerceToLong(Long.valueOf(99)));
-        assertEquals(ninetynine, converter.coerceToLong(Float.valueOf(99)));
-        assertEquals(ninetynine, converter.coerceToLong(Double.valueOf(99)));
+        assertEquals(ninetynine, converter.coerceToLong((byte) 99));
+        assertEquals(ninetynine, converter.coerceToLong((short) 99));
+        assertEquals(ninetynine, converter.coerceToLong(99));
+        assertEquals(ninetynine, converter.coerceToLong(99L));
+        assertEquals(ninetynine, converter.coerceToLong(99F));
+        assertEquals(ninetynine, converter.coerceToLong(99.0));
         assertEquals(ninetynine, converter.coerceToLong(new BigDecimal(99)));
         assertEquals(ninetynine, converter.coerceToLong(new BigInteger("99")));
         assertEquals(ninetynine, converter.coerceToLong(ninetynine.toString()));
         try {
             converter.coerceToLong("foo");
             fail();
-        } catch (ELException e) {}
+        } catch (ELException ignored) {}
     }
 
     @Test
     public <T extends Number> void testToInteger() {
-        Number zero = Integer.valueOf(0);
-        Number ninetynine = Integer.valueOf(99);
+        Number zero = 0;
+        Number ninetynine = 99;
         assertEquals(zero, converter.coerceToInteger(null));
         assertEquals(zero, converter.coerceToInteger(""));
         assertEquals(
             ninetynine,
-            converter.coerceToInteger(Character.valueOf('c'))
+            converter.coerceToInteger('c')
         );
         assertEquals(
             ninetynine,
-            converter.coerceToInteger(Byte.valueOf((byte) 99))
+            converter.coerceToInteger((byte) 99)
         );
         assertEquals(
             ninetynine,
-            converter.coerceToInteger(Short.valueOf((short) 99))
+            converter.coerceToInteger((short) 99)
         );
-        assertEquals(ninetynine, converter.coerceToInteger(Integer.valueOf(99)));
-        assertEquals(ninetynine, converter.coerceToInteger(Long.valueOf(99)));
-        assertEquals(ninetynine, converter.coerceToInteger(Float.valueOf(99)));
-        assertEquals(ninetynine, converter.coerceToInteger(Double.valueOf(99)));
+        assertEquals(ninetynine, converter.coerceToInteger(99));
+        assertEquals(ninetynine, converter.coerceToInteger(99L));
+        assertEquals(ninetynine, converter.coerceToInteger(99F));
+        assertEquals(ninetynine, converter.coerceToInteger(99.0));
         assertEquals(ninetynine, converter.coerceToInteger(new BigDecimal(99)));
         assertEquals(
             ninetynine,
@@ -221,28 +221,28 @@ public class TypeConverterImplTest extends TestCase {
         try {
             converter.coerceToInteger("foo");
             fail();
-        } catch (ELException e) {}
+        } catch (ELException ignored) {}
     }
 
     @Test
     public <T extends Number> void testToShort() {
-        Number zero = Short.valueOf((short) 0);
-        Number ninetynine = Short.valueOf((short) 99);
+        Number zero = (short) 0;
+        Number ninetynine = (short) 99;
         assertEquals(zero, converter.coerceToShort(null));
         assertEquals(zero, converter.coerceToShort(""));
         assertEquals(
             ninetynine,
-            converter.coerceToShort(Character.valueOf('c'))
+            converter.coerceToShort('c')
         );
-        assertEquals(ninetynine, converter.coerceToShort(Byte.valueOf((byte) 99)));
+        assertEquals(ninetynine, converter.coerceToShort((byte) 99));
         assertEquals(
             ninetynine,
-            converter.coerceToShort(Short.valueOf((short) 99))
+            converter.coerceToShort((short) 99)
         );
-        assertEquals(ninetynine, converter.coerceToShort(Integer.valueOf(99)));
-        assertEquals(ninetynine, converter.coerceToShort(Long.valueOf(99)));
-        assertEquals(ninetynine, converter.coerceToShort(Float.valueOf(99)));
-        assertEquals(ninetynine, converter.coerceToShort(Double.valueOf(99)));
+        assertEquals(ninetynine, converter.coerceToShort(99));
+        assertEquals(ninetynine, converter.coerceToShort(99L));
+        assertEquals(ninetynine, converter.coerceToShort(99F));
+        assertEquals(ninetynine, converter.coerceToShort(99.0));
         assertEquals(ninetynine, converter.coerceToShort(new BigDecimal(99)));
         assertEquals(ninetynine, converter.coerceToShort(new BigInteger("99")));
         assertEquals(
@@ -252,25 +252,25 @@ public class TypeConverterImplTest extends TestCase {
         try {
             converter.coerceToShort("foo");
             fail();
-        } catch (ELException e) {}
+        } catch (ELException ignored) {}
     }
 
     @Test
     public <T extends Number> void testToByte() {
-        Number zero = Byte.valueOf((byte) 0);
-        Number ninetynine = Byte.valueOf((byte) 99);
+        Number zero = (byte) 0;
+        Number ninetynine = (byte) 99;
         assertEquals(zero, converter.coerceToByte(null));
         assertEquals(zero, converter.coerceToByte(""));
         assertEquals(
             ninetynine,
-            converter.coerceToByte(Character.valueOf('c'))
+            converter.coerceToByte('c')
         );
-        assertEquals(ninetynine, converter.coerceToByte(Byte.valueOf((byte) 99)));
-        assertEquals(ninetynine, converter.coerceToByte(Short.valueOf((short) 99)));
-        assertEquals(ninetynine, converter.coerceToByte(Integer.valueOf(99)));
-        assertEquals(ninetynine, converter.coerceToByte(Long.valueOf(99)));
-        assertEquals(ninetynine, converter.coerceToByte(Float.valueOf(99)));
-        assertEquals(ninetynine, converter.coerceToByte(Double.valueOf(99)));
+        assertEquals(ninetynine, converter.coerceToByte((byte) 99));
+        assertEquals(ninetynine, converter.coerceToByte((short) 99));
+        assertEquals(ninetynine, converter.coerceToByte(99));
+        assertEquals(ninetynine, converter.coerceToByte(99L));
+        assertEquals(ninetynine, converter.coerceToByte(99F));
+        assertEquals(ninetynine, converter.coerceToByte(99.0));
         assertEquals(ninetynine, converter.coerceToByte(BigDecimal.valueOf(99)));
         assertEquals(ninetynine, converter.coerceToByte(new BigInteger("99")));
         assertEquals(ninetynine, converter.coerceToByte(ninetynine.toString()));
@@ -282,23 +282,23 @@ public class TypeConverterImplTest extends TestCase {
 
     @Test
     public <T extends Number> void testToDouble() {
-        Number zero = Double.valueOf(0);
-        Number ninetynine = Double.valueOf(99);
+        Number zero = (double) 0;
+        Number ninetynine = 99.0;
         assertEquals(zero, converter.coerceToDouble(null));
         assertEquals(zero, converter.coerceToDouble(""));
         assertEquals(
             ninetynine,
-            converter.coerceToDouble(Character.valueOf('c'))
+            converter.coerceToDouble('c')
         );
-        assertEquals(ninetynine, converter.coerceToDouble( Byte.valueOf((byte) 99)));
+        assertEquals(ninetynine, converter.coerceToDouble((byte) 99));
         assertEquals(
             ninetynine,
             converter.coerceToDouble(Short.valueOf((short) 99))
         );
-        assertEquals(ninetynine, converter.coerceToDouble(Integer.valueOf(99)));
-        assertEquals(ninetynine, converter.coerceToDouble(Long.valueOf(99)));
-        assertEquals(ninetynine, converter.coerceToDouble( Float.valueOf(99)));
-        assertEquals(ninetynine, converter.coerceToDouble(Double.valueOf(99)));
+        assertEquals(ninetynine, converter.coerceToDouble(99));
+        assertEquals(ninetynine, converter.coerceToDouble(99L));
+        assertEquals(ninetynine, converter.coerceToDouble(99F));
+        assertEquals(ninetynine, converter.coerceToDouble(99.0));
         assertEquals(ninetynine, converter.coerceToDouble(new BigDecimal(99)));
         assertEquals(
             ninetynine,
@@ -316,23 +316,23 @@ public class TypeConverterImplTest extends TestCase {
 
     @Test
     public <T extends Number> void testToFloat() {
-        Number zero = Float.valueOf(0);
-        Number ninetynine = Float.valueOf(99);
+        Number zero = (float) 0;
+        Number ninetynine = 99F;
         assertEquals(zero, converter.coerceToFloat(null));
         assertEquals(zero, converter.coerceToFloat(""));
         assertEquals(
             ninetynine,
-            converter.coerceToFloat(Character.valueOf('c'))
+            converter.coerceToFloat('c')
         );
-        assertEquals(ninetynine, converter.coerceToFloat(Byte.valueOf((byte) 99)));
+        assertEquals(ninetynine, converter.coerceToFloat((byte) 99));
         assertEquals(
             ninetynine,
-            converter.coerceToFloat(Short.valueOf((short) 99))
+            converter.coerceToFloat((short) 99)
         );
-        assertEquals(ninetynine, converter.coerceToFloat(Integer.valueOf(99)));
-        assertEquals(ninetynine, converter.coerceToFloat( Long.valueOf(99)));
-        assertEquals(ninetynine, converter.coerceToFloat( Float.valueOf(99)));
-        assertEquals(ninetynine, converter.coerceToFloat(Double.valueOf(99)));
+        assertEquals(ninetynine, converter.coerceToFloat(99));
+        assertEquals(ninetynine, converter.coerceToFloat(99L));
+        assertEquals(ninetynine, converter.coerceToFloat(99F));
+        assertEquals(ninetynine, converter.coerceToFloat(99.0));
         assertEquals(ninetynine, converter.coerceToFloat(new BigDecimal(99)));
         assertEquals(ninetynine, converter.coerceToFloat(new BigInteger("99")));
         assertEquals(
@@ -342,7 +342,7 @@ public class TypeConverterImplTest extends TestCase {
         try {
             converter.coerceToFloat("foo");
             fail();
-        } catch (ELException e) {}
+        } catch (ELException ignored) {}
     }
 
     @Test
@@ -353,20 +353,20 @@ public class TypeConverterImplTest extends TestCase {
         assertEquals(zero, converter.coerceToBigDecimal(""));
         assertEquals(
             ninetynine,
-            converter.coerceToBigDecimal(Character.valueOf('c'))
+            converter.coerceToBigDecimal('c')
         );
         assertEquals(
             ninetynine,
-            converter.coerceToBigDecimal(Byte.valueOf((byte) 99))
+            converter.coerceToBigDecimal((byte) 99)
         );
         assertEquals(
             ninetynine,
-            converter.coerceToBigDecimal(Short.valueOf((short) 99))
+            converter.coerceToBigDecimal((short) 99)
         );
-        assertEquals(ninetynine, converter.coerceToBigDecimal(Integer.valueOf(99)));
-        assertEquals(ninetynine, converter.coerceToBigDecimal(Long.valueOf(99)));
-        assertEquals(ninetynine, converter.coerceToBigDecimal(Float.valueOf(99)));
-        assertEquals(ninetynine, converter.coerceToBigDecimal(Double.valueOf(99)));
+        assertEquals(ninetynine, converter.coerceToBigDecimal(99));
+        assertEquals(ninetynine, converter.coerceToBigDecimal(99L));
+        assertEquals(ninetynine, converter.coerceToBigDecimal(99F));
+        assertEquals(ninetynine, converter.coerceToBigDecimal(99.0));
         assertEquals(
             ninetynine,
             converter.coerceToBigDecimal(new BigDecimal(99))
@@ -393,20 +393,20 @@ public class TypeConverterImplTest extends TestCase {
         assertEquals(zero, converter.coerceToBigInteger(""));
         assertEquals(
             ninetynine,
-            converter.coerceToBigInteger(Character.valueOf('c'))
+            converter.coerceToBigInteger('c')
         );
         assertEquals(
             ninetynine,
-            converter.coerceToBigInteger(Byte.valueOf((byte) 99))
+            converter.coerceToBigInteger((byte) 99)
         );
         assertEquals(
             ninetynine,
-            converter.coerceToBigInteger(Short.valueOf((short) 99))
+            converter.coerceToBigInteger((short) 99)
         );
-        assertEquals(ninetynine, converter.coerceToBigInteger(Integer.valueOf(99)));
-        assertEquals(ninetynine, converter.coerceToBigInteger(Long.valueOf(99)));
-        assertEquals(ninetynine, converter.coerceToBigInteger(Float.valueOf(99)));
-        assertEquals(ninetynine, converter.coerceToBigInteger(Double.valueOf(99)));
+        assertEquals(ninetynine, converter.coerceToBigInteger(99));
+        assertEquals(ninetynine, converter.coerceToBigInteger(99L));
+        assertEquals(ninetynine, converter.coerceToBigInteger(99F));
+        assertEquals(ninetynine, converter.coerceToBigInteger(99.0));
         assertEquals(
             ninetynine,
             converter.coerceToBigInteger(new BigDecimal(99))
@@ -446,9 +446,9 @@ public class TypeConverterImplTest extends TestCase {
     @Test
     public void testToType() {
         assertEquals("foo", converter.coerceToType("foo", String.class));
-        assertEquals(Long.valueOf(0), converter.coerceToType("0", Long.class));
+        assertEquals(0L, converter.coerceToType("0", Long.class));
         assertEquals(
-            Character.valueOf('c'),
+          'c',
             converter.coerceToType("c", Character.class)
         );
         assertEquals(
@@ -470,7 +470,7 @@ public class TypeConverterImplTest extends TestCase {
         try {
             converter.coerceToType("bar", getClass());
             fail();
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
         assertEquals(false, converter.coerceToType("false", boolean.class));
         assertEquals((byte) 0, converter.coerceToType("0", byte.class));
         assertEquals((short) 0, converter.coerceToType("0", short.class));

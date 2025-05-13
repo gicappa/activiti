@@ -45,19 +45,16 @@ public class IntermediateThrowEventParseHandler extends AbstractActivityBpmnPars
       eventDefinition = intermediateEvent.getEventDefinitions().get(0);
     }
 
-    if (eventDefinition instanceof SignalEventDefinition) {
-      SignalEventDefinition signalEventDefinition = (SignalEventDefinition) eventDefinition;
+    if (eventDefinition instanceof SignalEventDefinition signalEventDefinition) {
       intermediateEvent.setBehavior(bpmnParse.getActivityBehaviorFactory().createIntermediateThrowSignalEventActivityBehavior(intermediateEvent, signalEventDefinition,
           bpmnParse.getBpmnModel().getSignal(signalEventDefinition.getSignalRef())));
 
-    } else if (eventDefinition instanceof CompensateEventDefinition) {
-      CompensateEventDefinition compensateEventDefinition = (CompensateEventDefinition) eventDefinition;
+    } else if (eventDefinition instanceof CompensateEventDefinition compensateEventDefinition) {
       intermediateEvent.setBehavior(bpmnParse.getActivityBehaviorFactory().createIntermediateThrowCompensationEventActivityBehavior(intermediateEvent, compensateEventDefinition));
 
-    } else if (eventDefinition instanceof MessageEventDefinition) {
+    } else if (eventDefinition instanceof MessageEventDefinition messageEventDefinition) {
 
-        MessageEventDefinition messageEventDefinition = (MessageEventDefinition) eventDefinition;
-        Message message = bpmnParse.getBpmnModel().getMessage(messageEventDefinition.getMessageRef());
+      Message message = bpmnParse.getBpmnModel().getMessage(messageEventDefinition.getMessageRef());
 
         BpmnModel bpmnModel = bpmnParse.getBpmnModel();
         if (bpmnModel.containsMessageId(messageEventDefinition.getMessageRef())) {

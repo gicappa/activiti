@@ -20,66 +20,67 @@ import org.activiti.engine.delegate.DelegateExecution;
 
 public class MappingExecutionContext {
 
-    private String processDefinitionId;
-    private String activityId;
-    private DelegateExecution execution;
+  private final String processDefinitionId;
+  private final String activityId;
+  private DelegateExecution execution;
 
-    public MappingExecutionContext(DelegateExecution delegateExecution) {
-        this.processDefinitionId = delegateExecution.getProcessDefinitionId();
-        this.activityId = delegateExecution.getCurrentActivityId();
-        this.execution = delegateExecution;
-    }
+  public MappingExecutionContext(DelegateExecution delegateExecution) {
+    this.processDefinitionId = delegateExecution.getProcessDefinitionId();
+    this.activityId = delegateExecution.getCurrentActivityId();
+    this.execution = delegateExecution;
+  }
 
-    public MappingExecutionContext(String processDefinitionId,
-                                   String activityId) {
-        this.processDefinitionId = processDefinitionId;
-        this.activityId = activityId;
-    }
+  public MappingExecutionContext(String processDefinitionId,
+    String activityId) {
+    this.processDefinitionId = processDefinitionId;
+    this.activityId = activityId;
+  }
 
-    public String getProcessDefinitionId() {
-        return processDefinitionId;
-    }
+  public String getProcessDefinitionId() {
+    return processDefinitionId;
+  }
 
-    public String getActivityId() {
-        return activityId;
-    }
+  public String getActivityId() {
+    return activityId;
+  }
 
-    public boolean hasExecution() {
-        return this.execution != null;
-    }
+  public boolean hasExecution() {
+    return this.execution != null;
+  }
 
-    public DelegateExecution getExecution() {
-        return execution;
-    }
+  public DelegateExecution getExecution() {
+    return execution;
+  }
 
-    public static MappingExecutionContext buildMappingExecutionContext(DelegateExecution delegateExecution) {
-        return new MappingExecutionContext(delegateExecution);
-    }
+  public static MappingExecutionContext buildMappingExecutionContext(
+    DelegateExecution delegateExecution) {
+    return new MappingExecutionContext(delegateExecution);
+  }
 
-    public static MappingExecutionContext buildMappingExecutionContext(String processDefinitionId,
-                                                                       String activityId) {
-        return new MappingExecutionContext(processDefinitionId,
-                activityId);
-    }
+  public static MappingExecutionContext buildMappingExecutionContext(String processDefinitionId,
+    String activityId) {
+    return new MappingExecutionContext(processDefinitionId,
+      activityId);
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        MappingExecutionContext that = (MappingExecutionContext) o;
-        return Objects.equals(processDefinitionId,
-                that.processDefinitionId) &&
-                Objects.equals(activityId,
-                        that.activityId);
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    MappingExecutionContext that = (MappingExecutionContext) o;
+    return Objects.equals(processDefinitionId,
+      that.processDefinitionId) &&
+      Objects.equals(activityId,
+        that.activityId);
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(processDefinitionId,
-                activityId);
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(processDefinitionId,
+      activityId);
+  }
 }

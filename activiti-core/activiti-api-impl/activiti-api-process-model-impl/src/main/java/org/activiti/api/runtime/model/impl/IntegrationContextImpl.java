@@ -27,8 +27,8 @@ import org.activiti.api.process.model.IntegrationContext;
 public class IntegrationContextImpl implements IntegrationContext {
 
     private String id;
-    private ProcessVariablesMap<String, Object> inBoundVariables = new ProcessVariablesMap<>();
-    private ProcessVariablesMap<String, Object> outBoundVariables = new ProcessVariablesMap<>();
+    private final ProcessVariablesMap<String, Object> inBoundVariables = new ProcessVariablesMap<>();
+    private final ProcessVariablesMap<String, Object> outBoundVariables = new ProcessVariablesMap<>();
     private String processInstanceId;
     private String parentProcessInstanceId;
     private String rootProcessInstanceId;
@@ -259,41 +259,40 @@ public class IntegrationContextImpl implements IntegrationContext {
     @Override
     public String toString() {
         final int maxLen = 10;
-        StringBuilder builder = new StringBuilder();
-        builder.append("IntegrationContextImpl [id=")
-               .append(id)
-               .append(", inboundVariables=")
-               .append(inBoundVariables != null ? toString(inBoundVariables.entrySet(), maxLen) : null)
-               .append(", outBoundVariables=")
-               .append(outBoundVariables != null ? toString(outBoundVariables.entrySet(), maxLen) : null)
-               .append(", rootProcessInstanceId=")
-               .append(rootProcessInstanceId)
-               .append(", processInstanceId=")
-               .append(processInstanceId)
-               .append(", parentProcessInstanceId=")
-               .append(parentProcessInstanceId)
-               .append(", processDefinitionId=")
-               .append(processDefinitionId)
-               .append(", executionId=")
-               .append(executionId)
-               .append(", processDefinitionKey=")
-               .append(processDefinitionKey)
-               .append(", processDefinitionVersion=")
-               .append(processDefinitionVersion)
-               .append(", businessKey=")
-               .append(businessKey)
-               .append(", clientId=")
-               .append(clientId)
-               .append(", clientName=")
-               .append(clientName)
-               .append(", clientType=")
-               .append(clientType)
-               .append(", appVersion=")
-               .append(appVersion)
-               .append(", connectorType=")
-               .append(connectorType)
-               .append("]");
-        return builder.toString();
+      String builder = "IntegrationContextImpl [id="
+        + id
+        + ", inboundVariables="
+        + (inBoundVariables != null ? toString(inBoundVariables.entrySet(), maxLen) : null)
+        + ", outBoundVariables="
+        + (outBoundVariables != null ? toString(outBoundVariables.entrySet(), maxLen) : null)
+        + ", rootProcessInstanceId="
+        + rootProcessInstanceId
+        + ", processInstanceId="
+        + processInstanceId
+        + ", parentProcessInstanceId="
+        + parentProcessInstanceId
+        + ", processDefinitionId="
+        + processDefinitionId
+        + ", executionId="
+        + executionId
+        + ", processDefinitionKey="
+        + processDefinitionKey
+        + ", processDefinitionVersion="
+        + processDefinitionVersion
+        + ", businessKey="
+        + businessKey
+        + ", clientId="
+        + clientId
+        + ", clientName="
+        + clientName
+        + ", clientType="
+        + clientType
+        + ", appVersion="
+        + appVersion
+        + ", connectorType="
+        + connectorType
+        + "]";
+        return builder;
     }
 
     private String toString(Collection<?> collection, int maxLen) {

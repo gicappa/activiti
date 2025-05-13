@@ -467,7 +467,7 @@ public class HistoryServiceTest extends PluggableActivitiTestCase {
     assertThat(tasks.get(0).getDescription()).isNull();
 
     ObjectNode infoNode = dynamicBpmnService.changeLocalizationName("en-GB", "theTask", "My localized name");
-    dynamicBpmnService.changeLocalizationDescription("en-GB".toString(), "theTask", "My localized description", infoNode);
+    dynamicBpmnService.changeLocalizationDescription("en-GB", "theTask", "My localized description", infoNode);
     dynamicBpmnService.saveProcessDefinitionInfo(processInstance.getProcessDefinitionId(), infoNode);
 
     tasks = historyService.createHistoricTaskInstanceQuery().processDefinitionId(processInstance.getProcessDefinitionId()).list();

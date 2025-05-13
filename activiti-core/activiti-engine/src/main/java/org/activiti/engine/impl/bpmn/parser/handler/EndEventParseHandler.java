@@ -46,11 +46,10 @@ public class EndEventParseHandler extends AbstractActivityBpmnParseHandler<EndEv
   protected void executeParse(BpmnParse bpmnParse, EndEvent endEvent) {
 
     EventDefinition eventDefinition = null;
-    if (endEvent.getEventDefinitions().size() > 0) {
-      eventDefinition = endEvent.getEventDefinitions().get(0);
+    if (!endEvent.getEventDefinitions().isEmpty()) {
+      eventDefinition = endEvent.getEventDefinitions().getFirst();
 
-      if (eventDefinition instanceof ErrorEventDefinition) {
-        ErrorEventDefinition errorDefinition = (ErrorEventDefinition) eventDefinition;
+      if (eventDefinition instanceof ErrorEventDefinition errorDefinition) {
         if (bpmnParse.getBpmnModel().containsErrorRef(errorDefinition.getErrorRef())) {
 
           for(Error error : bpmnParse.getBpmnModel().getErrors().values()) {
@@ -69,8 +68,7 @@ public class EndEventParseHandler extends AbstractActivityBpmnParseHandler<EndEv
       } else if (eventDefinition instanceof CancelEventDefinition) {
         endEvent.setBehavior(bpmnParse.getActivityBehaviorFactory().createCancelEndEventActivityBehavior(endEvent));
       } else if (eventDefinition instanceof MessageEventDefinition) {
-        MessageEventDefinition messageEventDefinition = MessageEventDefinition.class
-                                                                              .cast(eventDefinition);
+        MessageEventDefinition messageEventDefinition = (MessageEventDefinition) eventDefinition;
         Message message = bpmnParse.getBpmnModel()
                                    .getMessage(messageEventDefinition.getMessageRef());
 

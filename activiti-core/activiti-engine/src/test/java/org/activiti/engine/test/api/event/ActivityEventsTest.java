@@ -248,7 +248,8 @@ public class ActivityEventsTest extends PluggableActivitiTestCase {
 
     // Check signal using event, and pass in additional payload
     Execution executionWithSignalEvent = runtimeService.createExecutionQuery().activityId("shipOrder").singleResult();
-    runtimeService.signalEventReceived("alert", executionWithSignalEvent.getId(), singletonMap("test", (Object) "test"));
+    runtimeService.signalEventReceived("alert", executionWithSignalEvent.getId(), singletonMap("test",
+      "test"));
     assertThat(listener.getEventsReceived()).hasSize(1);
     assertThat(listener.getEventsReceived().get(0)).isInstanceOf(ActivitiSignalEvent.class);
     signalEvent = (ActivitiSignalEvent) listener.getEventsReceived().get(0);
@@ -514,10 +515,10 @@ public class ActivityEventsTest extends PluggableActivitiTestCase {
       assertThat(((ActivitiActivityCancelledEvent) event).getCause()).isEqualTo("boundary event (boundaryTimer)");
       eventIdList.add(((ActivitiActivityEventImpl) event).getActivityId());
     }
-    assertThat(eventIdList.indexOf("innerTask1") >= 0).isTrue();
-    assertThat(eventIdList.indexOf("innerTask2") >= 0).isTrue();
-    assertThat(eventIdList.indexOf("subprocess") >= 0).isTrue();
-    assertThat(eventIdList.indexOf("innerSubprocess") >= 0).isTrue();
+    assertThat(eventIdList.contains("innerTask1")).isTrue();
+    assertThat(eventIdList.contains("innerTask2")).isTrue();
+    assertThat(eventIdList.contains("subprocess")).isTrue();
+    assertThat(eventIdList.contains("innerSubprocess")).isTrue();
   }
 
   @Deployment

@@ -238,10 +238,9 @@ public class ErrorPropagation {
     List<EventSubProcess> subProcesses = process.findFlowElementsOfType(EventSubProcess.class, true);
     for (EventSubProcess eventSubProcess : subProcesses) {
       for (FlowElement flowElement : eventSubProcess.getFlowElements()) {
-        if (flowElement instanceof StartEvent) {
-          StartEvent startEvent = (StartEvent) flowElement;
-          if (CollectionUtil.isNotEmpty(startEvent.getEventDefinitions()) && startEvent.getEventDefinitions().get(0) instanceof ErrorEventDefinition) {
-            ErrorEventDefinition errorEventDef = (ErrorEventDefinition) startEvent.getEventDefinitions().get(0);
+        if (flowElement instanceof StartEvent startEvent) {
+          if (CollectionUtil.isNotEmpty(startEvent.getEventDefinitions()) && startEvent.getEventDefinitions()
+            .get(0) instanceof ErrorEventDefinition errorEventDef) {
             String eventErrorCode = retrieveErrorCode(bpmnModel, errorEventDef.getErrorRef());
 
             if (eventErrorCode == null || compareErrorCode == null || eventErrorCode.equals(compareErrorCode)) {
@@ -256,9 +255,9 @@ public class ErrorPropagation {
 
     List<BoundaryEvent> boundaryEvents = process.findFlowElementsOfType(BoundaryEvent.class, true);
     for (BoundaryEvent boundaryEvent : boundaryEvents) {
-      if (boundaryEvent.getAttachedToRefId() != null && CollectionUtil.isNotEmpty(boundaryEvent.getEventDefinitions()) && boundaryEvent.getEventDefinitions().get(0) instanceof ErrorEventDefinition) {
+      if (boundaryEvent.getAttachedToRefId() != null && CollectionUtil.isNotEmpty(boundaryEvent.getEventDefinitions()) && boundaryEvent.getEventDefinitions()
+        .get(0) instanceof ErrorEventDefinition errorEventDef) {
 
-        ErrorEventDefinition errorEventDef = (ErrorEventDefinition) boundaryEvent.getEventDefinitions().get(0);
         String eventErrorCode = retrieveErrorCode(bpmnModel, errorEventDef.getErrorRef());
 
         if (eventErrorCode == null || compareErrorCode == null || eventErrorCode.equals(compareErrorCode)) {

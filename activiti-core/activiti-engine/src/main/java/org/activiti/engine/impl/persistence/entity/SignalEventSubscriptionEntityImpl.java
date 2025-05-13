@@ -15,16 +15,19 @@
  */
 package org.activiti.engine.impl.persistence.entity;
 
+import static org.activiti.bpmn.model.Signal.SCOPE_GLOBAL;
+import static org.activiti.bpmn.model.Signal.SCOPE_PROCESS_INSTANCE;
+
+import java.io.Serial;
 import java.text.MessageFormat;
 
-import org.activiti.bpmn.model.Signal;
-
 /**
-
-
+ *
  */
-public class SignalEventSubscriptionEntityImpl extends EventSubscriptionEntityImpl implements SignalEventSubscriptionEntity {
+public class SignalEventSubscriptionEntityImpl extends EventSubscriptionEntityImpl implements
+  SignalEventSubscriptionEntity {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   // Using json here, but not worth of adding json dependency lib for this
@@ -45,19 +48,21 @@ public class SignalEventSubscriptionEntityImpl extends EventSubscriptionEntityIm
 
   public boolean isProcessInstanceScoped() {
     String scope = extractScopeFormConfiguration();
-    return (scope != null) && (Signal.SCOPE_PROCESS_INSTANCE.equals(scope));
+    return SCOPE_PROCESS_INSTANCE.equals(scope);
   }
 
   public boolean isGlobalScoped() {
-    String scope = extractScopeFormConfiguration();
-    return (scope == null) || (Signal.SCOPE_GLOBAL.equals(scope));
+    var scope = extractScopeFormConfiguration();
+
+    return scope == null || SCOPE_GLOBAL.equals(scope);
   }
 
   protected String extractScopeFormConfiguration() {
     if (this.configuration == null) {
       return null;
     } else {
-      return this.configuration.substring(10, this.configuration.length() - 2); // 10 --> length of {"scope": and -2 for removing"}
+      return this.configuration.substring(10,
+        this.configuration.length() - 2); // 10 --> length of {"scope": and -2 for removing"}
     }
   }
 

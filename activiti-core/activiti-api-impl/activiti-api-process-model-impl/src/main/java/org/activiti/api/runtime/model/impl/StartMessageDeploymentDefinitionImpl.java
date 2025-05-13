@@ -66,13 +66,12 @@ public class StartMessageDeploymentDefinitionImpl implements StartMessageDeploym
 
     @Override
     public String toString() {
-        StringBuilder builder2 = new StringBuilder();
-        builder2.append("StartMessageDeploymentDefinitionImpl [messageSubscription=")
-                .append(messageSubscription)
-                .append(", processDefinition=")
-                .append(processDefinition)
-                .append("]");
-        return builder2.toString();
+      var builder2 = "StartMessageDeploymentDefinitionImpl [messageSubscription="
+        + messageSubscription
+        + ", processDefinition="
+        + processDefinition
+        + "]";
+        return builder2;
     }
 
     public static Builder builder() {

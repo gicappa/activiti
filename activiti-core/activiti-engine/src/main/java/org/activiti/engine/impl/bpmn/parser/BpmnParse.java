@@ -167,22 +167,22 @@ public class BpmnParse implements BpmnXMLConstants {
 
             for (ValidationError error : validationErrors) {
               if (error.isWarning()) {
-                warningBuilder.append(error.toString());
+                warningBuilder.append(error);
                 warningBuilder.append("\n");
               } else {
-                errorBuilder.append(error.toString());
+                errorBuilder.append(error);
                 errorBuilder.append("\n");
               }
             }
 
             // Throw exception if there is any error
-            if (errorBuilder.length() > 0) {
-              throw new ActivitiException("Errors while parsing:\n" + errorBuilder.toString());
+            if (!errorBuilder.isEmpty()) {
+              throw new ActivitiException("Errors while parsing:\n" + errorBuilder);
             }
 
             // Write out warnings (if any)
-            if (warningBuilder.length() > 0) {
-              LOGGER.warn("Following warnings encountered during process validation: " + warningBuilder.toString());
+            if (!warningBuilder.isEmpty()) {
+              LOGGER.warn("Following warnings encountered during process validation: " + warningBuilder);
             }
 
           }
@@ -278,7 +278,7 @@ public class BpmnParse implements BpmnXMLConstants {
    * Parses the 'definitions' root element
    */
   protected void applyParseHandlers() {
-    sequenceFlows = new HashMap<String, SequenceFlow>();
+    sequenceFlows = new HashMap<>();
     for (Process process : bpmnModel.getProcesses()) {
       currentProcess = process;
       if (process.isExecutable()) {
@@ -392,8 +392,7 @@ public class BpmnParse implements BpmnXMLConstants {
 
   public void createBPMNEdge(String key, List<GraphicInfo> graphicList) {
     FlowElement flowElement = bpmnModel.getFlowElement(key);
-    if (flowElement instanceof SequenceFlow) {
-      SequenceFlow sequenceFlow = (SequenceFlow) flowElement;
+    if (flowElement instanceof SequenceFlow sequenceFlow) {
       List<Integer> waypoints = new ArrayList<Integer>();
       for (GraphicInfo waypointInfo : graphicList) {
         waypoints.add((int) waypointInfo.getX());

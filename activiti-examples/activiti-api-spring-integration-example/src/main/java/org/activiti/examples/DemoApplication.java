@@ -50,9 +50,9 @@ import org.springframework.messaging.MessageChannel;
 @EnableIntegration
 public class DemoApplication implements CommandLineRunner {
 
-    private String INPUT_DIR = "/tmp/";
-    private String FILE_PATTERN = "*.txt";
-    private Logger logger = LoggerFactory.getLogger(DemoApplication.class);
+    private final String INPUT_DIR = "/tmp/";
+    private final String FILE_PATTERN = "*.txt";
+    private final Logger logger = LoggerFactory.getLogger(DemoApplication.class);
 
 
     private final ProcessRuntime processRuntime;

@@ -31,7 +31,7 @@ import static org.mockito.Mockito.when;
  */
 public class SubProcessVariableSnapshotterTest {
 
-    private SubProcessVariableSnapshotter snapshotter = new SubProcessVariableSnapshotter();
+    private final SubProcessVariableSnapshotter snapshotter = new SubProcessVariableSnapshotter();
 
     @Test
     public void setVariablesSnapshots_should_set_all_source_local_variables_in_the_snapshot_holder() throws Exception {

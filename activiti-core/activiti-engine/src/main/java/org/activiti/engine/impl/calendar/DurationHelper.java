@@ -40,13 +40,13 @@ public class DurationHelper {
 
     private Calendar start;
     private Calendar end;
-    private Duration period;
+    private final Duration period;
     private boolean isRepeat;
     private int times;
     private int maxIterations = -1;
     private boolean repeatWithNoBounds;
 
-    private DatatypeFactory datatypeFactory;
+    private final DatatypeFactory datatypeFactory;
 
     public Calendar getStart() {
         return start;

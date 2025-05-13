@@ -28,7 +28,7 @@ import org.activiti.engine.impl.context.Context;
 @Internal
 public class DefaultBusinessCalendar implements BusinessCalendar {
 
-  private static Map<String, Integer> units = new HashMap<String, Integer>();
+  private static final Map<String, Integer> units = new HashMap<String, Integer>();
   static {
     units.put("millis", Calendar.MILLISECOND);
     units.put("seconds", Calendar.SECOND);

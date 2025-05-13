@@ -15,19 +15,19 @@
  */
 package org.activiti.api.runtime.event.impl;
 
-import org.activiti.api.process.runtime.events.ProcessCandidateStarterGroupAddedEvent;
-
 import java.util.List;
+import org.activiti.api.process.runtime.events.ProcessCandidateStarterGroupAddedEvent;
 
 public class ProcessCandidateStarterGroupAddedEvents {
 
-    private List<ProcessCandidateStarterGroupAddedEvent> events;
+  private final List<ProcessCandidateStarterGroupAddedEvent> events;
 
-    public ProcessCandidateStarterGroupAddedEvents(List<ProcessCandidateStarterGroupAddedEvent> events) {
-        this.events = events;
-    }
+  public ProcessCandidateStarterGroupAddedEvents(
+    List<ProcessCandidateStarterGroupAddedEvent> events) {
+    this.events = events;
+  }
 
-    public List<ProcessCandidateStarterGroupAddedEvent> getEvents() {
-        return events;
-    }
+  public List<ProcessCandidateStarterGroupAddedEvent> getEvents() {
+    return events;
+  }
 }

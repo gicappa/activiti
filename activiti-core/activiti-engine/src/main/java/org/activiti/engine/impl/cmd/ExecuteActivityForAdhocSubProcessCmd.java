@@ -15,6 +15,7 @@
  */
 package org.activiti.engine.impl.cmd;
 
+import java.io.Serial;
 import org.activiti.bpmn.model.AdhocSubProcess;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.FlowNode;
@@ -33,7 +34,9 @@ import java.io.Serializable;
  */
 public class ExecuteActivityForAdhocSubProcessCmd implements Command<Execution>, Serializable {
 
+  @Serial
   private static final long serialVersionUID = 1L;
+
   protected String executionId;
   protected String activityId;
 
@@ -48,24 +51,22 @@ public class ExecuteActivityForAdhocSubProcessCmd implements Command<Execution>,
       throw new ActivitiObjectNotFoundException("No execution found for id '" + executionId + "'", ExecutionEntity.class);
     }
 
-    if (!(execution.getCurrentFlowElement() instanceof AdhocSubProcess)) {
+    if (!(execution.getCurrentFlowElement() instanceof AdhocSubProcess adhocSubProcess)) {
       throw new ActivitiException("The current flow element of the requested execution is not an ad-hoc sub process");
     }
 
     FlowNode foundNode = null;
-    AdhocSubProcess adhocSubProcess = (AdhocSubProcess) execution.getCurrentFlowElement();
 
     // if sequential ordering, only one child execution can be active
     if (adhocSubProcess.hasSequentialOrdering()) {
-      if (execution.getExecutions().size() > 0) {
+      if (!execution.getExecutions().isEmpty()) {
         throw new ActivitiException("Sequential ad-hoc sub process already has an active execution");
       }
     }
 
     for (FlowElement flowElement : adhocSubProcess.getFlowElements()) {
-      if (activityId.equals(flowElement.getId()) && flowElement instanceof FlowNode) {
-        FlowNode flowNode = (FlowNode) flowElement;
-        if (flowNode.getIncomingFlows().size() == 0) {
+      if (activityId.equals(flowElement.getId()) && flowElement instanceof FlowNode flowNode) {
+        if (flowNode.getIncomingFlows().isEmpty()) {
           foundNode = flowNode;
         }
       }

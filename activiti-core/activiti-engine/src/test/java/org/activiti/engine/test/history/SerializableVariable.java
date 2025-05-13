@@ -15,6 +15,7 @@
  */
 package org.activiti.engine.test.history;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -22,6 +23,7 @@ import java.io.Serializable;
  */
 public class SerializableVariable implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   public String text;
@@ -49,10 +51,8 @@ public class SerializableVariable implements Serializable {
       return false;
     SerializableVariable other = (SerializableVariable) obj;
     if (text == null) {
-      if (other.text != null)
-        return false;
-    } else if (!text.equals(other.text))
-      return false;
-    return true;
+      return other.text == null;
+    } else
+      return text.equals(other.text);
   }
 }

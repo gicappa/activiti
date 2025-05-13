@@ -25,7 +25,7 @@ import org.activiti.runtime.api.model.impl.APITaskConverter;
 
 public class ToTaskCancelledConverter implements EventConverter<TaskCancelledEvent, ActivitiEntityEvent> {
 
-    private APITaskConverter taskConverter;
+    private final APITaskConverter taskConverter;
 
     public ToTaskCancelledConverter(APITaskConverter taskConverter) {
         this.taskConverter = taskConverter;

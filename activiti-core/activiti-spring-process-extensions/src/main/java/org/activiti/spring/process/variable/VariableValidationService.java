@@ -33,7 +33,7 @@ public class VariableValidationService {
         this.variableTypeMap = variableTypeMap;
     }
 
-    private Map<String, VariableType> variableTypeMap;
+    private final Map<String, VariableType> variableTypeMap;
 
     public boolean validate(Object var, VariableDefinition variableDefinition){
         return validateWithErrors(var,variableDefinition).isEmpty();

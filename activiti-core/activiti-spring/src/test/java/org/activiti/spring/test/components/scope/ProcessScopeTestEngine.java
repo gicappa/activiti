@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 class ProcessScopeTestEngine {
-  private int customerId = 43;
+  private final int customerId = 43;
 
   private String keyForObjectType(Map<String, Object> runtimeVars, Class<?> clazz) {
     for (Map.Entry<String, Object> e : runtimeVars.entrySet()) {
@@ -76,9 +76,9 @@ class ProcessScopeTestEngine {
     return scopedObject;
   }
 
-  private ProcessEngine processEngine;
-  private RuntimeService runtimeService;
-  private TaskService taskService;
+  private final ProcessEngine processEngine;
+  private final RuntimeService runtimeService;
+  private final TaskService taskService;
 
   public void testScopedProxyCreation() {
 

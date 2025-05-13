@@ -27,7 +27,7 @@ import java.util.List;
 
 public class SimpleGrantedAuthoritiesGroupsMapperTest {
 
-    private SimpleGrantedAuthoritiesGroupsMapper subject = new SimpleGrantedAuthoritiesGroupsMapper();
+    private final SimpleGrantedAuthoritiesGroupsMapper subject = new SimpleGrantedAuthoritiesGroupsMapper();
 
     @Test
     public void testGetGroups() {

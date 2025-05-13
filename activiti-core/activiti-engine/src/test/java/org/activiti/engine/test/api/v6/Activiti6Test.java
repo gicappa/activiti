@@ -523,6 +523,6 @@ public class Activiti6Test extends PluggableActivitiTestCase {
     @org.activiti.engine.test.Deployment(resources = "org/activiti/engine/test/api/v6/Activiti6Test.testOneTaskProcess.bpmn20.xml")
     public void testProcessDefinitionTagCreated() {
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().singleResult();
-        assertThat(((ProcessDefinitionEntity) processDefinition).getEngineVersion()).isNull();
+        assertThat(processDefinition.getEngineVersion()).isNull();
     }
 }

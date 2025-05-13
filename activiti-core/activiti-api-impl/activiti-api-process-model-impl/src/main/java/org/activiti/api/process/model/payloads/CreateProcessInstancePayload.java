@@ -19,7 +19,7 @@ import java.util.UUID;
 import org.activiti.api.model.shared.Payload;
 
 public class CreateProcessInstancePayload implements Payload {
-    private String id;
+    private final String id;
     private String processDefinitionId;
     private String processDefinitionKey;
     private String name;

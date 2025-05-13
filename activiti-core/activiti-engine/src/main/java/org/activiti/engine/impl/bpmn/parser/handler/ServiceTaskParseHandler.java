@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 
 public class ServiceTaskParseHandler extends AbstractActivityBpmnParseHandler<ServiceTask> {
 
-  private static Logger logger = LoggerFactory.getLogger(ServiceTaskParseHandler.class);
+  private static final Logger logger = LoggerFactory.getLogger(ServiceTaskParseHandler.class);
 
   public Class<? extends BaseElement> getHandledType() {
     return ServiceTask.class;

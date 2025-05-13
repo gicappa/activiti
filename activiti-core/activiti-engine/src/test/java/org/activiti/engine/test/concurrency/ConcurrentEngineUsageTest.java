@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ConcurrentEngineUsageTest extends PluggableActivitiTestCase {
 
-  private static Logger log = LoggerFactory.getLogger(ConcurrentEngineUsageTest.class);
+  private static final Logger log = LoggerFactory.getLogger(ConcurrentEngineUsageTest.class);
   private static final int MAX_RETRIES = 5;
 
   @Deployment
@@ -84,7 +84,8 @@ public class ConcurrentEngineUsageTest extends PluggableActivitiTestCase {
     boolean success = false;
     while (retries > 0 && !success) {
       try {
-        runtimeService.startProcessInstanceByKey("concurrentProcess", singletonMap("assignee", (Object) runningUser));
+        runtimeService.startProcessInstanceByKey("concurrentProcess", singletonMap("assignee",
+          runningUser));
         success = true;
       } catch (PersistenceException pe) {
         retries = retries - 1;
@@ -126,7 +127,7 @@ public class ConcurrentEngineUsageTest extends PluggableActivitiTestCase {
   }
 
   private class ConcurrentProcessRunnerRunnable implements Runnable {
-    private String drivingUser;
+    private final String drivingUser;
     private int numberOfProcesses;
 
     public ConcurrentProcessRunnerRunnable(int numberOfProcesses, String drivingUser) {

@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ToSignalConverterTest {
 
-    private ToSignalConverter toSignalConverter = new ToSignalConverter();
+    private final ToSignalConverter toSignalConverter = new ToSignalConverter();
 
     @Test
     public void fromShouldSetMetaInfoAndVariables() {

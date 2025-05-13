@@ -45,9 +45,8 @@ public class ActivitiMapExceptionParser extends BaseChildElementParser {
     String exceptionClass = xtr.getElementText();
     boolean hasChildrenBool = false;
 
-    if (StringUtils.isEmpty(andChildren) || andChildren.toLowerCase().equals("false")) {
-      hasChildrenBool = false;
-    } else if (andChildren.toLowerCase().equals("true")) {
+    if (StringUtils.isEmpty(andChildren) || andChildren.equalsIgnoreCase("false")) {
+    } else if (andChildren.equalsIgnoreCase("true")) {
       hasChildrenBool = true;
     } else {
       throw new XMLException("'" + andChildren + "' is not valid boolean in mapException with errorCode=" + errorCode + " and class=" + exceptionClass);

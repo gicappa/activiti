@@ -36,7 +36,7 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration("classpath:org/activiti/spring/test/email/jndiEmailConfiguration-context.xml")
 public class JndiEmailTest extends SpringActivitiTestCase {
 
-    private static Logger logger = LoggerFactory.getLogger(JndiEmailTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(JndiEmailTest.class);
 
     @BeforeClass
     public void setUp() {

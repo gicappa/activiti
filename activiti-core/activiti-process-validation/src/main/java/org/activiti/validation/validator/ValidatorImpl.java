@@ -91,8 +91,7 @@ public abstract class ValidatorImpl implements Validator {
     error.setDefaultDescription(problem);
     error.setParams(params);
 
-    if (baseElement instanceof FlowElement) {
-      FlowElement flowElement = (FlowElement) baseElement;
+    if (baseElement instanceof FlowElement flowElement) {
       error.setActivityId(flowElement.getId());
       error.setActivityName(flowElement.getName());
     }

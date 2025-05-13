@@ -30,11 +30,11 @@ import org.activiti.engine.delegate.event.ActivitiEventType;
  */
 public class TestActivitiActivityEventListener implements ActivitiEventListener {
 
-  private List<ActivitiEvent> eventsReceived;
+  private final List<ActivitiEvent> eventsReceived;
   private boolean ignoreRawActivityEvents;
 
   public TestActivitiActivityEventListener(boolean ignoreRawActivityEvents) {
-    eventsReceived = new ArrayList<ActivitiEvent>();
+    eventsReceived = new ArrayList<>();
     this.ignoreRawActivityEvents = ignoreRawActivityEvents;
   }
 

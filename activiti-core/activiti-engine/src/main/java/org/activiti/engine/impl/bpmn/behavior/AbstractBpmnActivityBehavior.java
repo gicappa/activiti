@@ -67,7 +67,7 @@ public class AbstractBpmnActivityBehavior extends FlowNodeActivityBehavior {
         continue;
       }
 
-      if (boundaryEvent.getEventDefinitions().get(0) instanceof CompensateEventDefinition == false) {
+      if (!(boundaryEvent.getEventDefinitions().get(0) instanceof CompensateEventDefinition)) {
         continue;
       }
 

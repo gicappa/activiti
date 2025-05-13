@@ -30,14 +30,14 @@ import javax.script.ScriptEngineFactory;
  */
 public class JuelScriptEngineFactory implements ScriptEngineFactory {
 
-  private static List<String> names;
-  private static List<String> extensions;
-  private static List<String> mimeTypes;
+  private static final List<String> names;
+  private static final List<String> extensions;
+  private static final List<String> mimeTypes;
 
   static {
     names = singletonList("juel");
     extensions = names;
-    mimeTypes = unmodifiableList(new ArrayList<String>(0));
+    mimeTypes = unmodifiableList(new ArrayList<>(0));
   }
 
   public String getEngineName() {
@@ -74,7 +74,7 @@ public class JuelScriptEngineFactory implements ScriptEngineFactory {
 
   public String getOutputStatement(String toDisplay) {
     // We will use out:print function to output statements
-    StringBuilder stringBuffer = new StringBuilder();
+    var stringBuffer = new StringBuilder();
     stringBuffer.append("out:print(\"");
 
     int length = toDisplay.length();
@@ -116,13 +116,11 @@ public class JuelScriptEngineFactory implements ScriptEngineFactory {
 
   public String getProgram(String... statements) {
     // Each statement is wrapped in '${}' to comply with EL
-    StringBuilder buf = new StringBuilder();
-    if (statements.length != 0) {
-      for (int i = 0; i < statements.length; i++) {
-        buf.append("${");
-        buf.append(statements[i]);
-        buf.append("} ");
-      }
+    var buf = new StringBuilder();
+    for (var statement : statements) {
+      buf.append("${");
+      buf.append(statement);
+      buf.append("} ");
     }
     return buf.toString();
   }

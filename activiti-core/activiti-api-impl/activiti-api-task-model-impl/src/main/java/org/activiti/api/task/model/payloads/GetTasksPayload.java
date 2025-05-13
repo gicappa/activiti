@@ -21,7 +21,7 @@ import org.activiti.api.model.shared.Payload;
 
 public class GetTasksPayload implements Payload {
 
-    private String id;
+    private final String id;
     private String assigneeId;
     private List<String> groups;
     private String processInstanceId;

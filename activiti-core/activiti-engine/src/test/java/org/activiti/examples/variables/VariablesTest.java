@@ -51,7 +51,7 @@ public class VariablesTest extends PluggableActivitiTestCase {
     processEngineConfiguration.getVariableTypes().addType(CustomVariableType.instance);
 
     Date now = new Date();
-    List<String> serializable = new ArrayList<String>();
+    List<String> serializable = new ArrayList<>();
     serializable.add("one");
     serializable.add("two");
     serializable.add("three");
@@ -82,7 +82,7 @@ public class VariablesTest extends PluggableActivitiTestCase {
     long4001StringBuilder.append("a");
 
     // Start process instance with different types of variables
-    Map<String, Object> variables = new HashMap<String, Object>();
+    Map<String, Object> variables = new HashMap<>();
     variables.put("longVar", 928374L);
     variables.put("shortVar", (short) 123);
     variables.put("integerVar", 1234);
@@ -192,7 +192,7 @@ public class VariablesTest extends PluggableActivitiTestCase {
   @Deployment
   public void testLocalizeVariables() {
     // Start process instance with different types of variables
-    Map<String, Object> variables = new HashMap<String, Object>();
+    Map<String, Object> variables = new HashMap<>();
     variables.put("stringVar", "coca-cola");
     ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("localizeVariables", variables);
 
@@ -201,7 +201,7 @@ public class VariablesTest extends PluggableActivitiTestCase {
     assertThat(variableInstances.get("stringVar").getName()).isEqualTo("stringVar");
     assertThat(variableInstances.get("stringVar").getValue()).isEqualTo("coca-cola");
 
-    List<String> variableNames = new ArrayList<String>();
+    List<String> variableNames = new ArrayList<>();
     variableNames.add("stringVar");
 
     // getVariablesInstances via names
@@ -238,7 +238,7 @@ public class VariablesTest extends PluggableActivitiTestCase {
     assertThat(variableInstances.get("intVar").getName()).isEqualTo("intVar");
     assertThat(variableInstances.get("intVar").getValue()).isEqualTo(null);
 
-    variableNames = new ArrayList<String>();
+    variableNames = new ArrayList<>();
     variableNames.add("stringVar");
 
     // getVariablesInstances via names
@@ -271,7 +271,7 @@ public class VariablesTest extends PluggableActivitiTestCase {
   @Deployment
   public void testLocalizeDataObjects() {
     // Start process instance with different types of variables
-    Map<String, Object> variables = new HashMap<String, Object>();
+    Map<String, Object> variables = new HashMap<>();
     variables.put("stringVar", "coca-cola");
     ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("localizeVariables", variables);
     Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
@@ -938,7 +938,7 @@ public class VariablesTest extends PluggableActivitiTestCase {
     assertThat(dataObjects.get("intVar").getDataObjectDefinitionKey()).isEqualTo("intVarId");
     assertThat(dataObjects.get("intVar").getType()).isEqualTo("int");
 
-    variableNames = new ArrayList<String>();
+    variableNames = new ArrayList<>();
     variableNames.add("stringVar");
 
     // getDataObjects via names
@@ -1056,14 +1056,14 @@ public class VariablesTest extends PluggableActivitiTestCase {
   public void testChangeVariableType() {
 
     Date now = new Date();
-    List<String> serializable = new ArrayList<String>();
+    List<String> serializable = new ArrayList<>();
     serializable.add("one");
     serializable.add("two");
     serializable.add("three");
     byte[] bytes = "somebytes".getBytes();
 
     // Start process instance with different types of variables
-    Map<String, Object> variables = new HashMap<String, Object>();
+    Map<String, Object> variables = new HashMap<>();
     variables.put("longVar", 928374L);
     variables.put("shortVar", (short) 123);
     variables.put("integerVar", 1234);
@@ -1102,8 +1102,8 @@ public class VariablesTest extends PluggableActivitiTestCase {
 
       assertThat(newSerializableVarId).isEqualTo(oldSerializableVarId);
 
-      // Change type of a  longVar from Long to Short
-      newVariables = new HashMap<String, Object>();
+      // Change type of  longVar from Long to Short
+      newVariables = new HashMap<>();
       newVariables.put("longVar", (short) 123);
       runtimeService.setVariables(processInstance.getId(), newVariables);
       variables = runtimeService.getVariables(processInstance.getId());
@@ -1184,7 +1184,7 @@ public class VariablesTest extends PluggableActivitiTestCase {
 }
 
 class CustomType {
-  private byte[] value;
+  private final byte[] value;
 
   public CustomType(byte[] value) {
     if (value == null) {
@@ -1213,9 +1213,7 @@ class CustomType {
       return false;
 
     CustomType other = (CustomType) obj;
-    if (!Arrays.equals(value, other.value))
-      return false;
-    return true;
+    return Arrays.equals(value, other.value);
   }
 
 }

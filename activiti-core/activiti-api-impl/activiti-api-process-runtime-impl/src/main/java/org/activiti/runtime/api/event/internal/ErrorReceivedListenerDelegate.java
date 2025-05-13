@@ -26,9 +26,9 @@ import org.activiti.runtime.api.event.impl.ToErrorReceivedConverter;
 
 public class ErrorReceivedListenerDelegate implements ActivitiEventListener {
 
-    private List<BPMNElementEventListener<BPMNErrorReceivedEvent>> processRuntimeEventListeners;
+    private final List<BPMNElementEventListener<BPMNErrorReceivedEvent>> processRuntimeEventListeners;
 
-    private ToErrorReceivedConverter converter;
+    private final ToErrorReceivedConverter converter;
 
     public ErrorReceivedListenerDelegate(List<BPMNElementEventListener<BPMNErrorReceivedEvent>> processRuntimeEventListeners,
                                          ToErrorReceivedConverter converter) {

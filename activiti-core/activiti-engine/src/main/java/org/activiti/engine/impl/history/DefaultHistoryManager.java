@@ -49,7 +49,7 @@ import org.slf4j.LoggerFactory;
  */
 public class DefaultHistoryManager extends AbstractManager implements HistoryManager {
 
-  private static Logger log = LoggerFactory.getLogger(DefaultHistoryManager.class.getName());
+  private static final Logger log = LoggerFactory.getLogger(DefaultHistoryManager.class.getName());
 
   private HistoryLevel historyLevel;
 
@@ -281,15 +281,15 @@ public class DefaultHistoryManager extends AbstractManager implements HistoryMan
       List<HistoricActivityInstanceEntity> historicActivityInstances = getHistoricActivityInstanceEntityManager()
           .findUnfinishedHistoricActivityInstancesByExecutionAndActivityId(executionId, activityId);
 
-      if (historicActivityInstances.size() > 0) {
-        return historicActivityInstances.get(0);
+      if (!historicActivityInstances.isEmpty()) {
+        return historicActivityInstances.getFirst();
       }
 
     }
 
     if (execution.getParentId() != null) {
       HistoricActivityInstanceEntity historicActivityInstanceFromParent
-        = findActivityInstance((ExecutionEntity) execution.getParent(), activityId, false, endTimeMustBeNull); // always false for create, we only check if it can be found
+        = findActivityInstance(execution.getParent(), activityId, false, endTimeMustBeNull); // always false for create, we only check if it can be found
       if (historicActivityInstanceFromParent != null) {
         return historicActivityInstanceFromParent;
       }

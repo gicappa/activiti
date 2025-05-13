@@ -24,7 +24,6 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Locale;
 import java.util.regex.Pattern;
-
 import org.activiti.engine.ActivitiClassLoadingException;
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
@@ -33,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ *
  */
 public abstract class ReflectUtil {
 
@@ -42,7 +42,7 @@ public abstract class ReflectUtil {
   private static final Pattern SETTER_PATTERN = Pattern.compile("set[A-Z].*");
 
   public static ClassLoader getClassLoader() {
-    ClassLoader loader = getCustomClassLoader();
+    var loader = getCustomClassLoader();
     if (loader == null) {
       loader = Thread.currentThread().getContextClassLoader();
     }
@@ -51,7 +51,7 @@ public abstract class ReflectUtil {
 
   public static Class<?> loadClass(String className) {
     Class<?> clazz = null;
-    ClassLoader classLoader = getCustomClassLoader();
+    var classLoader = getCustomClassLoader();
 
     // First exception in chain of classloaders will be used as cause when
     // no class is found in any of them
@@ -94,7 +94,7 @@ public abstract class ReflectUtil {
 
   public static InputStream getResourceAsStream(String name) {
     InputStream resourceStream = null;
-    ClassLoader classLoader = getCustomClassLoader();
+    var classLoader = getCustomClassLoader();
     if (classLoader != null) {
       resourceStream = classLoader.getResourceAsStream(name);
     }
@@ -145,6 +145,7 @@ public abstract class ReflectUtil {
     try {
       Class<? extends Object> clazz = target.getClass();
       Method method = findMethod(clazz, methodName, args);
+      assert method != null;
       method.setAccessible(true);
       return method.invoke(target, args);
     } catch (Exception e) {
@@ -167,7 +168,8 @@ public abstract class ReflectUtil {
     try {
       field = clazz.getDeclaredField(fieldName);
     } catch (SecurityException e) {
-      throw new ActivitiException("not allowed to access field " + field + " on class " + clazz.getCanonicalName());
+      throw new ActivitiException(
+        "not allowed to access field " + field + " on class " + clazz.getCanonicalName());
     } catch (NoSuchFieldException e) {
       // for some reason getDeclaredFields doesn't search superclasses
       // (which getFields() does ... but that gives only public fields)
@@ -183,10 +185,8 @@ public abstract class ReflectUtil {
     try {
       field.setAccessible(true);
       field.set(object, value);
-    } catch (IllegalArgumentException e) {
-      throw new ActivitiException("Could not set field " + field.toString(), e);
-    } catch (IllegalAccessException e) {
-      throw new ActivitiException("Could not set field " + field.toString(), e);
+    } catch (IllegalArgumentException | IllegalAccessException e) {
+      throw new ActivitiException("Could not set field " + field, e);
     }
   }
 
@@ -194,7 +194,7 @@ public abstract class ReflectUtil {
    * Returns the setter-method for the given field name or null if no setter exists.
    */
   public static Method getSetter(String fieldName, Class<?> clazz, Class<?> fieldType) {
-    String setterName = "set" + Character.toTitleCase(fieldName.charAt(0)) + fieldName.substring(1, fieldName.length());
+    String setterName = "set" + Character.toTitleCase(fieldName.charAt(0)) + fieldName.substring(1);
     try {
       // Using getMethods(), getMethod(...) expects exact parameter type
       // matching and ignores inheritance-tree.
@@ -202,18 +202,20 @@ public abstract class ReflectUtil {
       for (Method method : methods) {
         if (method.getName().equals(setterName)) {
           Class<?>[] paramTypes = method.getParameterTypes();
-          if (paramTypes != null && paramTypes.length == 1 && paramTypes[0].isAssignableFrom(fieldType)) {
+          if (paramTypes.length == 1 && paramTypes[0].isAssignableFrom(fieldType)) {
             return method;
           }
         }
       }
       return null;
     } catch (SecurityException e) {
-      throw new ActivitiException("Not allowed to access method " + setterName + " on class " + clazz.getCanonicalName());
+      throw new ActivitiException(
+        "Not allowed to access method " + setterName + " on class " + clazz.getCanonicalName());
     }
   }
 
-  private static Method findMethod(Class<? extends Object> clazz, String methodName, Object[] args) {
+  private static Method findMethod(Class<? extends Object> clazz, String methodName,
+    Object[] args) {
     for (Method method : clazz.getDeclaredMethods()) {
       // TODO add parameter matching
       if (method.getName().equals(methodName) && matches(method.getParameterTypes(), args)) {
@@ -231,16 +233,18 @@ public abstract class ReflectUtil {
     Class<?> clazz = loadClass(className);
     Constructor<?> constructor = findMatchingConstructor(clazz, args);
     if (constructor == null) {
-      throw new ActivitiException("couldn't find constructor for " + className + " with args " + asList(args));
+      throw new ActivitiException(
+        "couldn't find constructor for " + className + " with args " + asList(args));
     }
     try {
       return constructor.newInstance(args);
     } catch (Exception e) {
-      throw new ActivitiException("couldn't find constructor for " + className + " with args " + asList(args), e);
+      throw new ActivitiException(
+        "couldn't find constructor for " + className + " with args " + asList(args), e);
     }
   }
 
-  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @SuppressWarnings({"unchecked", "rawtypes"})
   private static <T> Constructor<T> findMatchingConstructor(Class<T> clazz, Object[] args) {
     for (Constructor constructor : clazz.getDeclaredConstructors()) { // cannot use <?> or <T> due to JDK 5/6 incompatibility
       if (matches(constructor.getParameterTypes(), args)) {
@@ -268,24 +272,24 @@ public abstract class ReflectUtil {
   private static ClassLoader getCustomClassLoader() {
     ProcessEngineConfigurationImpl processEngineConfiguration = Context.getProcessEngineConfiguration();
     if (processEngineConfiguration != null) {
-      final ClassLoader classLoader = processEngineConfiguration.getClassLoader();
-      if (classLoader != null) {
-        return classLoader;
-      }
+      return processEngineConfiguration.getClassLoader();
     }
     return null;
   }
 
-  private static Class loadClass(ClassLoader classLoader, String className) throws ClassNotFoundException {
+  private static Class loadClass(ClassLoader classLoader, String className)
+    throws ClassNotFoundException {
     ProcessEngineConfigurationImpl processEngineConfiguration = Context.getProcessEngineConfiguration();
-    boolean useClassForName = processEngineConfiguration == null || processEngineConfiguration.isUseClassForNameClassLoading();
-    return useClassForName ? Class.forName(className, true, classLoader) : classLoader.loadClass(className);
+    boolean useClassForName = processEngineConfiguration == null
+      || processEngineConfiguration.isUseClassForNameClassLoading();
+    return useClassForName ? Class.forName(className, true, classLoader)
+      : classLoader.loadClass(className);
   }
 
   public static boolean isGetter(Method method) {
-    String name = method.getName();
-    Class<?> type = method.getReturnType();
-    Class<?> params[] = method.getParameterTypes();
+    var name = method.getName();
+    var type = method.getReturnType();
+    var params = method.getParameterTypes();
 
     if (!GETTER_PATTERN.matcher(name).matches()) {
       return false;
@@ -300,15 +304,16 @@ public abstract class ReflectUtil {
   }
 
   public static boolean isSetter(Method method, boolean allowBuilderPattern) {
-    String name = method.getName();
-    Class<?> type = method.getReturnType();
-    Class<?> params[] = method.getParameterTypes();
+    var name = method.getName();
+    var type = method.getReturnType();
+    var params = method.getParameterTypes();
 
     if (!SETTER_PATTERN.matcher(name).matches()) {
       return false;
     }
 
-    return params.length == 1 && (type.equals(Void.TYPE) || (allowBuilderPattern && method.getDeclaringClass().isAssignableFrom(type)));
+    return params.length == 1 && (type.equals(Void.TYPE) || (allowBuilderPattern
+      && method.getDeclaringClass().isAssignableFrom(type)));
   }
 
   public static boolean isSetter(Method method) {
@@ -320,7 +325,7 @@ public abstract class ReflectUtil {
       return method.getName();
     }
 
-    String name = method.getName();
+    var name = method.getName();
     if (name.startsWith("get")) {
       name = name.substring(3);
       name = name.substring(0, 1).toLowerCase(Locale.ENGLISH) + name.substring(1);
@@ -337,7 +342,7 @@ public abstract class ReflectUtil {
       return method.getName();
     }
 
-    String name = method.getName();
+    var name = method.getName();
     if (name.startsWith("set")) {
       name = name.substring(3);
       name = name.substring(0, 1).toLowerCase(Locale.ENGLISH) + name.substring(1);

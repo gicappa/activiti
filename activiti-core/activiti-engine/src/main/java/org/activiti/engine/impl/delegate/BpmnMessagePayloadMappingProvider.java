@@ -54,8 +54,8 @@ public class BpmnMessagePayloadMappingProvider implements MessagePayloadMappingP
         return Optional.of(field)
                        .map(f -> {
                            Object value = Optional.ofNullable(f.getValue())
-                                                  .map(v -> (Expression.class.isInstance(v))
-                                                               ? Expression.class.cast(v).getValue(execution)
+                                                  .map(v -> (v instanceof Expression)
+                                                               ? ((Expression) v).getValue(execution)
                                                                : v)
                                                   .orElse(null);
 

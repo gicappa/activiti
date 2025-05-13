@@ -53,7 +53,7 @@ public class CommentEntityManagerImpl extends AbstractEntityManager<CommentEntit
 
     insert(commentEntity, false);
 
-    Comment comment = (Comment) commentEntity;
+    Comment comment = commentEntity;
     if (getEventDispatcher().isEnabled()) {
       // Forced to fetch the process-instance to associate the right
       // process definition
@@ -142,7 +142,7 @@ public class CommentEntityManagerImpl extends AbstractEntityManager<CommentEntit
 
     delete(commentEntity, false);
 
-    Comment comment = (Comment) commentEntity;
+    Comment comment = commentEntity;
     if (getEventDispatcher().isEnabled()) {
       // Forced to fetch the process-instance to associate the right
       // process definition

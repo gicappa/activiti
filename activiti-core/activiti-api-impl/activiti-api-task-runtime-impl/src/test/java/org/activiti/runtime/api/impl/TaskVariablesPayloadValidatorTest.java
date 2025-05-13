@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 
 public class TaskVariablesPayloadValidatorTest {
 
-    private TaskVariablesPayloadValidator taskVariablesPayloadValidator = new TaskVariablesPayloadValidator(new DateFormatterProvider("yyyy-MM-dd[['T']HH:mm:ss[.SSS'Z']]"),
+    private final TaskVariablesPayloadValidator taskVariablesPayloadValidator = new TaskVariablesPayloadValidator(new DateFormatterProvider("yyyy-MM-dd[['T']HH:mm:ss[.SSS'Z']]"),
                                                                                                             new VariableNameValidator());
 
     @Test

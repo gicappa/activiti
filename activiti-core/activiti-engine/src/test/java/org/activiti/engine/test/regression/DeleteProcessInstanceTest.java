@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
  */
 public class DeleteProcessInstanceTest extends PluggableActivitiTestCase {
 
-  private static Logger log = LoggerFactory.getLogger(DeleteProcessInstanceTest.class);
+  private static final Logger log = LoggerFactory.getLogger(DeleteProcessInstanceTest.class);
 
   @Deployment
   public void testNoEndTimeSet() {

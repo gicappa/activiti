@@ -15,6 +15,7 @@
  */
 package org.activiti.engine.impl;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +29,7 @@ import org.activiti.engine.query.QueryProperty;
  */
 public class HistoricDetailQueryProperty implements QueryProperty {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   private static final Map<String, HistoricDetailQueryProperty> properties = new HashMap<String, HistoricDetailQueryProperty>();
@@ -38,7 +40,7 @@ public class HistoricDetailQueryProperty implements QueryProperty {
   public static final HistoricDetailQueryProperty VARIABLE_REVISION = new HistoricDetailQueryProperty("REV_");
   public static final HistoricDetailQueryProperty TIME = new HistoricDetailQueryProperty("TIME_");
 
-  private String name;
+  private final String name;
 
   public HistoricDetailQueryProperty(String name) {
     this.name = name;

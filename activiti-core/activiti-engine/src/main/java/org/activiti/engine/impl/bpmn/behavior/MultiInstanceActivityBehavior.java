@@ -15,6 +15,9 @@
  */
 package org.activiti.engine.impl.bpmn.behavior;
 
+import static org.activiti.engine.delegate.event.ActivitiEventType.ACTIVITY_COMPLETED;
+
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -59,6 +62,7 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class MultiInstanceActivityBehavior extends FlowNodeActivityBehavior implements SubProcessActivityBehavior {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   protected static final Logger LOGGER = LoggerFactory.getLogger(MultiInstanceActivityBehavior.class);
@@ -127,7 +131,7 @@ public abstract class MultiInstanceActivityBehavior extends FlowNodeActivityBeha
   protected void executeCompensationBoundaryEvents(FlowElement flowElement, DelegateExecution execution) {
 
     //Execute compensation boundary events
-    Collection<BoundaryEvent> boundaryEvents = findBoundaryEventsForFlowNode(execution.getProcessDefinitionId(), flowElement);
+    var boundaryEvents = findBoundaryEventsForFlowNode(execution.getProcessDefinitionId(), flowElement);
     if (CollectionUtil.isNotEmpty(boundaryEvents)) {
 
       // The parent execution becomes a scope, and a child execution is created for each of the boundary events
@@ -137,14 +141,14 @@ public abstract class MultiInstanceActivityBehavior extends FlowNodeActivityBeha
           continue;
         }
 
-        if (boundaryEvent.getEventDefinitions().get(0) instanceof CompensateEventDefinition) {
-          ExecutionEntity childExecutionEntity = getCommandContext().getExecutionEntityManager()
+        if (boundaryEvent.getEventDefinitions().getFirst() instanceof CompensateEventDefinition) {
+          var childExecutionEntity = getCommandContext().getExecutionEntityManager()
               .createChildExecution((ExecutionEntity) execution);
           childExecutionEntity.setParentId(execution.getId());
           childExecutionEntity.setCurrentFlowElement(boundaryEvent);
           childExecutionEntity.setScope(false);
 
-          ActivityBehavior boundaryEventBehavior = ((ActivityBehavior) boundaryEvent.getBehavior());
+          var boundaryEventBehavior = ((ActivityBehavior) boundaryEvent.getBehavior());
           boundaryEventBehavior.execute(childExecutionEntity);
         }
       }
@@ -152,12 +156,12 @@ public abstract class MultiInstanceActivityBehavior extends FlowNodeActivityBeha
   }
 
   protected Collection<BoundaryEvent> findBoundaryEventsForFlowNode(final String processDefinitionId, final FlowElement flowElement) {
-    Process process = getProcessDefinition(processDefinitionId);
+    var process = getProcessDefinition(processDefinitionId);
 
     // This could be cached or could be done at parsing time
-    List<BoundaryEvent> results = new ArrayList<BoundaryEvent>(1);
-    Collection<BoundaryEvent> boundaryEvents = process.findFlowElementsOfType(BoundaryEvent.class, true);
-    for (BoundaryEvent boundaryEvent : boundaryEvents) {
+    var results = new ArrayList<BoundaryEvent>(1);
+    var boundaryEvents = process.findFlowElementsOfType(BoundaryEvent.class, true);
+    for (var boundaryEvent : boundaryEvents) {
       if (boundaryEvent.getAttachedToRefId() != null && boundaryEvent.getAttachedToRefId().equals(flowElement.getId())) {
         results.add(boundaryEvent);
       }
@@ -198,7 +202,7 @@ public abstract class MultiInstanceActivityBehavior extends FlowNodeActivityBeha
       return resolveLoopCardinality(execution);
 
     } else if(usesCollection()) {
-      Collection collection = resolveAndValidateCollection(execution);
+      var collection = resolveAndValidateCollection(execution);
       return collection.size();
 
     } else {
@@ -209,11 +213,11 @@ public abstract class MultiInstanceActivityBehavior extends FlowNodeActivityBeha
   @SuppressWarnings("rawtypes")
   protected void executeOriginalBehavior(DelegateExecution execution, int loopCounter) {
     if (usesCollection() && collectionElementVariable != null) {
-      Collection collection = (Collection) resolveCollection(execution);
+      var collection = (Collection) resolveCollection(execution);
 
       Object value = null;
       int index = 0;
-      Iterator it = collection.iterator();
+      var it = collection.iterator();
       while (index <= loopCounter) {
         value = it.next();
         index++;
@@ -227,7 +231,7 @@ public abstract class MultiInstanceActivityBehavior extends FlowNodeActivityBeha
 
   @SuppressWarnings("rawtypes")
   protected Collection resolveAndValidateCollection(DelegateExecution execution) {
-    Object obj = resolveCollection(execution);
+    var obj = resolveCollection(execution);
     if (collectionExpression != null) {
       if (!(obj instanceof Collection)) {
         throw new ActivitiIllegalArgumentException(collectionExpression.getExpressionText() + "' didn't resolve to a Collection");
@@ -269,12 +273,12 @@ public abstract class MultiInstanceActivityBehavior extends FlowNodeActivityBeha
 
   protected int resolveLoopCardinality(DelegateExecution execution) {
     // Using Number since expr can evaluate to eg. Long (which is also the default for Juel)
-    Object value = loopCardinalityExpression.getValue(execution);
+    var value = loopCardinalityExpression.getValue(execution);
     if (value instanceof Number) {
       return ((Number) value).intValue();
 
     } else if (value instanceof String) {
-      return Integer.valueOf((String) value);
+      return Integer.parseInt((String) value);
 
     } else {
       throw new ActivitiIllegalArgumentException("Could not resolve loopCardinality expression '" + loopCardinalityExpression.getExpressionText() + "': not a number nor number String");
@@ -283,12 +287,11 @@ public abstract class MultiInstanceActivityBehavior extends FlowNodeActivityBeha
 
   protected boolean completionConditionSatisfied(DelegateExecution execution) {
     if (completionConditionExpression != null) {
-      Object value = completionConditionExpression.getValue(execution);
-      if (!(value instanceof Boolean)) {
+      var value = completionConditionExpression.getValue(execution);
+      if (!(value instanceof Boolean booleanValue)) {
         throw new ActivitiIllegalArgumentException("completionCondition '" + completionConditionExpression.getExpressionText() + "' does not evaluate to a boolean value");
       }
 
-      Boolean booleanValue = (Boolean) value;
       if (LOGGER.isDebugEnabled()) {
         LOGGER.debug("Completion condition of multi-instance satisfied: {}", booleanValue);
       }
@@ -302,8 +305,8 @@ public abstract class MultiInstanceActivityBehavior extends FlowNodeActivityBeha
   }
 
   protected Integer getLoopVariable(DelegateExecution execution, String variableName) {
-    Object value = execution.getVariableLocal(variableName);
-    DelegateExecution parent = execution.getParent();
+    var value = execution.getVariableLocal(variableName);
+    var parent = execution.getParent();
     while (value == null && parent != null) {
       value = parent.getVariableLocal(variableName);
       parent = parent.getParent();
@@ -337,7 +340,7 @@ public abstract class MultiInstanceActivityBehavior extends FlowNodeActivityBeha
 
   protected DelegateExecution getMultiInstanceRootExecution(DelegateExecution executionEntity) {
     DelegateExecution multiInstanceRootExecution = null;
-    DelegateExecution currentExecution = executionEntity;
+    var currentExecution = executionEntity;
     while (currentExecution != null  && multiInstanceRootExecution == null && currentExecution.getParent() != null) {
       if (currentExecution.isMultiInstanceRoot()) {
         multiInstanceRootExecution = currentExecution;
@@ -349,11 +352,11 @@ public abstract class MultiInstanceActivityBehavior extends FlowNodeActivityBeha
   }
 
   protected void dispatchActivityCompletedEvent(DelegateExecution execution) {
-    ExecutionEntity executionEntity = (ExecutionEntity) execution;
-    FlowElement flowElement = executionEntity.getCurrentFlowElement();
+    var executionEntity = (ExecutionEntity) execution;
+    var flowElement = executionEntity.getCurrentFlowElement();
 
     getCommandContext().getEventDispatcher().dispatchEvent(ActivitiEventBuilder.createActivityEvent(
-            ActivitiEventType.ACTIVITY_COMPLETED,
+            ACTIVITY_COMPLETED,
             executionEntity,
             flowElement
     ));

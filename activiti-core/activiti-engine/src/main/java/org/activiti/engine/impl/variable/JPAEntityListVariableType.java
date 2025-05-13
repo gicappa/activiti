@@ -64,9 +64,8 @@ public class JPAEntityListVariableType implements VariableType, CacheableVariabl
   public boolean isAbleToStore(Object value) {
     boolean canStore = false;
 
-    if (value instanceof List<?>) {
-      List<?> list = (List<?>) value;
-      if (list.size() > 0) {
+    if (value instanceof List<?> list) {
+      if (!list.isEmpty()) {
         // We can only store the list if we are sure it's actually a
         // list of JPA entities. In case the
         // list is empty, we don't store it.
@@ -100,12 +99,11 @@ public class JPAEntityListVariableType implements VariableType, CacheableVariabl
       entityManagerSession.flush();
     }
 
-    if (value instanceof List<?> && ((List<?>) value).size() > 0) {
-      List<?> list = (List<?>) value;
-      List<String> ids = new ArrayList<String>();
+    if (value instanceof List<?> list && ((List<?>) value).size() > 0) {
+      var ids = new ArrayList<String>();
 
-      String type = mappings.getJPAClassString(list.get(0));
-      for (Object entry : list) {
+      var type = mappings.getJPAClassString(list.get(0));
+      for (var entry : list) {
         ids.add(mappings.getJPAIdString(entry));
       }
 
@@ -126,12 +124,12 @@ public class JPAEntityListVariableType implements VariableType, CacheableVariabl
   public Object getValue(ValueFields valueFields) {
     byte[] bytes = valueFields.getBytes();
     if (valueFields.getTextValue() != null && bytes != null) {
-      String entityClass = valueFields.getTextValue();
+      var entityClass = valueFields.getTextValue();
 
-      List<Object> result = new ArrayList<Object>();
-      String[] ids = deserializeIds(bytes);
+      var result = new ArrayList<Object>();
+      var ids = deserializeIds(bytes);
 
-      for (String id : ids) {
+      for (var id : ids) {
         result.add(mappings.getJPAEntity(entityClass, id));
       }
 
@@ -145,9 +143,9 @@ public class JPAEntityListVariableType implements VariableType, CacheableVariabl
    */
   protected byte[] serializeIds(List<String> ids) {
     try {
-      String[] toStore = ids.toArray(new String[] {});
-      ByteArrayOutputStream baos = new ByteArrayOutputStream();
-      ObjectOutputStream out = new ObjectOutputStream(baos);
+      var toStore = ids.toArray(new String[] {});
+      var baos = new ByteArrayOutputStream();
+      var out = new ObjectOutputStream(baos);
 
       out.writeObject(toStore);
       return baos.toByteArray();
@@ -167,10 +165,8 @@ public class JPAEntityListVariableType implements VariableType, CacheableVariabl
       }
 
       return (String[]) read;
-    } catch (IOException ioe) {
+    } catch (IOException | ClassNotFoundException ioe) {
       throw new ActivitiException("Unexpected exception when deserializing JPA id's", ioe);
-    } catch (ClassNotFoundException e) {
-      throw new ActivitiException("Unexpected exception when deserializing JPA id's", e);
     }
   }
 

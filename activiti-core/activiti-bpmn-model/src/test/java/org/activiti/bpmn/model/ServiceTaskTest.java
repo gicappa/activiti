@@ -54,15 +54,15 @@ public class ServiceTaskTest {
 
     private List<BoundaryEvent> createErrorBoundaryEvents() {
         BoundaryEvent boundaryEvent = new BoundaryEvent();
-        boundaryEvent.setEventDefinitions(Arrays.asList(new ErrorEventDefinition()));
+        boundaryEvent.setEventDefinitions(List.of(new ErrorEventDefinition()));
 
-        return Arrays.asList(boundaryEvent);
+        return List.of(boundaryEvent);
     }
 
     private List<BoundaryEvent> createNoErrorBoundaryEvents() {
         BoundaryEvent boundaryEvent = new BoundaryEvent();
-        boundaryEvent.setEventDefinitions(Arrays.asList(new MessageEventDefinition()));
+        boundaryEvent.setEventDefinitions(List.of(new MessageEventDefinition()));
 
-        return Arrays.asList(boundaryEvent);
+        return List.of(boundaryEvent);
     }
 }

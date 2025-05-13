@@ -25,7 +25,7 @@ import org.activiti.engine.RepositoryService;
 public class APIProcessDefinitionConverter extends ListConverter<org.activiti.engine.repository.ProcessDefinition, ProcessDefinition>
         implements ModelConverter<org.activiti.engine.repository.ProcessDefinition, ProcessDefinition> {
 
-    private RepositoryService repositoryService;
+    private final RepositoryService repositoryService;
 
     public APIProcessDefinitionConverter(RepositoryService repositoryService) {
         this.repositoryService = repositoryService;

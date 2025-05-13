@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
  */
 public class AcquireAsyncJobsDueRunnable implements Runnable {
 
-  private static Logger log = LoggerFactory.getLogger(AcquireAsyncJobsDueRunnable.class);
+  private static final Logger log = LoggerFactory.getLogger(AcquireAsyncJobsDueRunnable.class);
 
   protected final AsyncExecutor asyncExecutor;
 
@@ -115,7 +115,7 @@ public class AcquireAsyncJobsDueRunnable implements Runnable {
       }
     }
 
-    log.info("{} stopped async job due acquisition");
+    log.info("stopped async job due acquisition");
   }
 
   public void stop() {
@@ -127,11 +127,4 @@ public class AcquireAsyncJobsDueRunnable implements Runnable {
     }
   }
 
-  public long getMillisToWait() {
-    return millisToWait;
-  }
-
-  public void setMillisToWait(long millisToWait) {
-    this.millisToWait = millisToWait;
-  }
 }

@@ -71,13 +71,12 @@ public class BoundaryCancelEventActivityBehavior extends BoundaryEventActivityBe
       // cancel boundary is always sync
       ScopeUtil.throwCompensationEvent(eventSubscriptions, execution, false);
       executionEntityManager.deleteExecutionAndRelatedData(subProcessExecution, deleteReason);
-      if (subProcessExecution.getCurrentFlowElement() instanceof Activity) {
-        Activity activity = (Activity) subProcessExecution.getCurrentFlowElement();
+      if (subProcessExecution.getCurrentFlowElement() instanceof Activity activity) {
         if (activity.getLoopCharacteristics() != null) {
           ExecutionEntity miExecution = subProcessExecution.getParent();
           List<ExecutionEntity> miChildExecutions = executionEntityManager.findChildExecutionsByParentExecutionId(miExecution.getId());
           for (ExecutionEntity miChildExecution : miChildExecutions) {
-            if (subProcessExecution.getId().equals(miChildExecution.getId()) == false && activity.getId().equals(miChildExecution.getCurrentActivityId())) {
+            if (!subProcessExecution.getId().equals(miChildExecution.getId()) && activity.getId().equals(miChildExecution.getCurrentActivityId())) {
               executionEntityManager.deleteExecutionAndRelatedData(miChildExecution, deleteReason);
             }
           }

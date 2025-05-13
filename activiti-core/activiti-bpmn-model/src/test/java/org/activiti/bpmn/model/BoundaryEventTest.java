@@ -18,6 +18,7 @@ package org.activiti.bpmn.model;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
+import java.util.List;
 import org.junit.Test;
 
 public class BoundaryEventTest {
@@ -26,7 +27,7 @@ public class BoundaryEventTest {
     public void hasErrorEventDefinition_should_returnTrue_when_hasAnErrorEvent() {
         // given
         BoundaryEvent boundaryEvent = new BoundaryEvent();
-        boundaryEvent.setEventDefinitions(Arrays.asList(new ErrorEventDefinition()));
+        boundaryEvent.setEventDefinitions(List.of(new ErrorEventDefinition()));
 
         // then
         assertThat(boundaryEvent.hasErrorEventDefinition()).isTrue();
@@ -45,7 +46,7 @@ public class BoundaryEventTest {
     public void hasErrorEventDefinition_should_returnFalse_when_doesNotContainErrorEvent() {
         // given
         BoundaryEvent boundaryEvent = new BoundaryEvent();
-        boundaryEvent.setEventDefinitions(Arrays.asList(new MessageEventDefinition()));
+        boundaryEvent.setEventDefinitions(List.of(new MessageEventDefinition()));
 
         // then
         assertThat(boundaryEvent.hasErrorEventDefinition()).isFalse();

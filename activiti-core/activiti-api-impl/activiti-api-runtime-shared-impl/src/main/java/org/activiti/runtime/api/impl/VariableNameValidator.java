@@ -29,9 +29,7 @@ public class VariableNameValidator {
     public boolean validate(String name) {
 
         if (StringUtils.hasLength(name)) {
-            if (Pattern.compile(regexPattern).matcher(name).matches()) {
-                return true;
-            }
+          return Pattern.compile(regexPattern).matcher(name).matches();
         }
         return false;
 

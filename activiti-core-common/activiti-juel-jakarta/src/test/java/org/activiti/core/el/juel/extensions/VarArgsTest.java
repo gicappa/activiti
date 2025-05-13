@@ -43,8 +43,7 @@ public class VarArgsTest {
         Method method =
             String.class.getMethod(
                     "format",
-                    new Class[] { String.class, Object[].class }
-                );
+              String.class, Object[].class);
         SimpleContext context = new SimpleContext();
         context.setFunction("varargs", "format", method);
 

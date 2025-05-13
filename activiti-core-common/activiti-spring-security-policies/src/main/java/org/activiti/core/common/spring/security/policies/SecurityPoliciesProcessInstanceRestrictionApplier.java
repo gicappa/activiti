@@ -31,7 +31,7 @@ public class SecurityPoliciesProcessInstanceRestrictionApplier implements Securi
     @Override
     public GetProcessInstancesPayload denyAll() {
         //user should not see anything so give unsatisfiable condition
-        return ProcessPayloadBuilder.processInstances().withProcessDefinitionKey("missing-" + UUID.randomUUID().toString()).build();
+        return ProcessPayloadBuilder.processInstances().withProcessDefinitionKey("missing-" + UUID.randomUUID()).build();
     }
 
     @Override

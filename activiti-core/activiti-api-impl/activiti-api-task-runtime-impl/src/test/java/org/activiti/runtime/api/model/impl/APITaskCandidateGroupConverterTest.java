@@ -24,7 +24,7 @@ import static org.mockito.Mockito.mock;
 
 public class APITaskCandidateGroupConverterTest {
 
-    private APITaskCandidateGroupConverter taskCandidateGroupConverter = new APITaskCandidateGroupConverter();
+    private final APITaskCandidateGroupConverter taskCandidateGroupConverter = new APITaskCandidateGroupConverter();
 
     @Test
     public void fromShouldConvertEngineObjectToModelObject() {

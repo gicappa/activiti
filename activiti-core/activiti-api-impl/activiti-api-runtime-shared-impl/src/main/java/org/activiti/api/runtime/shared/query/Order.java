@@ -19,13 +19,12 @@ public class Order {
 
     public enum Direction {
         ASC,
-
         DESC
     }
 
-    private String property;
+    private final String property;
 
-    private Direction direction;
+    private final Direction direction;
 
     public Order(String property) {
         this(property, Direction.ASC);

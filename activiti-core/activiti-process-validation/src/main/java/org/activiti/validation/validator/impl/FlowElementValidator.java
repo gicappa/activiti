@@ -54,11 +54,9 @@ public class FlowElementValidator extends ProcessLevelValidator {
     }
 
     private void handleFlowElement(Process process, FlowElement flowElement, List<ValidationError> errors) {
-        if (flowElement instanceof Activity) {
-            Activity activity = (Activity) flowElement;
-            if (activity instanceof SubProcess) {
-                SubProcess subProcess = (SubProcess) activity;
-                for (FlowElement subElement : subProcess.getFlowElements()) {
+        if (flowElement instanceof Activity activity) {
+          if (activity instanceof SubProcess subProcess) {
+              for (FlowElement subElement : subProcess.getFlowElements()) {
                     handleFlowElement(process, subElement, errors);
                 }
             } else {

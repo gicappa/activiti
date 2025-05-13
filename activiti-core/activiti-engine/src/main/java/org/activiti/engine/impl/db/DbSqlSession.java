@@ -437,9 +437,8 @@ public class DbSqlSession implements Session {
         statement = dbSqlSessionFactory.mapStatement(statement);
         Object result = sqlSession.selectOne(statement,
                                              parameter);
-        if (result instanceof Entity) {
-            Entity loadedObject = (Entity) result;
-            result = cacheLoadOrStore(loadedObject);
+        if (result instanceof Entity loadedObject) {
+          result = cacheLoadOrStore(loadedObject);
         }
         return result;
     }
@@ -467,7 +466,7 @@ public class DbSqlSession implements Session {
 
         String selectStatement = dbSqlSessionFactory.getSelectStatement(entityClass);
         selectStatement = dbSqlSessionFactory.mapStatement(selectStatement);
-        entity = (T) sqlSession.selectOne(selectStatement,
+        entity = sqlSession.selectOne(selectStatement,
                                           id);
         if (entity == null) {
             return null;
@@ -988,7 +987,7 @@ public class DbSqlSession implements Session {
 
     protected String getDbVersion() {
         String selectSchemaVersionStatement = dbSqlSessionFactory.mapStatement("selectDbSchemaVersion");
-        return (String) sqlSession.selectOne(selectSchemaVersionStatement);
+        return sqlSession.selectOne(selectSchemaVersionStatement);
     }
 
     public void dbSchemaCreate() {
@@ -1437,9 +1436,9 @@ public class DbSqlSession implements Session {
             }
 
             // Message returned from Postgres
-            if (((exceptionMessage.indexOf("relation") != -1 || exceptionMessage.indexOf("table") != -1)) && (exceptionMessage.indexOf("does not exist") != -1)) {
-                return true;
-            }
+          return ((exceptionMessage.indexOf("relation") != -1
+            || exceptionMessage.indexOf("table") != -1)) && (
+            exceptionMessage.indexOf("does not exist") != -1);
         }
         return false;
     }

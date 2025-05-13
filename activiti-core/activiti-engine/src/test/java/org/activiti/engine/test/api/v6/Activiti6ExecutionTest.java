@@ -19,7 +19,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.activiti.engine.delegate.event.ActivitiActivityCancelledEvent;
 import org.activiti.engine.delegate.event.ActivitiActivityEvent;
 import org.activiti.engine.delegate.event.ActivitiEvent;
@@ -40,7 +39,8 @@ public class Activiti6ExecutionTest extends PluggableActivitiTestCase {
   public void testOneTaskProcess() {
     ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("oneTaskProcess");
 
-    List<Execution> executionList = runtimeService.createExecutionQuery().processInstanceId(processInstance.getId()).list();
+    List<Execution> executionList = runtimeService.createExecutionQuery()
+      .processInstanceId(processInstance.getId()).list();
     assertThat(executionList).hasSize(2);
 
     Execution rootProcessInstance = null;
@@ -70,8 +70,8 @@ public class Activiti6ExecutionTest extends PluggableActivitiTestCase {
 
     if (processEngineConfiguration.getHistoryLevel().isAtLeast(HistoryLevel.ACTIVITY)) {
       List<HistoricActivityInstance> historicActivities = historyService.createHistoricActivityInstanceQuery()
-          .processInstanceId(processInstance.getId())
-          .list();
+        .processInstanceId(processInstance.getId())
+        .list();
       assertThat(historicActivities).hasSize(3);
 
       List<String> activityIds = new ArrayList<String>();
@@ -91,9 +91,11 @@ public class Activiti6ExecutionTest extends PluggableActivitiTestCase {
   @Test
   @Deployment
   public void testOneNestedTaskProcess() {
-    ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("oneNestedTaskProcess");
+    ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(
+      "oneNestedTaskProcess");
 
-    List<Execution> executionList = runtimeService.createExecutionQuery().processInstanceId(processInstance.getId()).list();
+    List<Execution> executionList = runtimeService.createExecutionQuery()
+      .processInstanceId(processInstance.getId()).list();
     assertThat(executionList).hasSize(2);
 
     Execution rootProcessInstance = null;
@@ -116,32 +118,38 @@ public class Activiti6ExecutionTest extends PluggableActivitiTestCase {
     assertThat(rootProcessInstance).isNotNull();
     assertThat(childExecution).isNotNull();
 
-    Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+    Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId())
+      .singleResult();
     assertThat(task.getExecutionId()).isEqualTo(childExecution.getId());
 
     taskService.complete(task.getId());
 
-    executionList = runtimeService.createExecutionQuery().processInstanceId(processInstance.getId()).list();
+    executionList = runtimeService.createExecutionQuery().processInstanceId(processInstance.getId())
+      .list();
     assertThat(executionList).hasSize(3);
 
     task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
     assertThat(task.getTaskDefinitionKey()).isEqualTo("subTask");
-    Execution subTaskExecution = runtimeService.createExecutionQuery().executionId(task.getExecutionId()).singleResult();
+    Execution subTaskExecution = runtimeService.createExecutionQuery()
+      .executionId(task.getExecutionId()).singleResult();
     assertThat(subTaskExecution.getActivityId()).isEqualTo("subTask");
 
-    Execution subProcessExecution = runtimeService.createExecutionQuery().executionId(subTaskExecution.getParentId()).singleResult();
+    Execution subProcessExecution = runtimeService.createExecutionQuery()
+      .executionId(subTaskExecution.getParentId()).singleResult();
     assertThat(subProcessExecution.getActivityId()).isEqualTo("subProcess");
     assertThat(subProcessExecution.getParentId()).isEqualTo(rootProcessInstance.getId());
 
     taskService.complete(task.getId());
 
-    executionList = runtimeService.createExecutionQuery().processInstanceId(processInstance.getId()).list();
+    executionList = runtimeService.createExecutionQuery().processInstanceId(processInstance.getId())
+      .list();
     assertThat(executionList).hasSize(2);
 
     task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
     assertThat(childExecution.getId()).isNotEqualTo(task.getExecutionId());
 
-    Execution finalTaskExecution = runtimeService.createExecutionQuery().executionId(task.getExecutionId()).singleResult();
+    Execution finalTaskExecution = runtimeService.createExecutionQuery()
+      .executionId(task.getExecutionId()).singleResult();
     assertThat(finalTaskExecution.getActivityId()).isEqualTo("theTask2");
 
     assertThat(finalTaskExecution.getParentId()).isEqualTo(rootProcessInstance.getId());
@@ -152,8 +160,8 @@ public class Activiti6ExecutionTest extends PluggableActivitiTestCase {
 
     if (processEngineConfiguration.getHistoryLevel().isAtLeast(HistoryLevel.ACTIVITY)) {
       List<HistoricActivityInstance> historicActivities = historyService.createHistoricActivityInstanceQuery()
-          .processInstanceId(processInstance.getId())
-          .list();
+        .processInstanceId(processInstance.getId())
+        .list();
       assertThat(historicActivities).hasSize(8);
 
       List<String> activityIds = new ArrayList<String>();
@@ -176,18 +184,20 @@ public class Activiti6ExecutionTest extends PluggableActivitiTestCase {
           assertThat(historicActivityInstance.getExecutionId()).isEqualTo(childExecution.getId());
 
         } else if ("theTask2".equalsIgnoreCase(activityId) ||
-              "theEnd".equalsIgnoreCase(activityId)) {
+          "theEnd".equalsIgnoreCase(activityId)) {
 
-          assertThat(historicActivityInstance.getExecutionId()).isEqualTo(finalTaskExecution.getId());
+          assertThat(historicActivityInstance.getExecutionId()).isEqualTo(
+            finalTaskExecution.getId());
 
         } else if ("subStart".equalsIgnoreCase(activityId) ||
-            "subTask".equalsIgnoreCase(activityId) ||
-            "subEnd".equalsIgnoreCase(activityId)) {
+          "subTask".equalsIgnoreCase(activityId) ||
+          "subEnd".equalsIgnoreCase(activityId)) {
 
           assertThat(historicActivityInstance.getExecutionId()).isEqualTo(subTaskExecution.getId());
 
         } else if ("subProcess".equalsIgnoreCase(activityId)) {
-          assertThat(historicActivityInstance.getExecutionId()).isEqualTo(subProcessExecution.getId());
+          assertThat(historicActivityInstance.getExecutionId()).isEqualTo(
+            subProcessExecution.getId());
         }
       }
 
@@ -198,9 +208,11 @@ public class Activiti6ExecutionTest extends PluggableActivitiTestCase {
   @Test
   @Deployment
   public void testSubProcessWithTimer() {
-    ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("subProcessWithTimer");
+    ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(
+      "subProcessWithTimer");
 
-    List<Execution> executionList = runtimeService.createExecutionQuery().processInstanceId(processInstance.getId()).list();
+    List<Execution> executionList = runtimeService.createExecutionQuery()
+      .processInstanceId(processInstance.getId()).list();
     assertThat(executionList).hasSize(2);
 
     Execution rootProcessInstance = null;
@@ -222,32 +234,38 @@ public class Activiti6ExecutionTest extends PluggableActivitiTestCase {
     assertThat(rootProcessInstance).isNotNull();
     assertThat(childExecution).isNotNull();
 
-    Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+    Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId())
+      .singleResult();
     assertThat(task.getExecutionId()).isEqualTo(childExecution.getId());
 
     taskService.complete(task.getId());
 
-    executionList = runtimeService.createExecutionQuery().processInstanceId(processInstance.getId()).list();
+    executionList = runtimeService.createExecutionQuery().processInstanceId(processInstance.getId())
+      .list();
     assertThat(executionList).hasSize(4);
 
     task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
     assertThat(task.getTaskDefinitionKey()).isEqualTo("subTask");
-    Execution subTaskExecution = runtimeService.createExecutionQuery().executionId(task.getExecutionId()).singleResult();
+    Execution subTaskExecution = runtimeService.createExecutionQuery()
+      .executionId(task.getExecutionId()).singleResult();
     assertThat(subTaskExecution.getActivityId()).isEqualTo("subTask");
 
-    Execution subProcessExecution = runtimeService.createExecutionQuery().executionId(subTaskExecution.getParentId()).singleResult();
+    Execution subProcessExecution = runtimeService.createExecutionQuery()
+      .executionId(subTaskExecution.getParentId()).singleResult();
     assertThat(subProcessExecution.getActivityId()).isEqualTo("subProcess");
     assertThat(subProcessExecution.getParentId()).isEqualTo(rootProcessInstance.getId());
 
     taskService.complete(task.getId());
 
-    executionList = runtimeService.createExecutionQuery().processInstanceId(processInstance.getId()).list();
+    executionList = runtimeService.createExecutionQuery().processInstanceId(processInstance.getId())
+      .list();
     assertThat(executionList).hasSize(2);
 
     task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
     assertThat(childExecution.getId()).isNotEqualTo(task.getExecutionId());
 
-    Execution finalTaskExecution = runtimeService.createExecutionQuery().executionId(task.getExecutionId()).singleResult();
+    Execution finalTaskExecution = runtimeService.createExecutionQuery()
+      .executionId(task.getExecutionId()).singleResult();
     assertThat(finalTaskExecution.getActivityId()).isEqualTo("theTask2");
 
     assertThat(finalTaskExecution.getParentId()).isEqualTo(rootProcessInstance.getId());
@@ -258,8 +276,8 @@ public class Activiti6ExecutionTest extends PluggableActivitiTestCase {
 
     if (processEngineConfiguration.getHistoryLevel().isAtLeast(HistoryLevel.ACTIVITY)) {
       List<HistoricActivityInstance> historicActivities = historyService.createHistoricActivityInstanceQuery()
-          .processInstanceId(processInstance.getId())
-          .list();
+        .processInstanceId(processInstance.getId())
+        .list();
       assertThat(historicActivities).hasSize(8);
 
       List<String> activityIds = new ArrayList<String>();
@@ -282,18 +300,20 @@ public class Activiti6ExecutionTest extends PluggableActivitiTestCase {
           assertThat(historicActivityInstance.getExecutionId()).isEqualTo(childExecution.getId());
 
         } else if ("theTask2".equalsIgnoreCase(activityId) ||
-              "theEnd".equalsIgnoreCase(activityId)) {
+          "theEnd".equalsIgnoreCase(activityId)) {
 
-          assertThat(historicActivityInstance.getExecutionId()).isEqualTo(finalTaskExecution.getId());
+          assertThat(historicActivityInstance.getExecutionId()).isEqualTo(
+            finalTaskExecution.getId());
 
         } else if ("subStart".equalsIgnoreCase(activityId) ||
-            "subTask".equalsIgnoreCase(activityId) ||
-            "subEnd".equalsIgnoreCase(activityId)) {
+          "subTask".equalsIgnoreCase(activityId) ||
+          "subEnd".equalsIgnoreCase(activityId)) {
 
           assertThat(historicActivityInstance.getExecutionId()).isEqualTo(subTaskExecution.getId());
 
         } else if ("subProcess".equalsIgnoreCase(activityId)) {
-          assertThat(historicActivityInstance.getExecutionId()).isEqualTo(subProcessExecution.getId());
+          assertThat(historicActivityInstance.getExecutionId()).isEqualTo(
+            subProcessExecution.getId());
         }
       }
 
@@ -309,10 +329,12 @@ public class Activiti6ExecutionTest extends PluggableActivitiTestCase {
 
     ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("subProcessEvents");
 
-    Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+    Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId())
+      .singleResult();
     taskService.complete(task.getId());
 
-    Execution subProcessExecution = runtimeService.createExecutionQuery().processInstanceId(processInstance.getId()).activityId("subProcess").singleResult();
+    Execution subProcessExecution = runtimeService.createExecutionQuery()
+      .processInstanceId(processInstance.getId()).activityId("subProcess").singleResult();
 
     task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
     taskService.complete(task.getId());
@@ -337,12 +359,12 @@ public class Activiti6ExecutionTest extends PluggableActivitiTestCase {
     processEngineConfiguration.getEventDispatcher().removeEventListener(listener);
   }
 
-  public class SubProcessEventListener implements ActivitiEventListener {
+  public static class SubProcessEventListener implements ActivitiEventListener {
 
-    private List<ActivitiEvent> eventsReceived;
+    private final List<ActivitiEvent> eventsReceived;
 
     public SubProcessEventListener() {
-      eventsReceived = new ArrayList<ActivitiEvent>();
+      eventsReceived = new ArrayList<>();
     }
 
     public List<ActivitiEvent> getEventsReceived() {
@@ -355,13 +377,11 @@ public class Activiti6ExecutionTest extends PluggableActivitiTestCase {
 
     @Override
     public void onEvent(ActivitiEvent activitiEvent) {
-      if (activitiEvent instanceof ActivitiActivityEvent) {
-        ActivitiActivityEvent event = (ActivitiActivityEvent) activitiEvent;
+      if (activitiEvent instanceof ActivitiActivityEvent event) {
         if ("subProcess".equals(event.getActivityType())) {
           eventsReceived.add(event);
         }
-      } else if (activitiEvent instanceof ActivitiActivityCancelledEvent) {
-        ActivitiActivityCancelledEvent event = (ActivitiActivityCancelledEvent) activitiEvent;
+      } else if (activitiEvent instanceof ActivitiActivityCancelledEvent event) {
         if ("subProcess".equals(event.getActivityType())) {
           eventsReceived.add(event);
         }

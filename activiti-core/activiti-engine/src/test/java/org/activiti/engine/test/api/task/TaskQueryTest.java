@@ -55,10 +55,10 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   private static final List<String> KERMITSGROUPS = asList("management","accountancy");
 
   private static final String GONZO = "gonzo";
-  private static final List<String> GONZOSGROUPS = asList();
+  private static final List<String> GONZOSGROUPS = List.of();
 
   private static final String FOZZIE = "fozzie";
-  private static final List<String> FOZZIESGROUPS = asList("management");
+  private static final List<String> FOZZIESGROUPS = List.of("management");
 
   private static final String SCOOTER = "scooter";
   private static final List<String> SCOOTERSGROUPS = null;
@@ -90,7 +90,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
     assertThat(query.count()).isEqualTo(12);
     assertThat(query.list()).hasSize(12);
     assertThatExceptionOfType(ActivitiException.class)
-      .isThrownBy(() -> query.singleResult());
+      .isThrownBy(query::singleResult);
   }
 
   public void testQueryByTaskId() {
@@ -133,7 +133,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
     assertThat(query.count()).isEqualTo(6);
 
     assertThatExceptionOfType(ActivitiException.class)
-      .isThrownBy(() -> query.singleResult());
+      .isThrownBy(query::singleResult);
   }
 
   public void testQueryByNameOr() {
@@ -142,7 +142,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
     assertThat(query.count()).isEqualTo(6);
 
     assertThatExceptionOfType(ActivitiException.class)
-      .isThrownBy(() -> query.singleResult());
+      .isThrownBy(query::singleResult);
   }
 
   public void testQueryByInvalidName() {
@@ -175,7 +175,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
     assertThat(query.count()).isEqualTo(7);
 
     assertThatExceptionOfType(ActivitiException.class)
-      .isThrownBy(() -> query.singleResult());
+      .isThrownBy(query::singleResult);
   }
 
   public void testQueryByNameInIgnoreCase() {
@@ -188,7 +188,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
     assertThat(query.count()).isEqualTo(7);
 
     assertThatExceptionOfType(ActivitiException.class)
-      .isThrownBy(() -> query.singleResult());
+      .isThrownBy(query::singleResult);
   }
 
   public void testQueryByNameInOr() {
@@ -214,7 +214,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
     assertThat(query.count()).isEqualTo(7);
 
     assertThatExceptionOfType(ActivitiException.class)
-      .isThrownBy(() -> query.singleResult());
+      .isThrownBy(query::singleResult);
   }
 
   public void testQueryByInvalidNameIn() {
@@ -242,7 +242,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   public void testQueryByInvalidNameInOr() {
-    final List<String> taskNameList = new ArrayList<String>(2);
+    final List<String> taskNameList = new ArrayList<>(2);
     taskNameList.add("invalid");
 
     TaskQuery query = taskService.createTaskQuery().or().taskNameIn(taskNameList).taskId("invalid");
@@ -254,7 +254,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   public void testQueryByInvalidNameInIgnoreCaseOr() {
-    final List<String> taskNameList = new ArrayList<String>(2);
+    final List<String> taskNameList = new ArrayList<>(2);
     taskNameList.add("invalid");
 
     TaskQuery query = taskService.createTaskQuery().or().taskNameInIgnoreCase(taskNameList).taskId("invalid");
@@ -305,7 +305,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
     assertThat(query.count()).isEqualTo(6);
 
     assertThatExceptionOfType(ActivitiException.class)
-      .isThrownBy(() -> query.singleResult());
+      .isThrownBy(query::singleResult);
   }
 
   public void testQueryByDescriptionOr() {
@@ -314,7 +314,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
     assertThat(query.count()).isEqualTo(6);
 
     assertThatExceptionOfType(ActivitiException.class)
-      .isThrownBy(() -> query.singleResult());
+      .isThrownBy(query::singleResult);
   }
 
   public void testQueryByInvalidDescription() {
@@ -377,7 +377,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
     assertThat(query.count()).isEqualTo(2);
 
     assertThatExceptionOfType(ActivitiException.class)
-      .isThrownBy(() -> query.singleResult());
+      .isThrownBy(query::singleResult);
   }
 
   public void testQueryByPriority() {
@@ -562,7 +562,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
       taskService.saveTask(adhocTask);
       taskService.addGroupIdentityLink(adhocTask.getId(), "group1", IdentityLinkType.PARTICIPANT);
 
-      List<String> groups = new ArrayList<String>();
+      List<String> groups = new ArrayList<>();
       groups.add("group1");
 
       assertThat(taskService.getIdentityLinksForTask(adhocTask.getId())).hasSize(3);
@@ -890,17 +890,17 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
     assertThat(queryForException.list()).hasSize(5);
 
     assertThatExceptionOfType(ActivitiException.class)
-      .isThrownBy(() -> queryForException.singleResult());
+      .isThrownBy(queryForException::singleResult);
 
     TaskQuery query = taskService.createTaskQuery().taskCandidateUser(KERMIT, groups);
     assertThat(query.count()).isEqualTo(11);
     assertThat(query.list()).hasSize(11);
 
-    query = taskService.createTaskQuery().taskCandidateUser(KERMIT, asList("unexisting"));
+    query = taskService.createTaskQuery().taskCandidateUser(KERMIT, List.of("unexisting"));
     assertThat(query.count()).isEqualTo(6);
     assertThat(query.list()).hasSize(6);
 
-    query = taskService.createTaskQuery().taskCandidateUser("unexisting", asList("unexisting"));
+    query = taskService.createTaskQuery().taskCandidateUser("unexisting", List.of("unexisting"));
     assertThat(query.count()).isEqualTo(0);
     assertThat(query.list()).hasSize(0);
 
@@ -918,7 +918,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
     assertThat(queryForException.list()).hasSize(5);
 
     assertThatExceptionOfType(ActivitiException.class)
-      .isThrownBy(() -> queryForException.singleResult());
+      .isThrownBy(queryForException::singleResult);
 
     TaskQuery query = taskService.createTaskQuery().or().taskCandidateUser(KERMIT,KERMITSGROUPS).taskCandidateGroupIn(groups).endOr();
     assertThat(query.count()).isEqualTo(11);
@@ -957,7 +957,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
     assertThat(queryForException.list()).hasSize(5);
 
     assertThatExceptionOfType(ActivitiException.class)
-      .isThrownBy(() -> queryForException.singleResult());
+      .isThrownBy(queryForException::singleResult);
 
     TaskQuery query = taskService.createTaskQuery().or().taskCandidateUser(KERMIT).taskCandidateGroupIn(groups).endOr();
     assertThat(query.count()).isEqualTo(11);
@@ -1167,7 +1167,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   @Deployment(resources = "org/activiti/engine/test/api/task/taskDefinitionProcess.bpmn20.xml")
-  public void testTaskDefinitionKeyOr() throws Exception {
+  public void testTaskDefinitionKeyOr() {
 
     // Start process instance, 2 tasks will be available
     runtimeService.startProcessInstanceByKey("taskDefinitionKeyProcess");
@@ -1185,7 +1185,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   @Deployment(resources = "org/activiti/engine/test/api/task/taskDefinitionProcess.bpmn20.xml")
-  public void testTaskDefinitionKeyLike() throws Exception {
+  public void testTaskDefinitionKeyLike() {
 
     // Start process instance, 2 tasks will be available
     runtimeService.startProcessInstanceByKey("taskDefinitionKeyProcess");
@@ -1203,14 +1203,14 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
     assertThat(tasks).isNotNull();
     assertThat(tasks).hasSize(1);
 
-    assertThat(tasks.get(0).getTaskDefinitionKey()).isEqualTo("taskKey123");
+    assertThat(tasks.getFirst().getTaskDefinitionKey()).isEqualTo("taskKey123");
 
     // Contains matching, TaskKey123 matches
     tasks = taskService.createTaskQuery().taskDefinitionKeyLike("%Key12%").orderByTaskName().asc().list();
     assertThat(tasks).isNotNull();
     assertThat(tasks).hasSize(1);
 
-    assertThat(tasks.get(0).getTaskDefinitionKey()).isEqualTo("taskKey123");
+    assertThat(tasks.getFirst().getTaskDefinitionKey()).isEqualTo("taskKey123");
 
     // No task should be found with unexisting key
     Long count = taskService.createTaskQuery().taskDefinitionKeyLike("%unexistingKey%").count();
@@ -1218,7 +1218,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   @Deployment(resources = "org/activiti/engine/test/api/task/taskDefinitionProcess.bpmn20.xml")
-  public void testTaskDefinitionKeyLikeOr() throws Exception {
+  public void testTaskDefinitionKeyLikeOr() {
 
     // Start process instance, 2 tasks will be available
     runtimeService.startProcessInstanceByKey("taskDefinitionKeyProcess");
@@ -1243,7 +1243,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
     assertThat(tasks).isNotNull();
     assertThat(tasks).hasSize(1);
 
-    assertThat(tasks.get(0).getTaskDefinitionKey()).isEqualTo("taskKey123");
+    assertThat(tasks.getFirst().getTaskDefinitionKey()).isEqualTo("taskKey123");
 
     // No task should be found with unexisting key
     Long count = taskService.createTaskQuery().or().taskId("invalid").taskDefinitionKeyLike("%unexistingKey%").count();
@@ -1251,7 +1251,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   @Deployment
-  public void testTaskVariableValueEquals() throws Exception {
+  public void testTaskVariableValueEquals() {
     ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("oneTaskProcess");
     Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
 
@@ -1259,7 +1259,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
     assertThat(taskService.createTaskQuery().taskVariableValueEquals("unexistingVar", "value").count()).isEqualTo(0);
 
     // Create a map with a variable for all default types
-    Map<String, Object> variables = new HashMap<String, Object>();
+    Map<String, Object> variables = new HashMap<>();
     variables.put("longVar", 928374L);
     variables.put("shortVar", (short) 123);
     variables.put("integerVar", 1234);
@@ -1344,7 +1344,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
     assertThat(taskService.createTaskQuery().or().taskId("invalid").taskVariableValueEquals("unexistingVar", "value").count()).isEqualTo(0);
 
     // Create a map with a variable for all default types
-    Map<String, Object> variables = new HashMap<String, Object>();
+    Map<String, Object> variables = new HashMap<>();
     variables.put("longVar", 928374L);
     variables.put("shortVar", (short) 123);
     variables.put("integerVar", 1234);
@@ -1421,7 +1421,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   @Deployment
-  public void testProcessVariableValueEquals() throws Exception {
+  public void testProcessVariableValueEquals() {
     Map<String, Object> variables = new HashMap<String, Object>();
     variables.put("longVar", 928374L);
     variables.put("shortVar", (short) 123);
@@ -1506,8 +1506,8 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   @Deployment(resources = { "org/activiti/engine/test/api/task/TaskQueryTest.testProcessVariableValueEquals.bpmn20.xml" })
-  public void testProcessVariableValueEqualsOn() throws Exception {
-    Map<String, Object> variables = new HashMap<String, Object>();
+  public void testProcessVariableValueEqualsOn() {
+    Map<String, Object> variables = new HashMap<>();
     variables.put("longVar", 928374L);
     variables.put("shortVar", (short) 123);
     variables.put("integerVar", 1234);
@@ -1578,13 +1578,13 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   @Deployment(resources = "org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml")
-  public void testVariableValueEqualsIgnoreCase() throws Exception {
+  public void testVariableValueEqualsIgnoreCase() {
     ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("oneTaskProcess");
 
     Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
     assertThat(task).isNotNull();
 
-    Map<String, Object> variables = new HashMap<String, Object>();
+    Map<String, Object> variables = new HashMap<>();
     variables.put("mixed", "AzerTY");
     variables.put("upper", "AZERTY");
     variables.put("lower", "azerty");
@@ -1618,8 +1618,8 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   @Deployment(resources = "org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml")
-  public void testProcessVariableValueEqualsIgnoreCase() throws Exception {
-    Map<String, Object> variables = new HashMap<String, Object>();
+  public void testProcessVariableValueEqualsIgnoreCase() {
+    Map<String, Object> variables = new HashMap<>();
     variables.put("mixed", "AzerTY");
     variables.put("upper", "AZERTY");
     variables.put("lower", "azerty");
@@ -1640,8 +1640,8 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   @Deployment(resources = "org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml")
-  public void testProcessVariableValueLike() throws Exception {
-    Map<String, Object> variables = new HashMap<String, Object>();
+  public void testProcessVariableValueLike() {
+    Map<String, Object> variables = new HashMap<>();
     variables.put("mixed", "AzerTY");
 
     runtimeService.startProcessInstanceByKey("oneTaskProcess", variables);
@@ -1652,8 +1652,8 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   @Deployment(resources="org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml")
-  public void testProcessVariableValueLikeIgnoreCase() throws Exception {
-    Map<String, Object> variables = new HashMap<String, Object>();
+  public void testProcessVariableValueLikeIgnoreCase() {
+    Map<String, Object> variables = new HashMap<>();
     variables.put("mixed", "AzerTY");
 
     runtimeService.startProcessInstanceByKey("oneTaskProcess", variables);
@@ -1664,8 +1664,8 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   @Deployment(resources="org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml")
-  public void testProcessVariableValueGreaterThan() throws Exception {
-    Map<String, Object> variables = new HashMap<String, Object>();
+  public void testProcessVariableValueGreaterThan() {
+    Map<String, Object> variables = new HashMap<>();
     variables.put("number", 10);
 
     runtimeService.startProcessInstanceByKey("oneTaskProcess", variables);
@@ -1675,8 +1675,8 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   @Deployment(resources = "org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml")
-  public void testProcessVariableValueGreaterThanOrEquals() throws Exception {
-    Map<String, Object> variables = new HashMap<String, Object>();
+  public void testProcessVariableValueGreaterThanOrEquals() {
+    Map<String, Object> variables = new HashMap<>();
     variables.put("number", 10);
 
     runtimeService.startProcessInstanceByKey("oneTaskProcess", variables);
@@ -1687,8 +1687,8 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   @Deployment(resources = "org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml")
-  public void testProcessVariableValueLessThan() throws Exception {
-    Map<String, Object> variables = new HashMap<String, Object>();
+  public void testProcessVariableValueLessThan() {
+    Map<String, Object> variables = new HashMap<>();
     variables.put("number", 10);
 
     runtimeService.startProcessInstanceByKey("oneTaskProcess", variables);
@@ -1698,8 +1698,8 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   @Deployment(resources = "org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml")
-  public void testProcessVariableValueLessThanOrEquals() throws Exception {
-    Map<String, Object> variables = new HashMap<String, Object>();
+  public void testProcessVariableValueLessThanOrEquals() {
+    Map<String, Object> variables = new HashMap<>();
     variables.put("number", 10);
 
     runtimeService.startProcessInstanceByKey("oneTaskProcess", variables);
@@ -1710,7 +1710,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   @Deployment(resources = { "org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml" })
-  public void testProcessDefinitionId() throws Exception {
+  public void testProcessDefinitionId() {
     ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("oneTaskProcess");
 
     List<Task> tasks = taskService.createTaskQuery().processDefinitionId(processInstance.getProcessDefinitionId()).list();
@@ -1721,12 +1721,12 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   @Deployment(resources = { "org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml" })
-  public void testProcessDefinitionIdOr() throws Exception {
+  public void testProcessDefinitionIdOr() {
     ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("oneTaskProcess");
 
     List<Task> tasks = taskService.createTaskQuery().or().taskId("invalid").processDefinitionId(processInstance.getProcessDefinitionId()).list();
     assertThat(tasks).hasSize(1);
-    assertThat(tasks.get(0).getProcessInstanceId()).isEqualTo(processInstance.getId());
+    assertThat(tasks.getFirst().getProcessInstanceId()).isEqualTo(processInstance.getId());
 
     tasks = taskService.createTaskQuery()
         .or()
@@ -1739,7 +1739,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
         .endOr()
         .list();
     assertThat(tasks).hasSize(1);
-    assertThat(tasks.get(0).getProcessInstanceId()).isEqualTo(processInstance.getId());
+    assertThat(tasks.getFirst().getProcessInstanceId()).isEqualTo(processInstance.getId());
 
     assertThat(taskService.createTaskQuery()
         .or()
@@ -1749,12 +1749,12 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   @Deployment(resources = { "org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml" })
-  public void testProcessDefinitionKey() throws Exception {
+  public void testProcessDefinitionKey() {
     ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("oneTaskProcess");
 
     List<Task> tasks = taskService.createTaskQuery().processDefinitionKey("oneTaskProcess").list();
     assertThat(tasks).hasSize(1);
-    assertThat(tasks.get(0).getProcessInstanceId()).isEqualTo(processInstance.getId());
+    assertThat(tasks.getFirst().getProcessInstanceId()).isEqualTo(processInstance.getId());
 
     assertThat(taskService.createTaskQuery().processDefinitionKey("unexisting").count()).isEqualTo(0);
   }
@@ -1765,17 +1765,17 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
 
     List<Task> tasks = taskService.createTaskQuery().or().taskId("invalid").processDefinitionKey("oneTaskProcess").list();
     assertThat(tasks).hasSize(1);
-    assertThat(tasks.get(0).getProcessInstanceId()).isEqualTo(processInstance.getId());
+    assertThat(tasks.getFirst().getProcessInstanceId()).isEqualTo(processInstance.getId());
 
     assertThat(taskService.createTaskQuery().or().taskId("invalid").processDefinitionKey("unexisting").count()).isEqualTo(0);
 
-    assertThat(taskService.createTaskQuery().or().taskId(taskIds.get(0)).processDefinitionKey("unexisting").endOr().count()).isEqualTo(1);
+    assertThat(taskService.createTaskQuery().or().taskId(taskIds.getFirst()).processDefinitionKey("unexisting").endOr().count()).isEqualTo(1);
   }
 
   @Deployment(resources={"org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml"})
-  public void testProcessDefinitionKeyIn() throws Exception {
+  public void testProcessDefinitionKeyIn() {
     runtimeService.startProcessInstanceByKey("oneTaskProcess");
-    List<String> includeIds = new ArrayList<String>();
+    List<String> includeIds = new ArrayList<>();
 
     assertThat(taskService.createTaskQuery().processDefinitionKeyIn(includeIds).count()).isEqualTo(13);
     includeIds.add("unexisting");
@@ -1785,10 +1785,10 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   @Deployment(resources={"org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml"})
-  public void testProcessDefinitionKeyInOr() throws Exception {
+  public void testProcessDefinitionKeyInOr() {
     runtimeService.startProcessInstanceByKey("oneTaskProcess");
 
-    List<String> includeIds = new ArrayList<String>();
+    List<String> includeIds = new ArrayList<>();
     assertThat(taskService.createTaskQuery()
         .or().taskId("invalid")
         .processDefinitionKeyIn(includeIds)
@@ -1808,29 +1808,29 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   @Deployment(resources={"org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml"})
-  public void testProcessDefinitionName() throws Exception {
+  public void testProcessDefinitionName() {
     ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("oneTaskProcess");
 
     List<Task> tasks = taskService.createTaskQuery().processDefinitionName("The One Task Process").list();
     assertThat(tasks).hasSize(1);
-    assertThat(tasks.get(0).getProcessInstanceId()).isEqualTo(processInstance.getId());
+    assertThat(tasks.getFirst().getProcessInstanceId()).isEqualTo(processInstance.getId());
 
     assertThat(taskService.createTaskQuery().processDefinitionName("unexisting").count()).isEqualTo(0);
   }
 
   @Deployment(resources = { "org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml" })
-  public void testProcessDefinitionNameOr() throws Exception {
+  public void testProcessDefinitionNameOr() {
     ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("oneTaskProcess");
 
     List<Task> tasks = taskService.createTaskQuery().or().taskId("invalid").processDefinitionName("The One Task Process").list();
     assertThat(tasks).hasSize(1);
-    assertThat(tasks.get(0).getProcessInstanceId()).isEqualTo(processInstance.getId());
+    assertThat(tasks.getFirst().getProcessInstanceId()).isEqualTo(processInstance.getId());
 
     assertThat(taskService.createTaskQuery().or().taskId("invalid").processDefinitionName("unexisting").count()).isEqualTo(0);
   }
 
   @Deployment(resources = { "org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml" })
-  public void testProcessCategoryIn() throws Exception {
+  public void testProcessCategoryIn() {
     ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("oneTaskProcess");
 
     final Task task = taskService.createTaskQuery().processCategoryIn(singletonList("Examples")).singleResult();
@@ -2010,7 +2010,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   @Deployment(resources = { "org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml" })
-  public void testTaskDueBefore() throws Exception {
+  public void testTaskDueBefore() {
     ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("oneTaskProcess");
     Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
 
@@ -2041,7 +2041,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   @Deployment(resources = { "org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml" })
-  public void testTaskDueBeforeOr() throws Exception {
+  public void testTaskDueBeforeOr() {
     ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("oneTaskProcess");
     Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
 
@@ -2072,7 +2072,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   @Deployment(resources = { "org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml" })
-  public void testTaskDueAfter() throws Exception {
+  public void testTaskDueAfter() {
     ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("oneTaskProcess");
     Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
 
@@ -2103,7 +2103,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   @Deployment(resources = { "org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml" })
-  public void testTaskDueAfterOn() throws Exception {
+  public void testTaskDueAfterOn() {
     ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("oneTaskProcess");
     Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
 
@@ -2263,12 +2263,13 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
    * Test confirming fix for ACT-1731
    */
   @Deployment(resources = { "org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml" })
-  public void testIncludeBinaryVariables() throws Exception {
+  public void testIncludeBinaryVariables() {
     // Start process with a binary variable
     ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("oneTaskProcess", singletonMap("binaryVariable", "It is I, le binary".getBytes()));
     Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
     assertThat(task).isNotNull();
-    taskService.setVariableLocal(task.getId(), "binaryTaskVariable", (Object) "It is I, le binary".getBytes());
+    taskService.setVariableLocal(task.getId(), "binaryTaskVariable",
+      "It is I, le binary".getBytes());
 
     // Query task, including processVariables
     task = taskService.createTaskQuery().taskId(task.getId()).includeProcessVariables().singleResult();
@@ -2289,12 +2290,14 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
    * Test confirming fix for ACT-1731
    */
   @Deployment(resources = { "org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml" })
-  public void testIncludeBinaryVariablesOr() throws Exception {
+  public void testIncludeBinaryVariablesOr() {
     // Start process with a binary variable
-    ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("oneTaskProcess", singletonMap("binaryVariable", (Object) "It is I, le binary".getBytes()));
+    ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("oneTaskProcess", singletonMap("binaryVariable",
+      "It is I, le binary".getBytes()));
     Task task = taskService.createTaskQuery().or().taskName("invalid").processInstanceId(processInstance.getId()).singleResult();
     assertThat(task).isNotNull();
-    taskService.setVariableLocal(task.getId(), "binaryTaskVariable", (Object) "It is I, le binary".getBytes());
+    taskService.setVariableLocal(task.getId(), "binaryTaskVariable",
+      "It is I, le binary".getBytes());
 
     // Query task, including processVariables
     task = taskService.createTaskQuery().or().taskName("invalid").taskId(task.getId()).includeProcessVariables().singleResult();
@@ -2312,7 +2315,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   @Deployment(resources = { "org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml" })
-  public void testQueryByDeploymentId() throws Exception {
+  public void testQueryByDeploymentId() {
     org.activiti.engine.repository.Deployment deployment = repositoryService.createDeploymentQuery().singleResult();
     runtimeService.startProcessInstanceByKey("oneTaskProcess");
     assertThat(taskService.createTaskQuery().deploymentId(deployment.getId()).singleResult()).isNotNull();
@@ -2322,7 +2325,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   @Deployment(resources = { "org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml" })
-  public void testQueryByDeploymentIdOr() throws Exception {
+  public void testQueryByDeploymentIdOr() {
     org.activiti.engine.repository.Deployment deployment = repositoryService.createDeploymentQuery().singleResult();
     runtimeService.startProcessInstanceByKey("oneTaskProcess");
     assertThat(taskService.createTaskQuery().or().taskId("invalid").deploymentId(deployment.getId()).singleResult()).isNotNull();
@@ -2332,10 +2335,10 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   }
 
   @Deployment(resources = { "org/activiti/engine/test/api/task/TaskQueryTest.testProcessDefinition.bpmn20.xml" })
-  public void testQueryByDeploymentIdIn() throws Exception {
+  public void testQueryByDeploymentIdIn() {
     org.activiti.engine.repository.Deployment deployment = repositoryService.createDeploymentQuery().singleResult();
     runtimeService.startProcessInstanceByKey("oneTaskProcess");
-    List<String> deploymentIds = new ArrayList<String>();
+    List<String> deploymentIds = new ArrayList<>();
     deploymentIds.add(deployment.getId());
     assertThat(taskService.createTaskQuery().deploymentIdIn(deploymentIds).singleResult()).isNotNull();
     assertThat(taskService.createTaskQuery().deploymentIdIn(deploymentIds).count()).isEqualTo(1);
@@ -2344,7 +2347,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
     assertThat(taskService.createTaskQuery().deploymentIdIn(deploymentIds).singleResult()).isNotNull();
     assertThat(taskService.createTaskQuery().deploymentIdIn(deploymentIds).count()).isEqualTo(1);
 
-    deploymentIds = new ArrayList<String>();
+    deploymentIds = new ArrayList<>();
     deploymentIds.add("invalid");
     assertThat(taskService.createTaskQuery().deploymentIdIn(deploymentIds).singleResult()).isNull();
     assertThat(taskService.createTaskQuery().deploymentIdIn(deploymentIds).count()).isEqualTo(0);
@@ -2354,7 +2357,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
   public void testQueryByDeploymentIdInOr() throws Exception {
     org.activiti.engine.repository.Deployment deployment = repositoryService.createDeploymentQuery().singleResult();
     runtimeService.startProcessInstanceByKey("oneTaskProcess");
-    List<String> deploymentIds = new ArrayList<String>();
+    List<String> deploymentIds = new ArrayList<>();
     deploymentIds.add(deployment.getId());
     assertThat(taskService.createTaskQuery().or().taskId("invalid").deploymentIdIn(deploymentIds).singleResult()).isNotNull();
 
@@ -2365,7 +2368,7 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
 
     assertThat(taskService.createTaskQuery().or().taskId("invalid").deploymentIdIn(deploymentIds).count()).isEqualTo(1);
 
-    deploymentIds = new ArrayList<String>();
+    deploymentIds = new ArrayList<>();
     deploymentIds.add("invalid");
     assertThat(taskService.createTaskQuery().deploymentIdIn(deploymentIds).singleResult()).isNull();
     assertThat(taskService.createTaskQuery().or().taskId("invalid").deploymentIdIn(deploymentIds).count()).isEqualTo(0);
@@ -2587,13 +2590,13 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
 
     List<Task> tasks = taskService.createTaskQuery().processDefinitionId(processInstance.getProcessDefinitionId()).list();
     assertThat(tasks).hasSize(1);
-    assertThat(tasks.get(0).getName()).isEqualTo("my task");
-    assertThat(tasks.get(0).getDescription()).isEqualTo("My Task Description");
+    assertThat(tasks.getFirst().getName()).isEqualTo("my task");
+    assertThat(tasks.getFirst().getDescription()).isEqualTo("My Task Description");
 
     tasks = taskService.createTaskQuery().processDefinitionId(processInstance.getProcessDefinitionId()).locale("es").list();
     assertThat(tasks).hasSize(1);
-    assertThat(tasks.get(0).getName()).isEqualTo("Mi Tarea");
-    assertThat(tasks.get(0).getDescription()).isEqualTo("Mi Tarea Descripción");
+    assertThat(tasks.getFirst().getName()).isEqualTo("Mi Tarea");
+    assertThat(tasks.getFirst().getDescription()).isEqualTo("Mi Tarea Descripción");
 
     ObjectNode infoNode = dynamicBpmnService.getProcessDefinitionInfo(processInstance.getProcessDefinitionId());
 
@@ -2607,33 +2610,33 @@ public class TaskQueryTest extends PluggableActivitiTestCase {
 
     tasks = taskService.createTaskQuery().processDefinitionId(processInstance.getProcessDefinitionId()).list();
     assertThat(tasks).hasSize(1);
-    assertThat(tasks.get(0).getName()).isEqualTo("my task");
-    assertThat(tasks.get(0).getDescription()).isEqualTo("My Task Description");
+    assertThat(tasks.getFirst().getName()).isEqualTo("my task");
+    assertThat(tasks.getFirst().getDescription()).isEqualTo("My Task Description");
 
     tasks = taskService.createTaskQuery().processDefinitionId(processInstance.getProcessDefinitionId()).locale("es").list();
     assertThat(tasks).hasSize(1);
-    assertThat(tasks.get(0).getName()).isEqualTo("Mi Tarea");
-    assertThat(tasks.get(0).getDescription()).isEqualTo("Mi Tarea Descripción");
+    assertThat(tasks.getFirst().getName()).isEqualTo("Mi Tarea");
+    assertThat(tasks.getFirst().getDescription()).isEqualTo("Mi Tarea Descripción");
 
     tasks = taskService.createTaskQuery().processDefinitionId(processInstance.getProcessDefinitionId()).locale("en-GB").list();
     assertThat(tasks).hasSize(1);
-    assertThat(tasks.get(0).getName()).isEqualTo("My 'en-GB' localized name");
-    assertThat(tasks.get(0).getDescription()).isEqualTo("My 'en-GB' localized description");
+    assertThat(tasks.getFirst().getName()).isEqualTo("My 'en-GB' localized name");
+    assertThat(tasks.getFirst().getDescription()).isEqualTo("My 'en-GB' localized description");
 
     tasks = taskService.createTaskQuery().processDefinitionId(processInstance.getProcessDefinitionId()).listPage(0, 10);
     assertThat(tasks).hasSize(1);
-    assertThat(tasks.get(0).getName()).isEqualTo("my task");
-    assertThat(tasks.get(0).getDescription()).isEqualTo("My Task Description");
+    assertThat(tasks.getFirst().getName()).isEqualTo("my task");
+    assertThat(tasks.getFirst().getDescription()).isEqualTo("My Task Description");
 
     tasks = taskService.createTaskQuery().processDefinitionId(processInstance.getProcessDefinitionId()).locale("es").listPage(0, 10);
     assertThat(tasks).hasSize(1);
-    assertThat(tasks.get(0).getName()).isEqualTo("Mi Tarea");
-    assertThat(tasks.get(0).getDescription()).isEqualTo("Mi Tarea Descripción");
+    assertThat(tasks.getFirst().getName()).isEqualTo("Mi Tarea");
+    assertThat(tasks.getFirst().getDescription()).isEqualTo("Mi Tarea Descripción");
 
     tasks = taskService.createTaskQuery().processDefinitionId(processInstance.getProcessDefinitionId()).locale("en-GB").listPage(0, 10);
     assertThat(tasks).hasSize(1);
-    assertThat(tasks.get(0).getName()).isEqualTo("My 'en-GB' localized name");
-    assertThat(tasks.get(0).getDescription()).isEqualTo("My 'en-GB' localized description");
+    assertThat(tasks.getFirst().getName()).isEqualTo("My 'en-GB' localized name");
+    assertThat(tasks.getFirst().getDescription()).isEqualTo("My 'en-GB' localized description");
 
     Task task = taskService.createTaskQuery().processDefinitionId(processInstance.getProcessDefinitionId()).singleResult();
     assertThat(task.getName()).isEqualTo("my task");

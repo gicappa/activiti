@@ -30,9 +30,12 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
  */
 public interface ActivityProcessor {
 
-  public void processFlowElements(FlowElementsContainer container, BpmnModel model, ArrayNode shapesArrayNode,
-      Map<String, ModelInfo> formKeyMap, Map<String, ModelInfo> decisionTableKeyMap, double subProcessX, double subProcessY);
+  void processFlowElements(FlowElementsContainer container, BpmnModel model,
+    ArrayNode shapesArrayNode,
+    Map<String, ModelInfo> formKeyMap, Map<String, ModelInfo> decisionTableKeyMap,
+    double subProcessX, double subProcessY);
 
-  public void processJsonElements(JsonNode shapesArrayNode, JsonNode modelNode, BaseElement parentElement,
-      Map<String, JsonNode> shapeMap, Map<String, String> formKeyMap, Map<String, String> decisionTableMap, BpmnModel bpmnModel);
+  void processJsonElements(JsonNode shapesArrayNode, JsonNode modelNode, BaseElement parentElement,
+    Map<String, JsonNode> shapeMap, Map<String, String> formKeyMap,
+    Map<String, String> decisionTableMap, BpmnModel bpmnModel);
 }

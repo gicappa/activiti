@@ -22,7 +22,7 @@ import org.activiti.api.model.shared.Payload;
 
 public class RemoveProcessVariablesPayload implements Payload {
 
-    private String id;
+    private final String id;
     private String processInstanceId;
     private List<String> variableNames = new ArrayList<>();
 

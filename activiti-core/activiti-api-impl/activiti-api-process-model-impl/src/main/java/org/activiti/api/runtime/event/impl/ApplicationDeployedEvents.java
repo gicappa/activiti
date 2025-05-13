@@ -20,7 +20,7 @@ import org.activiti.api.process.model.events.ApplicationDeployedEvent;
 
 public class ApplicationDeployedEvents {
 
-    private List<ApplicationDeployedEvent> applicationDeployedEvents;
+    private final List<ApplicationDeployedEvent> applicationDeployedEvents;
 
     public ApplicationDeployedEvents(List<ApplicationDeployedEvent> applicationDeployedEvents) {
         this.applicationDeployedEvents = applicationDeployedEvents;

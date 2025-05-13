@@ -24,7 +24,7 @@ import java.util.Optional;
 
 public class ToSignalReceivedConverter implements EventConverter<BPMNSignalReceivedEvent, ActivitiSignalEvent> {
 
-    private ToSignalConverter toSignalConverter;
+    private final ToSignalConverter toSignalConverter;
 
     public ToSignalReceivedConverter(ToSignalConverter toSignalConverter) {
         this.toSignalConverter = toSignalConverter;

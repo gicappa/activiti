@@ -48,10 +48,10 @@ public class HistoricTaskAndVariablesQueryTest extends PluggableActivitiTestCase
     private static final List<String> KERMITSGROUPS = asList("management","accountancy");
 
     private static final String GONZO = "gonzo";
-    private static final List<String> GONZOSGROUPS = asList();
+    private static final List<String> GONZOSGROUPS = List.of();
 
     private static final String FOZZIE = "fozzie";
-    private static final List<String> FOZZIESGROUPS = asList("management");
+    private static final List<String> FOZZIESGROUPS = List.of("management");
 
     private final UserGroupManager userGroupManager = Mockito.mock(UserGroupManager.class);
 
@@ -417,15 +417,18 @@ public class HistoricTaskAndVariablesQueryTest extends PluggableActivitiTestCase
             assertThat(tasks).hasSize(1);
 
             tasks = historyService.createHistoricTaskInstanceQuery().taskCandidateUser(KERMIT,
-                                                                                       KERMITSGROUPS).taskCandidateGroupIn(asList("management")).list();
+                                                                                       KERMITSGROUPS).taskCandidateGroupIn(
+              List.of("management")).list();
             assertThat(tasks).hasSize(3);
 
             tasks = historyService.createHistoricTaskInstanceQuery().taskCandidateUser(GONZO,
-                                                                                       GONZOSGROUPS).taskCandidateGroupIn(asList("management")).list();
+                                                                                       GONZOSGROUPS).taskCandidateGroupIn(
+              List.of("management")).list();
             assertThat(tasks).hasSize(1);
 
             tasks = historyService.createHistoricTaskInstanceQuery().taskCandidateUser(GONZO,
-                                                                                       GONZOSGROUPS).taskCandidateGroupIn(asList("invalid")).list();
+                                                                                       GONZOSGROUPS).taskCandidateGroupIn(
+              List.of("invalid")).list();
             assertThat(tasks).hasSize(0);
 
             tasks = historyService.createHistoricTaskInstanceQuery().taskCandidateGroupIn(groups).list();
@@ -472,13 +475,16 @@ public class HistoricTaskAndVariablesQueryTest extends PluggableActivitiTestCase
             tasks = historyService.createHistoricTaskInstanceQuery().taskCandidateUser(FOZZIE).list();
             assertThat(tasks).hasSize(1);
 
-            tasks = historyService.createHistoricTaskInstanceQuery().taskCandidateUser(KERMIT).taskCandidateGroupIn(asList("management")).list();
+            tasks = historyService.createHistoricTaskInstanceQuery().taskCandidateUser(KERMIT).taskCandidateGroupIn(
+              List.of("management")).list();
             assertThat(tasks).hasSize(3);
 
-            tasks = historyService.createHistoricTaskInstanceQuery().taskCandidateUser(GONZO).taskCandidateGroupIn(asList("management")).list();
+            tasks = historyService.createHistoricTaskInstanceQuery().taskCandidateUser(GONZO).taskCandidateGroupIn(
+              List.of("management")).list();
             assertThat(tasks).hasSize(1);
 
-            tasks = historyService.createHistoricTaskInstanceQuery().taskCandidateUser(GONZO).taskCandidateGroupIn(asList("invalid")).list();
+            tasks = historyService.createHistoricTaskInstanceQuery().taskCandidateUser(GONZO).taskCandidateGroupIn(
+              List.of("invalid")).list();
             assertThat(tasks).hasSize(0);
         }
     }

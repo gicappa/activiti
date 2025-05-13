@@ -26,9 +26,9 @@ import java.util.List;
 
 public class ActivityCompletedListenerDelegate implements ActivitiEventListener {
 
-    private List<BPMNElementEventListener<BPMNActivityCompletedEvent>> processRuntimeEventListeners;
+    private final List<BPMNElementEventListener<BPMNActivityCompletedEvent>> processRuntimeEventListeners;
 
-    private ToActivityCompletedConverter converter;
+    private final ToActivityCompletedConverter converter;
 
     public ActivityCompletedListenerDelegate(List<BPMNElementEventListener<BPMNActivityCompletedEvent>> processRuntimeEventListeners,
                                              ToActivityCompletedConverter converter) {

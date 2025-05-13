@@ -85,13 +85,9 @@ public class AddIdentityLinkCmd extends NeedsActiveTaskCmd<Void> {
       task.addGroupIdentityLink(identityId, identityType);
     }
 
-    boolean forceNullUserId = false;
-    if (assignedToNoOne) {
-      // ACT-1317: Special handling when assignee is set to NULL, a
-      // CommentEntity notifying of assignee-delete should be created
-      forceNullUserId = true;
-
-    }
+    boolean forceNullUserId = assignedToNoOne;
+    // ACT-1317: Special handling when assignee is set to NULL, a
+    // CommentEntity notifying of assignee-delete should be created
 
     if (IDENTITY_USER == identityIdType) {
       commandContext.getHistoryManager().createUserIdentityLinkComment(taskId, identityId, identityType, true, forceNullUserId);

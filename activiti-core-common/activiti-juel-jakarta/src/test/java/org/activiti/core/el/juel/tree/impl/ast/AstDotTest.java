@@ -15,6 +15,7 @@
  */
 package org.activiti.core.el.juel.tree.impl.ast;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -26,7 +27,6 @@ import jakarta.el.ELException;
 import jakarta.el.MethodInfo;
 import jakarta.el.PropertyNotFoundException;
 import jakarta.el.ValueExpression;
-import java.util.Arrays;
 import org.activiti.core.el.juel.test.TestCase;
 import org.activiti.core.el.juel.test.TestClass;
 import org.activiti.core.el.juel.tree.Bindings;
@@ -37,227 +37,231 @@ import org.junit.jupiter.api.Test;
 
 public class AstDotTest extends TestCase {
 
-    AstDot parseNode(String expression) {
-        return (AstDot) parse(expression).getRoot().getChild(0);
+  AstDot parseNode(String expression) {
+    return (AstDot) parse(expression).getRoot().getChild(0);
+  }
+
+  SimpleContext context;
+  Bindings bindings;
+
+  long foo = 1L;
+
+  public long getFoo() {
+    return foo;
+  }
+
+  public void setFoo(long value) {
+    foo = value;
+  }
+
+  public long bar() {
+    return 1L;
+  }
+
+  public long bar(long value) {
+    return value;
+  }
+
+
+  @SuppressWarnings("unused")
+  public TestClass getTestClass() {
+    return new TestClass();
+  }
+
+  @SuppressWarnings("unused")
+  public Object getNullObject() {
+    return null;
+  }
+
+  @BeforeEach
+  protected void setUp() throws Exception {
+    context = new SimpleContext(new SimpleResolver(new BeanELResolver()));
+    context.getELResolver().setValue(context, null, "base", this);
+
+    bindings = new Bindings(null, new ValueExpression[1]);
+  }
+
+  @Test
+  public void testEval() {
+    try {
+      parseNode("${base.bad}").eval(bindings, context);
+      fail();
+    } catch (ELException ignored) {
     }
+    assertEquals(1L, parseNode("${base.foo}").eval(bindings, context));
+  }
 
-    SimpleContext context;
-    Bindings bindings;
+  @Test
+  public void testAppendStructure() {
+    StringBuilder s = new StringBuilder();
+    parseNode("${foo.bar}")
+      .appendStructure(s, new Bindings(null, null, null));
+    assertEquals("foo.bar", s.toString());
+  }
 
-    long foo = 1l;
+  @Test
+  public void testIsLiteralText() {
+    assertFalse(parseNode("${foo.bar}").isLiteralText());
+  }
 
-    public long getFoo() {
-        return foo;
+  @Test
+  public void testIsLeftValue() {
+    assertFalse(parseNode("${'foo'.bar}").isLeftValue());
+    assertTrue(parseNode("${foo.bar}").isLeftValue());
+  }
+
+  @Test
+  public void testGetType() {
+    try {
+      parseNode("${base.bad}").getType(bindings, context);
+      fail();
+    } catch (ELException ignored) {
     }
+    assertEquals(
+      long.class,
+      parseNode("${base.foo}").getType(bindings, context)
+    );
+    assertNull(parseNode("${'base'.foo}").getType(bindings, context));
+  }
 
-    public void setFoo(long value) {
-        foo = value;
+  @Test
+  public void testIsReadOnly() {
+    assertFalse(parseNode("${base.foo}").isReadOnly(bindings, context));
+    assertTrue(parseNode("${'base'.foo}").isReadOnly(bindings, context));
+  }
+
+  @Test
+  public void testSetValue() {
+    try {
+      parseNode("${base.bad}").setValue(bindings, context, "good");
+      fail();
+    } catch (ELException ignored) {
     }
+    parseNode("${base.foo}").setValue(bindings, context, 2L);
+    assertEquals(2L, getFoo());
+    parseNode("${base.foo}").setValue(bindings, context, "3");
+    assertEquals(3L, getFoo());
+  }
 
-    public long bar() {
-        return 1l;
+  @Test
+  public void testGetValue() {
+    assertEquals(
+      1L,
+      parseNode("${base.foo}").getValue(bindings, context, null)
+    );
+    assertEquals(
+      "1",
+      parseNode("${base.foo}").getValue(bindings, context, String.class)
+    );
+    assertNull(
+      parseNode("${base.nullObject.class}")
+        .getValue(bindings, context, Object.class)
+    );
+  }
+
+  @Test
+  public void testGetValueReference() {
+    assertEquals(
+      this,
+      parseNode("${base.foo}")
+        .getValueReference(bindings, context)
+        .getBase()
+    );
+    assertEquals(
+      "foo",
+      parseNode("${base.foo}")
+        .getValueReference(bindings, context)
+        .getProperty()
+    );
+  }
+
+  @Test
+  public void testInvoke() {
+    assertEquals(
+      1L,
+      parseNode("${base.bar}")
+        .invoke(bindings, context, long.class, new Class[0], null)
+    );
+    assertEquals(
+      2L,
+      parseNode("${base.bar}")
+        .invoke(
+          bindings,
+          context,
+          null,
+          new Class[]{long.class},
+          new Object[]{2L}
+        )
+    );
+
+    assertEquals(
+      42,
+      parseNode("${base.testClass.anonymousTestInterface.fourtyTwo}")
+        .invoke(bindings, context, null, new Class[0], null)
+    );
+    assertEquals(
+      42,
+      parseNode("${base.testClass.nestedTestInterface.fourtyTwo}")
+        .invoke(bindings, context, null, new Class[0], null)
+    );
+
+    try {
+      parseNode("${base.nullObject.class}")
+        .invoke(bindings, context, null, null, new Object[0]);
+      fail();
+    } catch (PropertyNotFoundException e) {
+      // ok
     }
+  }
 
-    public long bar(long value) {
-        return value;
-    }
+  @Test
+  public void testGetMethodInfo() {
+    MethodInfo info;
 
-    public TestClass getTestClass() {
-        return new TestClass();
-    }
+    // long bar()
+    info =
+      parseNode("${base.bar}")
+        .getMethodInfo(bindings, context, long.class, new Class[0]);
+    assertEquals("bar", info.getName());
+    assertArrayEquals(new Class[0], info.getParamTypes());
+    assertEquals(long.class, info.getReturnType());
 
-    public Object getNullObject() {
-        return null;
-    }
-
-    @BeforeEach
-    protected void setUp() throws Exception {
-        context = new SimpleContext(new SimpleResolver(new BeanELResolver()));
-        context.getELResolver().setValue(context, null, "base", this);
-
-        bindings = new Bindings(null, new ValueExpression[1]);
-    }
-
-    @Test
-    public void testEval() {
-        try {
-            parseNode("${base.bad}").eval(bindings, context);
-            fail();
-        } catch (ELException e) {}
-        assertEquals(1l, parseNode("${base.foo}").eval(bindings, context));
-    }
-
-    @Test
-    public void testAppendStructure() {
-        StringBuilder s = new StringBuilder();
-        parseNode("${foo.bar}")
-            .appendStructure(s, new Bindings(null, null, null));
-        assertEquals("foo.bar", s.toString());
-    }
-
-    @Test
-    public void testIsLiteralText() {
-        assertFalse(parseNode("${foo.bar}").isLiteralText());
-    }
-
-    @Test
-    public void testIsLeftValue() {
-        assertFalse(parseNode("${'foo'.bar}").isLeftValue());
-        assertTrue(parseNode("${foo.bar}").isLeftValue());
-    }
-
-    @Test
-    public void testGetType() {
-        try {
-            parseNode("${base.bad}").getType(bindings, context);
-            fail();
-        } catch (ELException e) {}
-        assertEquals(
-            long.class,
-            parseNode("${base.foo}").getType(bindings, context)
+    // long bar(long)
+    info =
+      parseNode("${base.bar}")
+        .getMethodInfo(
+          bindings,
+          context,
+          null,
+          new Class[]{long.class}
         );
-        assertNull(parseNode("${'base'.foo}").getType(bindings, context));
+    assertEquals("bar", info.getName());
+    assertArrayEquals(new Class[]{long.class}, info.getParamTypes());
+    assertEquals(long.class, info.getReturnType());
+
+    // bad arg type
+    try {
+      parseNode("${base.bar}")
+        .getMethodInfo(
+          bindings,
+          context,
+          null,
+          new Class[]{String.class}
+        );
+      fail();
+    } catch (ELException ignored) {
     }
-
-    @Test
-    public void testIsReadOnly() {
-        assertFalse(parseNode("${base.foo}").isReadOnly(bindings, context));
-        assertTrue(parseNode("${'base'.foo}").isReadOnly(bindings, context));
+    // bad return type
+    try {
+      parseNode("${base.bar}")
+        .getMethodInfo(
+          bindings,
+          context,
+          String.class,
+          new Class[0]
+        );
+      fail();
+    } catch (ELException ignored) {
     }
-
-    @Test
-    public void testSetValue() {
-        try {
-            parseNode("${base.bad}").setValue(bindings, context, "good");
-            fail();
-        } catch (ELException e) {}
-        parseNode("${base.foo}").setValue(bindings, context, 2l);
-        assertEquals(2l, getFoo());
-        parseNode("${base.foo}").setValue(bindings, context, "3");
-        assertEquals(3l, getFoo());
-    }
-
-    @Test
-    public void testGetValue() {
-        assertEquals(
-            1l,
-            parseNode("${base.foo}").getValue(bindings, context, null)
-        );
-        assertEquals(
-            "1",
-            parseNode("${base.foo}").getValue(bindings, context, String.class)
-        );
-        assertNull(
-            parseNode("${base.nullObject.class}")
-                .getValue(bindings, context, Object.class)
-        );
-    }
-
-    @Test
-    public void testGetValueReference() {
-        assertEquals(
-            this,
-            parseNode("${base.foo}")
-                .getValueReference(bindings, context)
-                .getBase()
-        );
-        assertEquals(
-            "foo",
-            parseNode("${base.foo}")
-                .getValueReference(bindings, context)
-                .getProperty()
-        );
-    }
-
-    @Test
-    public void testInvoke() {
-        assertEquals(
-            1l,
-            parseNode("${base.bar}")
-                .invoke(bindings, context, long.class, new Class[0], null)
-        );
-        assertEquals(
-            2l,
-            parseNode("${base.bar}")
-                .invoke(
-                    bindings,
-                    context,
-                    null,
-                    new Class[] { long.class },
-                    new Object[] { 2l }
-                )
-        );
-
-        assertEquals(
-            42,
-            parseNode("${base.testClass.anonymousTestInterface.fourtyTwo}")
-                .invoke(bindings, context, null, new Class[0], null)
-        );
-        assertEquals(
-            42,
-            parseNode("${base.testClass.nestedTestInterface.fourtyTwo}")
-                .invoke(bindings, context, null, new Class[0], null)
-        );
-
-        try {
-            parseNode("${base.nullObject.class}")
-                .invoke(bindings, context, null, null, new Object[0]);
-            fail();
-        } catch (PropertyNotFoundException e) {
-            // ok
-        }
-    }
-
-    @Test
-    public void testGetMethodInfo() {
-        MethodInfo info = null;
-
-        // long bar()
-        info =
-            parseNode("${base.bar}")
-                .getMethodInfo(bindings, context, long.class, new Class[0]);
-        assertEquals("bar", info.getName());
-        assertTrue(Arrays.equals(new Class[0], info.getParamTypes()));
-        assertEquals(long.class, info.getReturnType());
-
-        // long bar(long)
-        info =
-            parseNode("${base.bar}")
-                .getMethodInfo(
-                    bindings,
-                    context,
-                    null,
-                    new Class[] { long.class }
-                );
-        assertEquals("bar", info.getName());
-        assertTrue(
-            Arrays.equals(new Class[] { long.class }, info.getParamTypes())
-        );
-        assertEquals(long.class, info.getReturnType());
-
-        // bad arg type
-        try {
-            info =
-                parseNode("${base.bar}")
-                    .getMethodInfo(
-                        bindings,
-                        context,
-                        null,
-                        new Class[] { String.class }
-                    );
-            fail();
-        } catch (ELException e) {}
-        // bad return type
-        try {
-            info =
-                parseNode("${base.bar}")
-                    .getMethodInfo(
-                        bindings,
-                        context,
-                        String.class,
-                        new Class[0]
-                    );
-            fail();
-        } catch (ELException e) {}
-    }
+  }
 }

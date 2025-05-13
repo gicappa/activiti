@@ -15,6 +15,7 @@
  */
 package org.activiti.engine.impl;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +29,7 @@ import org.activiti.engine.task.TaskQuery;
  */
 public class TaskQueryProperty implements QueryProperty {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   private static final Map<String, TaskQueryProperty> properties = new HashMap<String, TaskQueryProperty>();
@@ -46,7 +48,7 @@ public class TaskQueryProperty implements QueryProperty {
   public static final TaskQueryProperty TENANT_ID = new TaskQueryProperty("RES.TENANT_ID_");
   public static final TaskQueryProperty TASK_DEFINITION_KEY = new TaskQueryProperty("RES.TASK_DEF_KEY_");
 
-  private String name;
+  private final String name;
 
   public TaskQueryProperty(String name) {
     this.name = name;

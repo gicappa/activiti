@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 
 public class AstNumberTest extends TestCase {
 
-    private Bindings bindings = new Bindings(null, null, null);
+    private final Bindings bindings = new Bindings(null, null, null);
 
     AstNumber parseNode(String expression) {
         return (AstNumber) parse(expression).getRoot().getChild(0);
@@ -35,7 +35,7 @@ public class AstNumberTest extends TestCase {
 
     @Test
     public void testEval() {
-        assertEquals(1l, parseNode("${1}").eval(bindings, null));
+        assertEquals(1L, parseNode("${1}").eval(bindings, null));
         assertEquals(1d, parseNode("${1.0}").eval(bindings, null));
     }
 
@@ -78,7 +78,7 @@ public class AstNumberTest extends TestCase {
 
     @Test
     public void testGetValue() {
-        assertEquals(1l, parseNode("${1}").getValue(bindings, null, null));
+        assertEquals(1L, parseNode("${1}").getValue(bindings, null, null));
         assertEquals(
             1d,
             parseNode("${1}").getValue(bindings, null, Double.class)

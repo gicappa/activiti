@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
  */
 public class StandaloneMybatisTransactionContext implements TransactionContext {
 
-  private static Logger log = LoggerFactory.getLogger(StandaloneMybatisTransactionContext.class);
+  private static final Logger log = LoggerFactory.getLogger(StandaloneMybatisTransactionContext.class);
 
   protected CommandContext commandContext;
   protected Map<TransactionState, List<TransactionListener>> stateTransactionListeners;
@@ -49,13 +49,10 @@ public class StandaloneMybatisTransactionContext implements TransactionContext {
 
   public void addTransactionListener(TransactionState transactionState, TransactionListener transactionListener) {
     if (stateTransactionListeners == null) {
-      stateTransactionListeners = new HashMap<TransactionState, List<TransactionListener>>();
+      stateTransactionListeners = new HashMap<>();
     }
-    List<TransactionListener> transactionListeners = stateTransactionListeners.get(transactionState);
-    if (transactionListeners == null) {
-      transactionListeners = new ArrayList<TransactionListener>();
-      stateTransactionListeners.put(transactionState, transactionListeners);
-    }
+    List<TransactionListener> transactionListeners = stateTransactionListeners.computeIfAbsent(
+      transactionState, k -> new ArrayList<>());
     transactionListeners.add(transactionListener);
   }
 
@@ -94,11 +91,9 @@ public class StandaloneMybatisTransactionContext implements TransactionContext {
     if (executeInNewContext) {
       CommandExecutor commandExecutor = commandContext.getProcessEngineConfiguration().getCommandExecutor();
       CommandConfig commandConfig = new CommandConfig(false, TransactionPropagation.REQUIRES_NEW);
-      commandExecutor.execute(commandConfig, new Command<Void>() {
-        public Void execute(CommandContext commandContext) {
-          executeTransactionListeners(transactionListeners, commandContext);
-          return null;
-        }
+      commandExecutor.execute(commandConfig, (Command<Void>) commandContext -> {
+        executeTransactionListeners(transactionListeners, commandContext);
+        return null;
       });
     } else {
       executeTransactionListeners(transactionListeners, commandContext);

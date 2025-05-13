@@ -20,8 +20,8 @@ package org.activiti.editor.constants;
  */
 public interface ModelDataJsonConstants {
 
-  final String MODEL_ID = "modelId";
-  final String MODEL_NAME = "name";
-  final String MODEL_REVISION = "revision";
-  final String MODEL_DESCRIPTION = "description";
+  String MODEL_ID = "modelId";
+  String MODEL_NAME = "name";
+  String MODEL_REVISION = "revision";
+  String MODEL_DESCRIPTION = "description";
 }

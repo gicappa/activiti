@@ -24,5 +24,5 @@ import org.activiti.editor.language.json.model.ModelInfo;
  */
 public interface FormKeyAwareConverter {
 
-    public void setFormKeyMap(Map<String, ModelInfo> formKeyMap);
+    void setFormKeyMap(Map<String, ModelInfo> formKeyMap);
 }

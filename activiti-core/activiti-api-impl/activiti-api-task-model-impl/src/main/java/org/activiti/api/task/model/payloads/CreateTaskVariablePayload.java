@@ -20,7 +20,7 @@ import org.activiti.api.model.shared.Payload;
 
 public class CreateTaskVariablePayload implements Payload {
 
-    private String id;
+    private final String id;
     private String taskId;
     private String name;
     private Object value;

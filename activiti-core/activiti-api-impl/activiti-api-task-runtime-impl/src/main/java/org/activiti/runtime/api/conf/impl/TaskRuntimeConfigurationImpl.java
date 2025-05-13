@@ -25,7 +25,7 @@ import java.util.List;
 
 public class TaskRuntimeConfigurationImpl implements TaskRuntimeConfiguration {
 
-    private List<TaskRuntimeEventListener<?>> taskRuntimeEventListeners;
+    private final List<TaskRuntimeEventListener<?>> taskRuntimeEventListeners;
     private final List<VariableEventListener<?>> variableEventListeners;
 
     public TaskRuntimeConfigurationImpl(List<TaskRuntimeEventListener<?>> taskRuntimeEventListeners,

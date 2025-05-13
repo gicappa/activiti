@@ -24,8 +24,8 @@ import java.util.Optional;
 
 public class ToAPITaskCandidateUserAddedEventConverter implements EventConverter<TaskCandidateUserAddedEvent, ActivitiEntityEvent> {
 
-    private APITaskCandidateUserConverter converter;
-    private TaskCandidateEventConverterHelper taskCandidateEventConverterHelper = new TaskCandidateEventConverterHelper();
+    private final APITaskCandidateUserConverter converter;
+    private final TaskCandidateEventConverterHelper taskCandidateEventConverterHelper = new TaskCandidateEventConverterHelper();
 
     public ToAPITaskCandidateUserAddedEventConverter(APITaskCandidateUserConverter converter) {
         this.converter = converter;
@@ -34,9 +34,8 @@ public class ToAPITaskCandidateUserAddedEventConverter implements EventConverter
     @Override
     public Optional<TaskCandidateUserAddedEvent> from(ActivitiEntityEvent internalEvent) {
         TaskCandidateUserAddedEventImpl event = null;
-        if (internalEvent.getEntity() instanceof IdentityLink) {
-            IdentityLink identityLink = (IdentityLink) internalEvent.getEntity();
-            if (taskCandidateEventConverterHelper.isTaskCandidateUserLink(identityLink)) {
+        if (internalEvent.getEntity() instanceof IdentityLink identityLink) {
+          if (taskCandidateEventConverterHelper.isTaskCandidateUserLink(identityLink)) {
                 event = new TaskCandidateUserAddedEventImpl(converter.from(identityLink));
             }
         }

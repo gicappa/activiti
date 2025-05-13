@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 
 public class VariableEventFilterTest {
 
-    private VariableEventFilter variableEventFilter = new VariableEventFilter();
+    private final VariableEventFilter variableEventFilter = new VariableEventFilter();
 
     @Test
     public void should_emmitEvent_when_executionIdIsEqualsToProcessInstanceId() {

@@ -39,7 +39,7 @@ public class AttachmentQueryProperty implements QueryProperty {
   public static final AttachmentQueryProperty TYPE = new AttachmentQueryProperty("RES.TYPE_");
   public static final AttachmentQueryProperty URL = new AttachmentQueryProperty("RES.URL_");
 
-  private String name;
+  private final String name;
 
   public AttachmentQueryProperty(String name) {
     this.name = name;

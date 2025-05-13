@@ -28,11 +28,11 @@ import org.activiti.test.matchers.TaskResultMatcher;
 
 public class TaskAssertionsImpl implements TaskAssertions {
 
-  private Task task;
+  private final Task task;
 
-  private EventSource eventSource;
+  private final EventSource eventSource;
 
-  private List<TaskSource> taskSources;
+  private final List<TaskSource> taskSources;
 
   public TaskAssertionsImpl(Task task,
     List<TaskSource> taskSources,

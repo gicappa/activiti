@@ -24,7 +24,7 @@ public class TestClass {
         }
     }
 
-    private TestInterface anonymousTestInterface = new TestInterface() {
+    private final TestInterface anonymousTestInterface = new TestInterface() {
         public int fourtyTwo() {
             return 42;
         }

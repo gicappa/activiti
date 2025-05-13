@@ -59,13 +59,14 @@ class IntegrationContextImplTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private static Instant instant = Instant.now();
+    private static final Instant instant = Instant.now();
 
-    private static Arguments[] testValues = {Arguments.of(BigDecimal.valueOf(1000, 2), BigDecimal.valueOf(1000, 2)),
+    private static final Arguments[] testValues = {Arguments.of(BigDecimal.valueOf(1000, 2), BigDecimal.valueOf(1000, 2)),
                                              Arguments.of(Long.valueOf(100000000000L), Long.valueOf(100000000000L)),
                                              Arguments.of(Integer.valueOf(123), Integer.valueOf(123)),
-                                             Arguments.of(String.valueOf("string"), String.valueOf("string")),
-                                             Arguments.of(String.valueOf("item1,item2"), String.valueOf("item1,item2")),
+                                             Arguments.of("string", "string"),
+                                             Arguments.of("item1,item2",
+                                               "item1,item2"),
                                              Arguments.of(Boolean.valueOf(true), Boolean.valueOf(true)),
                                              Arguments.of('A', 'A'),
                                              Arguments.of(Character.valueOf('A'), Character.valueOf('A')),

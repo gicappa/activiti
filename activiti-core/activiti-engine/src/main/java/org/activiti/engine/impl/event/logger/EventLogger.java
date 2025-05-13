@@ -150,17 +150,15 @@ public class EventLogger implements ActivitiEventListener {
         Class<? extends EventLoggerEventHandler> eventHandlerClass = null;
         if (event.getType().equals(ActivitiEventType.ENTITY_INITIALIZED)) {
             Object entity = ((ActivitiEntityEvent) event).getEntity();
-            if (entity instanceof ExecutionEntity) {
-                ExecutionEntity executionEntity = (ExecutionEntity) entity;
-                if (executionEntity.getProcessInstanceId().equals(executionEntity.getId())) {
+            if (entity instanceof ExecutionEntity executionEntity) {
+              if (executionEntity.getProcessInstanceId().equals(executionEntity.getId())) {
                     eventHandlerClass = ProcessInstanceStartedEventHandler.class;
                 }
             }
         } else if (event.getType().equals(ActivitiEventType.ENTITY_DELETED)) {
             Object entity = ((ActivitiEntityEvent) event).getEntity();
-            if (entity instanceof ExecutionEntity) {
-                ExecutionEntity executionEntity = (ExecutionEntity) entity;
-                if (executionEntity.getProcessInstanceId().equals(executionEntity.getId())) {
+            if (entity instanceof ExecutionEntity executionEntity) {
+              if (executionEntity.getProcessInstanceId().equals(executionEntity.getId())) {
                     eventHandlerClass = ProcessInstanceEndedEventHandler.class;
                 }
             }

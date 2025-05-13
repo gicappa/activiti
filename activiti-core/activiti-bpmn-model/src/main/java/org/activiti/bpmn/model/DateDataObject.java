@@ -15,12 +15,10 @@
  */
 package org.activiti.bpmn.model;
 
-import java.util.Date;
-
 public class DateDataObject extends ValuedDataObject {
 
   public void setValue(Object value) {
-    this.value = (Date) value;
+    this.value = value;
   }
 
   public DateDataObject clone() {

@@ -24,7 +24,7 @@ import java.util.Map;
 
 public class ApplicationContent {
 
-    private Map<String, List<FileContent>> entries = new HashMap<>();
+    private final Map<String, List<FileContent>> entries = new HashMap<>();
 
     public void add(ApplicationEntry entry) {
         List<FileContent> fileContents = entries.computeIfAbsent(entry.getType(),

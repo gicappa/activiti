@@ -26,9 +26,9 @@ import java.util.List;
 
 public class TaskCompletedListenerDelegate implements ActivitiEventListener {
 
-    private List<TaskRuntimeEventListener<TaskCompletedEvent>> listeners;
+    private final List<TaskRuntimeEventListener<TaskCompletedEvent>> listeners;
 
-    private ToTaskCompletedConverter taskCompletedConverter;
+    private final ToTaskCompletedConverter taskCompletedConverter;
 
     public TaskCompletedListenerDelegate(List<TaskRuntimeEventListener<TaskCompletedEvent>> listeners,
                                          ToTaskCompletedConverter taskCompletedConverter) {
@@ -41,7 +41,7 @@ public class TaskCompletedListenerDelegate implements ActivitiEventListener {
         if (event instanceof ActivitiEntityEvent) {
             taskCompletedConverter.from((ActivitiEntityEvent) event)
                     .ifPresent(convertedEvent -> {
-                        for (TaskRuntimeEventListener<TaskCompletedEvent> listener : listeners) {
+                        for (var listener : listeners) {
                             listener.onEvent(convertedEvent);
                         }
                     });

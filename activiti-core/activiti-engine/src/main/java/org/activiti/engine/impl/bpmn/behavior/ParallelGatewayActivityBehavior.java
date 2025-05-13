@@ -15,6 +15,7 @@
  */
 package org.activiti.engine.impl.bpmn.behavior;
 
+import java.io.Serial;
 import org.activiti.bpmn.model.Activity;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.FlowNode;
@@ -50,17 +51,18 @@ import java.util.List;
  */
 public class ParallelGatewayActivityBehavior extends GatewayActivityBehavior {
 
+  @Serial
   private static final long serialVersionUID = 1840892471343975524L;
 
-  private static Logger log = LoggerFactory.getLogger(ParallelGatewayActivityBehavior.class);
+  private static final Logger log = LoggerFactory.getLogger(ParallelGatewayActivityBehavior.class);
 
   public void execute(DelegateExecution execution) {
 
-    // First off all, deactivate the execution
+    // First of all, deactivate the execution
     execution.inactivate();
 
     // Join
-    FlowElement flowElement = execution.getCurrentFlowElement();
+    var flowElement = execution.getCurrentFlowElement();
     ParallelGateway parallelGateway = null;
     if (flowElement instanceof ParallelGateway) {
       parallelGateway = (ParallelGateway) flowElement;
@@ -75,8 +77,8 @@ public class ParallelGatewayActivityBehavior extends GatewayActivityBehavior {
       multiInstanceExecution = findMultiInstanceParentExecution(execution);
     }
 
-    ExecutionEntityManager executionEntityManager = Context.getCommandContext().getExecutionEntityManager();
-    Collection<ExecutionEntity> joinedExecutions = executionEntityManager.findInactiveExecutionsByActivityIdAndProcessInstanceId(execution.getCurrentActivityId(), execution.getProcessInstanceId());
+    var executionEntityManager = Context.getCommandContext().getExecutionEntityManager();
+    var joinedExecutions = executionEntityManager.findInactiveExecutionsByActivityIdAndProcessInstanceId(execution.getCurrentActivityId(), execution.getProcessInstanceId());
     if (multiInstanceExecution != null) {
       joinedExecutions = cleanJoinedExecutions(joinedExecutions, multiInstanceExecution);
     }
@@ -99,7 +101,7 @@ public class ParallelGatewayActivityBehavior extends GatewayActivityBehavior {
       if (parallelGateway.getIncomingFlows().size() > 1) {
 
         // All (now inactive) children are deleted.
-        for (ExecutionEntity joinedExecution : joinedExecutions) {
+        for (var joinedExecution : joinedExecutions) {
 
           // The current execution will be reused and not deleted
           if (!joinedExecution.getId().equals(execution.getId())) {
@@ -119,8 +121,8 @@ public class ParallelGatewayActivityBehavior extends GatewayActivityBehavior {
   }
 
   protected Collection<ExecutionEntity> cleanJoinedExecutions(Collection<ExecutionEntity> joinedExecutions, DelegateExecution multiInstanceExecution) {
-    List<ExecutionEntity> cleanedExecutions = new ArrayList<ExecutionEntity>();
-    for (ExecutionEntity executionEntity : joinedExecutions) {
+    var cleanedExecutions = new ArrayList<ExecutionEntity>();
+    for (var executionEntity : joinedExecutions) {
       if (isChildOfMultiInstanceExecution(executionEntity, multiInstanceExecution)) {
         cleanedExecutions.add(executionEntity);
       }
@@ -130,7 +132,7 @@ public class ParallelGatewayActivityBehavior extends GatewayActivityBehavior {
 
   protected boolean isChildOfMultiInstanceExecution(DelegateExecution executionEntity, DelegateExecution multiInstanceExecution) {
     boolean isChild = false;
-    DelegateExecution parentExecution = executionEntity.getParent();
+    var parentExecution = executionEntity.getParent();
     if (parentExecution != null) {
       if (parentExecution.getId().equals(multiInstanceExecution.getId())) {
         isChild = true;
@@ -163,18 +165,17 @@ public class ParallelGatewayActivityBehavior extends GatewayActivityBehavior {
 
   protected DelegateExecution findMultiInstanceParentExecution(DelegateExecution execution) {
     DelegateExecution multiInstanceExecution = null;
-    DelegateExecution parentExecution = execution.getParent();
+    var parentExecution = execution.getParent();
     if (parentExecution != null && parentExecution.getCurrentFlowElement() != null) {
-      FlowElement flowElement = parentExecution.getCurrentFlowElement();
-      if (flowElement instanceof Activity) {
-        Activity activity = (Activity) flowElement;
+      var flowElement = parentExecution.getCurrentFlowElement();
+      if (flowElement instanceof Activity activity) {
         if (activity.getLoopCharacteristics() != null) {
           multiInstanceExecution = parentExecution;
         }
       }
 
       if (multiInstanceExecution == null) {
-        DelegateExecution potentialMultiInstanceExecution = findMultiInstanceParentExecution(parentExecution);
+        var potentialMultiInstanceExecution = findMultiInstanceParentExecution(parentExecution);
         if (potentialMultiInstanceExecution != null) {
           multiInstanceExecution = potentialMultiInstanceExecution;
         }

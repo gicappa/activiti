@@ -23,7 +23,7 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 @AutoConfiguration
 public class ProcessExtensionsConfiguratorAutoConfiguration extends AbstractProcessEngineConfigurator {
 
-    private ProcessVariablesInitiator processVariablesInitiator;
+    private final ProcessVariablesInitiator processVariablesInitiator;
 
     public ProcessExtensionsConfiguratorAutoConfiguration(ProcessVariablesInitiator processVariablesInitiator) {
         this.processVariablesInitiator = processVariablesInitiator;

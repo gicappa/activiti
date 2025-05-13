@@ -21,7 +21,7 @@ import org.activiti.api.model.shared.Payload;
 
 public class GetProcessDefinitionsPayload implements Payload {
 
-    private String id;
+    private final String id;
     private String processDefinitionId;
     private Set<String> processDefinitionKeys;
 

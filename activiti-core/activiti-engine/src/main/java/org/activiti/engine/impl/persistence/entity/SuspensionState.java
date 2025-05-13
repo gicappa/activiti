@@ -36,7 +36,7 @@ public interface SuspensionState {
 
   // default implementation ///////////////////////////////////////////////////
 
-  static class SuspensionStateImpl implements SuspensionState {
+  class SuspensionStateImpl implements SuspensionState {
 
     public final int stateCode;
     protected final String name;
@@ -67,9 +67,7 @@ public interface SuspensionState {
       if (getClass() != obj.getClass())
         return false;
       SuspensionStateImpl other = (SuspensionStateImpl) obj;
-      if (stateCode != other.stateCode)
-        return false;
-      return true;
+      return stateCode == other.stateCode;
     }
 
     @Override
@@ -80,7 +78,7 @@ public interface SuspensionState {
 
   // helper class /////////////////////////////////////////
 
-  public static class SuspensionStateUtil {
+  class SuspensionStateUtil {
 
     public static void setSuspensionState(ProcessDefinitionEntity processDefinitionEntity, SuspensionState state) {
       if (processDefinitionEntity.getSuspensionState() == state.getStateCode()) {
@@ -108,7 +106,7 @@ public interface SuspensionState {
 
     protected static void dispatchStateChangeEvent(Object entity, SuspensionState state) {
       if (Context.getCommandContext() != null && Context.getCommandContext().getEventDispatcher().isEnabled()) {
-        ActivitiEventType eventType = null;
+        ActivitiEventType eventType;
         if (state == SuspensionState.ACTIVE) {
           eventType = ActivitiEventType.ENTITY_ACTIVATED;
         } else {

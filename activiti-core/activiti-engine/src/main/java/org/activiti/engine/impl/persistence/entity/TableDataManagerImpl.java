@@ -57,10 +57,10 @@ public class TableDataManagerImpl extends AbstractManager implements TableDataMa
     super(processEngineConfiguration);
   }
 
-  private static Logger log = LoggerFactory.getLogger(TableDataManagerImpl.class);
+  private static final Logger log = LoggerFactory.getLogger(TableDataManagerImpl.class);
 
-  public static Map<Class<?>, String> apiTypeToTableNameMap = new HashMap<Class<?>, String>();
-  public static Map<Class<? extends Entity>, String> entityToTableNameMap = new HashMap<Class<? extends Entity>, String>();
+  public static Map<Class<?>, String> apiTypeToTableNameMap = new HashMap<>();
+  public static Map<Class<? extends Entity>, String> entityToTableNameMap = new HashMap<>();
 
   static {
     // runtime
@@ -137,7 +137,7 @@ public class TableDataManagerImpl extends AbstractManager implements TableDataMa
 
   @Override
   public Map<String, Long> getTableCount() {
-    Map<String, Long> tableCount = new HashMap<String, Long>();
+    Map<String, Long> tableCount = new HashMap<>();
     try {
       for (String tableName : getTablesPresentInDatabase()) {
         tableCount.put(tableName, getTableCount(tableName));
@@ -151,8 +151,8 @@ public class TableDataManagerImpl extends AbstractManager implements TableDataMa
 
   @Override
   public List<String> getTablesPresentInDatabase() {
-    List<String> tableNames = new ArrayList<String>();
-    Connection connection = null;
+    List<String> tableNames = new ArrayList<>();
+    Connection connection;
     try {
       connection = getDbSqlSession().getSqlSession().getConnection();
       DatabaseMetaData databaseMetaData = connection.getMetaData();
@@ -169,12 +169,14 @@ public class TableDataManagerImpl extends AbstractManager implements TableDataMa
         }
 
         String catalog = null;
-        if (getProcessEngineConfiguration().getDatabaseCatalog() != null && getProcessEngineConfiguration().getDatabaseCatalog().length() > 0) {
+        if (getProcessEngineConfiguration().getDatabaseCatalog() != null && !getProcessEngineConfiguration().getDatabaseCatalog()
+          .isEmpty()) {
           catalog = getProcessEngineConfiguration().getDatabaseCatalog();
         }
 
         String schema = null;
-        if (getProcessEngineConfiguration().getDatabaseSchema() != null && getProcessEngineConfiguration().getDatabaseSchema().length() > 0) {
+        if (getProcessEngineConfiguration().getDatabaseSchema() != null && !getProcessEngineConfiguration().getDatabaseSchema()
+          .isEmpty()) {
           if ("oracle".equals(getDbSqlSession().getDbSqlSessionFactory().getDatabaseType())) {
             schema = getProcessEngineConfiguration().getDatabaseSchema().toUpperCase();
           } else {
@@ -190,6 +192,7 @@ public class TableDataManagerImpl extends AbstractManager implements TableDataMa
           log.debug("  retrieved activiti table name {}", tableName);
         }
       } finally {
+        assert tables != null;
         tables.close();
       }
     } catch (Exception e) {
@@ -200,8 +203,7 @@ public class TableDataManagerImpl extends AbstractManager implements TableDataMa
 
   protected long getTableCount(String tableName) {
     log.debug("selecting table count for {}", tableName);
-    Long count = (Long) getDbSqlSession().selectOne("selectTableCount", singletonMap("tableName", tableName));
-    return count;
+    return (Long) getDbSqlSession().selectOne("selectTableCount", singletonMap("tableName", tableName));
   }
 
   @Override
@@ -266,7 +268,7 @@ public class TableDataManagerImpl extends AbstractManager implements TableDataMa
       ResultSet resultSet = metaData.getColumns(catalog, schema, tableName, null);
       while(resultSet.next()) {
         boolean wrongSchema = false;
-        if (schema != null && schema.length() > 0) {
+        if (schema != null && !schema.isEmpty()) {
           for (int i = 0; i < resultSet.getMetaData().getColumnCount(); i++) {
             String columnName = resultSet.getMetaData().getColumnName(i+1);
             if ("TABLE_SCHEM".equalsIgnoreCase(columnName) || "TABLE_SCHEMA".equalsIgnoreCase(columnName)) {

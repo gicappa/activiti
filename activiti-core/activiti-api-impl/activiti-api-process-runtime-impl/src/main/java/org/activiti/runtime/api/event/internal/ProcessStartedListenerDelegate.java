@@ -26,9 +26,9 @@ import java.util.List;
 
 public class ProcessStartedListenerDelegate implements ActivitiEventListener {
 
-    private List<ProcessRuntimeEventListener<ProcessStartedEvent>> listeners;
+    private final List<ProcessRuntimeEventListener<ProcessStartedEvent>> listeners;
 
-    private ToAPIProcessStartedEventConverter processInstanceStartedEventConverter;
+    private final ToAPIProcessStartedEventConverter processInstanceStartedEventConverter;
 
     public ProcessStartedListenerDelegate(List<ProcessRuntimeEventListener<ProcessStartedEvent>> listeners,
                                           ToAPIProcessStartedEventConverter processInstanceStartedEventConverter) {

@@ -26,7 +26,7 @@ import static org.mockito.Mockito.mock;
 
 public class BPMNMessageConverterTest {
 
-    private BPMNMessageConverter bpmnMessageConverter = new BPMNMessageConverter();
+    private final BPMNMessageConverter bpmnMessageConverter = new BPMNMessageConverter();
 
     @Test
     public void convertShouldReturnBPMNMessage() {

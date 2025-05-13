@@ -51,7 +51,7 @@ public class BoundaryEvent extends Event {
   public boolean hasErrorEventDefinition() {
     if(this.eventDefinitions != null && !this.eventDefinitions.isEmpty()){
       return this.eventDefinitions.stream().anyMatch(eventDefinition ->
-        ErrorEventDefinition.class.isInstance(eventDefinition)
+        eventDefinition instanceof ErrorEventDefinition
       );
     }
     return false;

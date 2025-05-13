@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 
 public class BPMNErrorConverterTest {
 
-    private BPMNErrorConverter bpmnErrorConverter = new BPMNErrorConverter();
+    private final BPMNErrorConverter bpmnErrorConverter = new BPMNErrorConverter();
 
     @Test
     public void convertShouldReturnBPMNError() {

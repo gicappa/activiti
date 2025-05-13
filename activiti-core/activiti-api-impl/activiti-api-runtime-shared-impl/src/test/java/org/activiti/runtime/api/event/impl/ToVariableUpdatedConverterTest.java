@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 
 class ToVariableUpdatedConverterTest {
 
-    private ToVariableUpdatedConverter converter = new ToVariableUpdatedConverter();
+    private final ToVariableUpdatedConverter converter = new ToVariableUpdatedConverter();
 
     @Test
     void should_convertToVariableUpdatedEvent() {

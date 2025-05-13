@@ -36,147 +36,141 @@ import java.util.Map;
  */
 public class RootPropertyResolver extends ELResolver {
 
-    private final Map<String, Object> map = Collections.synchronizedMap(
-        new HashMap<String, Object>()
+  private final Map<String, Object> map = Collections.synchronizedMap(
+    new HashMap<>()
+  );
+  private final boolean readOnly;
+
+  /**
+   * Create a read/write root property resolver
+   */
+  public RootPropertyResolver() {
+    this(false);
+  }
+
+  /**
+   * Create a root property resolver
+   *
+   * @param readOnly
+   */
+  public RootPropertyResolver(boolean readOnly) {
+    this.readOnly = readOnly;
+  }
+
+  private boolean isResolvable(Object base) {
+    return base == null;
+  }
+
+  private boolean resolve(ELContext context, Object base, Object property) {
+    context.setPropertyResolved(
+      isResolvable(base) && property instanceof String
     );
-    private final boolean readOnly;
+    return context.isPropertyResolved();
+  }
 
-    /**
-     * Create a read/write root property resolver
-     */
-    public RootPropertyResolver() {
-        this(false);
-    }
+  @Override
+  public Class<?> getCommonPropertyType(ELContext context, Object base) {
+    return isResolvable(context) ? String.class : null;
+  }
 
-    /**
-     * Create a root property resolver
-     *
-     * @param readOnly
-     */
-    public RootPropertyResolver(boolean readOnly) {
-        this.readOnly = readOnly;
-    }
+  @Override
+  public Iterator<FeatureDescriptor> getFeatureDescriptors(
+    ELContext context, Object base) {
+    return null;
+  }
 
-    private boolean isResolvable(Object base) {
-        return base == null;
-    }
+  @Override
+  public Class<?> getType(ELContext context, Object base, Object property) {
+    return resolve(context, base, property) ? Object.class : null;
+  }
 
-    private boolean resolve(ELContext context, Object base, Object property) {
-        context.setPropertyResolved(
-            isResolvable(base) && property instanceof String
+  @Override
+  public Object getValue(ELContext context, Object base, Object property) {
+    if (resolve(context, base, property)) {
+      if (!isProperty((String) property)) {
+        throw new PropertyNotFoundException(
+          "Cannot find property " + property
         );
-        return context.isPropertyResolved();
+      }
+      return getProperty((String) property);
     }
+    return null;
+  }
 
-    @Override
-    public Class<?> getCommonPropertyType(ELContext context, Object base) {
-        return isResolvable(context) ? String.class : null;
-    }
+  @Override
+  public boolean isReadOnly(ELContext context, Object base, Object property) {
+    return resolve(context, base, property) && readOnly;
+  }
 
-    @Override
-    public Iterator<FeatureDescriptor> getFeatureDescriptors(
-        ELContext context,
-        Object base
-    ) {
-        return null;
+  @Override
+  public void setValue(
+    ELContext context,
+    Object base,
+    Object property,
+    Object value
+  ) throws PropertyNotWritableException {
+    if (resolve(context, base, property)) {
+      if (readOnly) {
+        throw new PropertyNotWritableException(
+          "Resolver is read only!"
+        );
+      }
+      setProperty((String) property, value);
     }
+  }
 
-    @Override
-    public Class<?> getType(ELContext context, Object base, Object property) {
-        return resolve(context, base, property) ? Object.class : null;
+  @Override
+  public Object invoke(
+    ELContext context,
+    Object base,
+    Object method,
+    Class<?>[] paramTypes,
+    Object[] params
+  ) {
+    if (resolve(context, base, method)) {
+      throw new NullPointerException(
+        "Cannot invoke method " + method + " on null"
+      );
     }
+    return null;
+  }
 
-    @Override
-    public Object getValue(ELContext context, Object base, Object property) {
-        if (resolve(context, base, property)) {
-            if (!isProperty((String) property)) {
-                throw new PropertyNotFoundException(
-                    "Cannot find property " + property
-                );
-            }
-            return getProperty((String) property);
-        }
-        return null;
-    }
+  /**
+   * Get property value
+   *
+   * @param property property name
+   * @return value associated with the given property
+   */
+  public Object getProperty(String property) {
+    return map.get(property);
+  }
 
-    @Override
-    public boolean isReadOnly(ELContext context, Object base, Object property) {
-        return resolve(context, base, property) ? readOnly : false;
-    }
+  /**
+   * Set property value
+   *
+   * @param property property name
+   * @param value    property value
+   */
+  public void setProperty(String property, Object value) {
+    map.put(property, value);
+  }
 
-    @Override
-    public void setValue(
-        ELContext context,
-        Object base,
-        Object property,
-        Object value
-    ) throws PropertyNotWritableException {
-        if (resolve(context, base, property)) {
-            if (readOnly) {
-                throw new PropertyNotWritableException(
-                    "Resolver is read only!"
-                );
-            }
-            setProperty((String) property, value);
-        }
-    }
+  /**
+   * Test property
+   *
+   * @param property property name
+   * @return <code>true</code> if the given property is associated with a value
+   */
+  public boolean isProperty(String property) {
+    return map.containsKey(property);
+  }
 
-    @Override
-    public Object invoke(
-        ELContext context,
-        Object base,
-        Object method,
-        Class<?>[] paramTypes,
-        Object[] params
-    ) {
-        if (resolve(context, base, method)) {
-            throw new NullPointerException(
-                "Cannot invoke method " + method + " on null"
-            );
-        }
-        return null;
-    }
-
-    /**
-     * Get property value
-     *
-     * @param property
-     *            property name
-     * @return value associated with the given property
-     */
-    public Object getProperty(String property) {
-        return map.get(property);
-    }
-
-    /**
-     * Set property value
-     *
-     * @param property
-     *            property name
-     * @param value
-     *            property value
-     */
-    public void setProperty(String property, Object value) {
-        map.put(property, value);
-    }
-
-    /**
-     * Test property
-     *
-     * @param property
-     *            property name
-     * @return <code>true</code> if the given property is associated with a value
-     */
-    public boolean isProperty(String property) {
-        return map.containsKey(property);
-    }
-
-    /**
-     * Get properties
-     *
-     * @return all property names (in no particular order)
-     */
-    public Iterable<String> properties() {
-        return map.keySet();
-    }
+  /**
+   * Get properties
+   *
+   * @return all property names (in no particular order)
+   */
+  public Iterable<String> properties() {
+    return map.keySet();
+  }
 }

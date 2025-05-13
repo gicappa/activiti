@@ -25,8 +25,8 @@ import java.util.Optional;
 
 public class ToAPIProcessCandidateStarterUserAddedEventConverter implements EventConverter<ProcessCandidateStarterUserAddedEvent, ActivitiEntityEvent> {
 
-    private APIProcessCandidateStarterUserConverter converter;
-    private ProcessCandidateStarterEventConverterHelper processCandidateStarterEventConverterHelper = new ProcessCandidateStarterEventConverterHelper();
+    private final APIProcessCandidateStarterUserConverter converter;
+    private final ProcessCandidateStarterEventConverterHelper processCandidateStarterEventConverterHelper = new ProcessCandidateStarterEventConverterHelper();
 
     public ToAPIProcessCandidateStarterUserAddedEventConverter(APIProcessCandidateStarterUserConverter converter) {
         this.converter = converter;
@@ -35,9 +35,8 @@ public class ToAPIProcessCandidateStarterUserAddedEventConverter implements Even
     @Override
     public Optional<ProcessCandidateStarterUserAddedEvent> from(ActivitiEntityEvent internalEvent) {
         ProcessCandidateStarterUserAddedEventImpl event = null;
-        if (internalEvent.getEntity() instanceof IdentityLink) {
-            IdentityLink identityLink = (IdentityLink) internalEvent.getEntity();
-            if (processCandidateStarterEventConverterHelper.isProcessCandidateStarterUserLink(identityLink)) {
+        if (internalEvent.getEntity() instanceof IdentityLink identityLink) {
+          if (processCandidateStarterEventConverterHelper.isProcessCandidateStarterUserLink(identityLink)) {
                 event = new ProcessCandidateStarterUserAddedEventImpl(converter.from(identityLink));
             }
         }

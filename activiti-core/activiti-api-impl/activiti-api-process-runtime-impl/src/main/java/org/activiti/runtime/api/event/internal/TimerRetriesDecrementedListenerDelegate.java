@@ -25,9 +25,9 @@ import java.util.List;
 
 public class TimerRetriesDecrementedListenerDelegate implements ActivitiEventListener {
 
-    private List<BPMNElementEventListener<BPMNTimerRetriesDecrementedEvent>> processRuntimeEventListeners;
+    private final List<BPMNElementEventListener<BPMNTimerRetriesDecrementedEvent>> processRuntimeEventListeners;
 
-    private ToTimerRetriesDecrementedConverter converter;
+    private final ToTimerRetriesDecrementedConverter converter;
 
     public TimerRetriesDecrementedListenerDelegate(List<BPMNElementEventListener<BPMNTimerRetriesDecrementedEvent>> processRuntimeEventListeners,
                                                    ToTimerRetriesDecrementedConverter converter) {

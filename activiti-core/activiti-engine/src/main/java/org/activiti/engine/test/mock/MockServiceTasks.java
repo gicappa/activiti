@@ -27,6 +27,6 @@ import java.lang.annotation.RetentionPolicy;
 @Internal
 public @interface MockServiceTasks {
 
-  public MockServiceTask[] value();
+  MockServiceTask[] value();
 
 }

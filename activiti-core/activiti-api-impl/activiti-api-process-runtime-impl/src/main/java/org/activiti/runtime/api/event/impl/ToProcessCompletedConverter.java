@@ -24,7 +24,7 @@ import java.util.Optional;
 
 public class ToProcessCompletedConverter implements EventConverter<ProcessCompletedEvent, ActivitiEntityEvent> {
 
-    private APIProcessInstanceConverter processInstanceConverter;
+    private final APIProcessInstanceConverter processInstanceConverter;
 
     public ToProcessCompletedConverter(APIProcessInstanceConverter processInstanceConverter) {
         this.processInstanceConverter = processInstanceConverter;

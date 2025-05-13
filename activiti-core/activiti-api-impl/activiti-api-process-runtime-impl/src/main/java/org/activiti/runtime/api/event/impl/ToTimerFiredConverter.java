@@ -24,7 +24,7 @@ import java.util.Optional;
 
 public class ToTimerFiredConverter implements EventConverter<BPMNTimerFiredEvent, ActivitiEvent> {
 
-    private BPMNTimerConverter bpmnTimerConverter;
+    private final BPMNTimerConverter bpmnTimerConverter;
 
     public ToTimerFiredConverter(BPMNTimerConverter bpmnTimerConverter) {
         this.bpmnTimerConverter = bpmnTimerConverter;

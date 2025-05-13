@@ -87,17 +87,16 @@ public class StartMessagePayload implements Payload {
 
   @Override
   public String toString() {
-    StringBuilder builder = new StringBuilder();
-    builder.append("StartMessagePayload [id=");
-    builder.append(id);
-    builder.append(", name=");
-    builder.append(name);
-    builder.append(", businessKey=");
-    builder.append(businessKey);
-    builder.append(", variables=");
-    builder.append(variables);
-    builder.append("]");
-    return builder.toString();
+    var builder = "StartMessagePayload [id="
+      + id
+      + ", name="
+      + name
+      + ", businessKey="
+      + businessKey
+      + ", variables="
+      + variables
+      + "]";
+    return builder;
   }
 
 }

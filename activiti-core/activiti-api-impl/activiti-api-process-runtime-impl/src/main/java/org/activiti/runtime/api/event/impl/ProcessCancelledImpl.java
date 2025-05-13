@@ -23,7 +23,7 @@ import org.activiti.api.runtime.event.impl.RuntimeEventImpl;
 public class ProcessCancelledImpl extends RuntimeEventImpl<ProcessInstance, ProcessRuntimeEvent.ProcessEvents>
         implements ProcessCancelledEvent {
 
-    private String cause;
+    private final String cause;
 
     public ProcessCancelledImpl(ProcessInstance entity,
                                 String cause) {

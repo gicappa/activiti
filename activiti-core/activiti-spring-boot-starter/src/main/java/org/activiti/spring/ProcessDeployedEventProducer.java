@@ -15,13 +15,11 @@
  */
 package org.activiti.spring;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.activiti.api.process.model.ProcessDefinition;
 import org.activiti.api.process.model.events.ProcessDeployedEvent;
 import org.activiti.api.process.runtime.events.listener.ProcessRuntimeEventListener;
 import org.activiti.api.runtime.event.impl.ProcessDeployedEventImpl;
@@ -34,45 +32,50 @@ import org.springframework.util.StreamUtils;
 
 public class ProcessDeployedEventProducer extends AbstractActivitiSmartLifeCycle {
 
-    private RepositoryService repositoryService;
-    private APIProcessDefinitionConverter converter;
-    private List<ProcessRuntimeEventListener<ProcessDeployedEvent>> listeners;
-    private ApplicationEventPublisher eventPublisher;
+  private final RepositoryService repositoryService;
+  private final APIProcessDefinitionConverter converter;
+  private final List<ProcessRuntimeEventListener<ProcessDeployedEvent>> listeners;
+  private final ApplicationEventPublisher eventPublisher;
 
-    public ProcessDeployedEventProducer(RepositoryService repositoryService,
-                                        APIProcessDefinitionConverter converter,
-                                        List<ProcessRuntimeEventListener<ProcessDeployedEvent>> listeners,
-                                        ApplicationEventPublisher eventPublisher) {
-        this.repositoryService = repositoryService;
-        this.converter = converter;
-        this.listeners = listeners;
-        this.eventPublisher = eventPublisher;
-    }
+  public ProcessDeployedEventProducer(
+    RepositoryService repositoryService,
+    APIProcessDefinitionConverter converter,
+    List<ProcessRuntimeEventListener<ProcessDeployedEvent>> listeners,
+    ApplicationEventPublisher eventPublisher) {
 
-    @Override
-    public void doStart() {
-        List<ProcessDefinition> processDefinitions = converter.from(repositoryService.createProcessDefinitionQuery().latestVersion().list());
-        List<ProcessDeployedEvent> processDeployedEvents = new ArrayList<>();
-        for (ProcessDefinition processDefinition : processDefinitions) {
-            try (InputStream inputStream = repositoryService.getProcessModel(processDefinition.getId())) {
-                String xmlModel = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
-                ProcessDeployedEventImpl processDeployedEvent = new ProcessDeployedEventImpl(processDefinition, xmlModel);
-                processDeployedEvents.add(processDeployedEvent);
-                for (ProcessRuntimeEventListener<ProcessDeployedEvent> listener : listeners) {
-                    listener.onEvent(processDeployedEvent);
-                }
-            } catch (IOException e) {
-                throw new ActivitiException("Error occurred while getting process model '" + processDefinition.getId() + "' : ", e);
-            }
+    this.repositoryService = repositoryService;
+    this.converter = converter;
+    this.listeners = listeners;
+    this.eventPublisher = eventPublisher;
+  }
+
+  @Override
+  public void doStart() {
+    var processDefinitions = converter.from(
+      repositoryService.createProcessDefinitionQuery().latestVersion().list());
+    var processDeployedEvents = new ArrayList<ProcessDeployedEvent>();
+    for (var processDefinition : processDefinitions) {
+      try (var inputStream = repositoryService.getProcessModel(processDefinition.getId())) {
+        var xmlModel = StreamUtils.copyToString(inputStream, UTF_8);
+        var processDeployedEvent = new ProcessDeployedEventImpl(
+          processDefinition, xmlModel);
+        processDeployedEvents.add(processDeployedEvent);
+        for (var listener : listeners) {
+          listener.onEvent(processDeployedEvent);
         }
-        if (!processDeployedEvents.isEmpty()) {
-            eventPublisher.publishEvent(new ProcessDeployedEvents(processDeployedEvents));
-        }
+      } catch (IOException e) {
+        throw new ActivitiException(
+          "Error occurred while getting process model '" + processDefinition.getId() + "' : ", e);
+      }
     }
-
-    @Override
-    public void doStop() {
-        // nothing
-
+    if (!processDeployedEvents.isEmpty()) {
+      eventPublisher.publishEvent(new ProcessDeployedEvents(processDeployedEvents));
     }
+  }
+
+  @Override
+  public void doStop() {
+    // nothing
+
+  }
 }

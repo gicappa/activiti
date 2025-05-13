@@ -19,15 +19,14 @@ import org.activiti.engine.ActivitiException;
 import org.activiti.engine.impl.context.Context;
 
 /**
- * Variable type capable of storing reference to JPA-entities. Only JPA-Entities which are configured by annotations are supported. Use of compound primary keys is not supported.
- *
-
+ * Variable type capable of storing reference to JPA-entities. Only JPA-Entities which are
+ * configured by annotations are supported. Use of compound primary keys is not supported.
  */
 public class JPAEntityVariableType implements VariableType, CacheableVariable {
 
   public static final String TYPE_NAME = "jpa-entity";
 
-  private JPAEntityMappings mappings;
+  private final JPAEntityMappings mappings;
 
   private boolean forceCacheable;
 
@@ -51,9 +50,11 @@ public class JPAEntityVariableType implements VariableType, CacheableVariable {
   }
 
   public void setValue(Object value, ValueFields valueFields) {
-    EntityManagerSession entityManagerSession = Context.getCommandContext().getSession(EntityManagerSession.class);
+    EntityManagerSession entityManagerSession = Context.getCommandContext()
+      .getSession(EntityManagerSession.class);
     if (entityManagerSession == null) {
-      throw new ActivitiException("Cannot set JPA variable: " + EntityManagerSession.class + " not configured");
+      throw new ActivitiException(
+        "Cannot set JPA variable: " + EntityManagerSession.class + " not configured");
     } else {
       // Before we set the value we must flush all pending changes from
       // the entitymanager

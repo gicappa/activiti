@@ -100,19 +100,16 @@ public class StartTimerEventTest extends PluggableActivitiTestCase {
         moveByMinutes(5);
         waitForJobExecutorOnCondition(10000,
                                       500,
-                                      new Callable<Boolean>() {
-                                          public Boolean call() throws Exception {
-                                              return 2 == piq.count();
-                                          }
-                                      });
+          () -> 2 == piq.count());
 
         assertThat(jobQuery.count()).isEqualTo(1);
         // have to manually delete pending timer
         cleanDB();
     }
 
-    private void moveByMinutes(int minutes) throws Exception {
-        processEngineConfiguration.getClock().setCurrentTime(new Date(processEngineConfiguration.getClock().getCurrentTime().getTime() + ((minutes * 60 * 1000) + 5000)));
+    private void moveByMinutes(int minutes) {
+        processEngineConfiguration.getClock().setCurrentTime(new Date(processEngineConfiguration.getClock().getCurrentTime().getTime() + ((
+          (long) minutes * 60 * 1000) + 5000)));
     }
 
     @Deployment
@@ -172,30 +169,28 @@ public class StartTimerEventTest extends PluggableActivitiTestCase {
         moveByMinutes(5);
         waitForJobExecutorOnCondition(10000,
                                       500,
-                                      new Callable<Boolean>() {
-                                          public Boolean call() throws Exception {
-                                              // we check that correct version was started
-                                              ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processDefinitionKey("startTimerEventExample").singleResult();
-                                              if (processInstance != null) {
-                                                  String pi = processInstance.getId();
-                                                  List<Execution> executions = runtimeService.createExecutionQuery().processInstanceId(pi).list();
-                                                  Execution activityExecution = null;
-                                                  for (Execution execution : executions) {
-                                                      if (!execution.getProcessInstanceId().equals(execution.getId())) {
-                                                          activityExecution = execution;
-                                                          break;
-                                                      }
-                                                  }
-                                                  if (activityExecution != null) {
-                                                      return "changed".equals(activityExecution.getActivityId());
-                                                  } else {
-                                                      return false;
-                                                  }
-                                              } else {
-                                                  return false;
-                                              }
-                                          }
-                                      });
+          () -> {
+              // we check that correct version was started
+              ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processDefinitionKey("startTimerEventExample").singleResult();
+              if (processInstance != null) {
+                  String pi = processInstance.getId();
+                  List<Execution> executions = runtimeService.createExecutionQuery().processInstanceId(pi).list();
+                  Execution activityExecution = null;
+                  for (Execution execution : executions) {
+                      if (!execution.getProcessInstanceId().equals(execution.getId())) {
+                          activityExecution = execution;
+                          break;
+                      }
+                  }
+                  if (activityExecution != null) {
+                      return "changed".equals(activityExecution.getActivityId());
+                  } else {
+                      return false;
+                  }
+              } else {
+                  return false;
+              }
+          });
         assertThat(jobQuery.count()).isEqualTo(1);
 
         cleanDB();

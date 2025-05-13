@@ -55,7 +55,7 @@ public class JuelExpressionResolver implements ExpressionResolver {
     var valueExpression = expressionFactory.createValueExpression(
       context, expression, type);
 
-    return (T) valueExpression.getValue(context);
+    return valueExpression.getValue(context);
   }
 
   protected ELContext buildContext(Map<String, Object> variables) {

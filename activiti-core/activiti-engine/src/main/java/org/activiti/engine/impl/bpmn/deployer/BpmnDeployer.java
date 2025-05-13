@@ -386,11 +386,11 @@ public class BpmnDeployer implements Deployer {
                             }
 
                             String flowElementId = flowElement.getId();
-                            if (isEqualToCurrentLocalizationValue(locale,
-                                                                  flowElementId,
-                                                                  "name",
-                                                                  name,
-                                                                  infoNode) == false) {
+                            if (!isEqualToCurrentLocalizationValue(locale,
+                              flowElementId,
+                              "name",
+                              name,
+                              infoNode)) {
                                 dynamicBpmnService.changeLocalizationName(locale,
                                                                           flowElementId,
                                                                           name,
@@ -398,11 +398,11 @@ public class BpmnDeployer implements Deployer {
                                 localizationValuesChanged = true;
                             }
 
-                            if (documentation != null && isEqualToCurrentLocalizationValue(locale,
-                                                                                           flowElementId,
-                                                                                           "description",
-                                                                                           documentation,
-                                                                                           infoNode) == false) {
+                            if (documentation != null && !isEqualToCurrentLocalizationValue(locale,
+                              flowElementId,
+                              "description",
+                              documentation,
+                              infoNode)) {
                                 dynamicBpmnService.changeLocalizationDescription(locale,
                                                                                  flowElementId,
                                                                                  documentation,
@@ -415,9 +415,8 @@ public class BpmnDeployer implements Deployer {
                     }
                 }
 
-                if (flowElement instanceof SubProcess) {
-                    SubProcess subprocess = (SubProcess) flowElement;
-                    boolean isFlowElementLocalizationChanged = localizeFlowElements(subprocess.getFlowElements(),
+                if (flowElement instanceof SubProcess subprocess) {
+                  boolean isFlowElementLocalizationChanged = localizeFlowElements(subprocess.getFlowElements(),
                                                                                     infoNode);
                     boolean isDataObjectLocalizationChanged = localizeDataObjectElements(subprocess.getDataObjects(),
                                                                                          infoNode);
@@ -478,11 +477,11 @@ public class BpmnDeployer implements Deployer {
                             }
                         }
 
-                        if (name != null && isEqualToCurrentLocalizationValue(locale,
-                                                                              dataObject.getId(),
-                                                                              DynamicBpmnConstants.LOCALIZATION_NAME,
-                                                                              name,
-                                                                              infoNode) == false) {
+                        if (name != null && !isEqualToCurrentLocalizationValue(locale,
+                          dataObject.getId(),
+                          DynamicBpmnConstants.LOCALIZATION_NAME,
+                          name,
+                          infoNode)) {
                             dynamicBpmnService.changeLocalizationName(locale,
                                                                       dataObject.getId(),
                                                                       name,
@@ -490,11 +489,11 @@ public class BpmnDeployer implements Deployer {
                             localizationValuesChanged = true;
                         }
 
-                        if (documentation != null && isEqualToCurrentLocalizationValue(locale,
-                                                                                       dataObject.getId(),
-                                                                                       DynamicBpmnConstants.LOCALIZATION_DESCRIPTION,
-                                                                                       documentation,
-                                                                                       infoNode) == false) {
+                        if (documentation != null && !isEqualToCurrentLocalizationValue(locale,
+                          dataObject.getId(),
+                          DynamicBpmnConstants.LOCALIZATION_DESCRIPTION,
+                          documentation,
+                          infoNode)) {
 
                             dynamicBpmnService.changeLocalizationDescription(locale,
                                                                              dataObject.getId(),

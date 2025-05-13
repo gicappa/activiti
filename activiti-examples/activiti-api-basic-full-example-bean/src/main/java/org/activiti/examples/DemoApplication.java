@@ -44,7 +44,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 @EnableScheduling
 public class DemoApplication implements CommandLineRunner {
 
-    private Logger logger = LoggerFactory.getLogger(DemoApplication.class);
+    private final Logger logger = LoggerFactory.getLogger(DemoApplication.class);
 
     private final ProcessRuntime processRuntime;
 

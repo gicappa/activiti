@@ -27,12 +27,12 @@ import org.activiti.engine.delegate.event.ActivitiEntityEvent;
 
 public class TestMultipleActivitiEventListener implements ActivitiEventListener {
 
-  private List<ActivitiEvent> eventsReceived;
+  private final List<ActivitiEvent> eventsReceived;
   private List<Class<?>> entityClasses;
   private List<Class<?>> eventClasses;
 
   public TestMultipleActivitiEventListener() {
-    eventsReceived = new ArrayList<ActivitiEvent>();
+    eventsReceived = new ArrayList<>();
   }
 
   public List<ActivitiEvent> getEventsReceived() {

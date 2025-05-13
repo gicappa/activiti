@@ -87,7 +87,7 @@ public class ProcessRuntimeBPMNMessageIT {
 
     @Component
     public static class TestStartMessageDeployedRuntimeEventListener implements ProcessRuntimeEventListener<StartMessageDeployedEvent>{
-        private List<StartMessageDeployedEvent> startMessageDeployedEvents = new ArrayList<>();
+        private final List<StartMessageDeployedEvent> startMessageDeployedEvents = new ArrayList<>();
 
         @Override
         public void onEvent(StartMessageDeployedEvent event) {
@@ -101,7 +101,7 @@ public class ProcessRuntimeBPMNMessageIT {
 
     @Component
     public static class TestStartMessageDeployedApplicationEventListener {
-        private List<StartMessageDeployedEvent> startMessageDeployedEvents = new ArrayList<>();
+        private final List<StartMessageDeployedEvent> startMessageDeployedEvents = new ArrayList<>();
 
         @EventListener
         public void onEvent(StartMessageDeployedEvents event) {

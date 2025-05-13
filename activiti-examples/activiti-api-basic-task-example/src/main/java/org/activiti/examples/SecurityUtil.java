@@ -31,14 +31,14 @@ import java.util.Collection;
 @Component
 public class SecurityUtil {
 
-    private Logger logger = LoggerFactory.getLogger(SecurityUtil.class);
+    private final Logger logger = LoggerFactory.getLogger(SecurityUtil.class);
 
     @Autowired
     private UserDetailsService userDetailsService;
 
     public void logInAs(String username) {
 
-        UserDetails user = userDetailsService.loadUserByUsername(username);
+      var user = userDetailsService.loadUserByUsername(username);
         if (user == null) {
             throw new IllegalStateException("User " + username + " doesn't exist, please provide a valid user");
         }

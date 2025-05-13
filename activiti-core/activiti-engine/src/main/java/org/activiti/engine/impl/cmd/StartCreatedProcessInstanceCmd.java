@@ -15,6 +15,7 @@
  */
 package org.activiti.engine.impl.cmd;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Map;
@@ -29,9 +30,11 @@ import org.activiti.engine.runtime.ProcessInstance;
 
 public class StartCreatedProcessInstanceCmd<T> implements Command<ProcessInstance>, Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
-    private ProcessInstance internalProcessInstance;
-    private Map<String, Object> variables;
+
+    private final ProcessInstance internalProcessInstance;
+    private final Map<String, Object> variables;
 
     public StartCreatedProcessInstanceCmd(ProcessInstance internalProcessInstance, Map<String, Object> variables){
         this.internalProcessInstance = internalProcessInstance;

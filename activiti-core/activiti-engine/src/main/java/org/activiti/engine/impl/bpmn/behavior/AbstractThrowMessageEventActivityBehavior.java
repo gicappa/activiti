@@ -51,7 +51,7 @@ public abstract class AbstractThrowMessageEventActivityBehavior extends FlowNode
                .handleInvocation(invocation);
 
         return (boolean) invocation.getInvocationResult();
-    };
+    }
 
     @Override
     public void execute(DelegateExecution execution) {

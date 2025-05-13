@@ -16,11 +16,8 @@
 package org.activiti.engine.impl.bpmn.parser.handler;
 
 import org.activiti.bpmn.model.BaseElement;
-import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.ErrorEventDefinition;
-import org.activiti.bpmn.model.EventDefinition;
 import org.activiti.bpmn.model.EventSubProcess;
-import org.activiti.bpmn.model.Message;
 import org.activiti.bpmn.model.MessageEventDefinition;
 import org.activiti.bpmn.model.StartEvent;
 import org.activiti.engine.impl.bpmn.parser.BpmnParse;
@@ -29,8 +26,7 @@ import org.activiti.engine.impl.util.CollectionUtil;
 import org.apache.commons.lang3.StringUtils;
 
 /**
-
-
+ *
  */
 public class StartEventParseHandler extends AbstractActivityBpmnParseHandler<StartEvent> {
 
@@ -43,40 +39,42 @@ public class StartEventParseHandler extends AbstractActivityBpmnParseHandler<Sta
   protected void executeParse(BpmnParse bpmnParse, StartEvent element) {
     if (element.getSubProcess() != null && element.getSubProcess() instanceof EventSubProcess) {
       if (CollectionUtil.isNotEmpty(element.getEventDefinitions())) {
-        EventDefinition eventDefinition = element.getEventDefinitions().get(0);
-        if (eventDefinition instanceof MessageEventDefinition) {
-          MessageEventDefinition messageDefinition = (MessageEventDefinition) eventDefinition;
-          BpmnModel bpmnModel = bpmnParse.getBpmnModel();
-          String messageRef = messageDefinition.getMessageRef();
+        var eventDefinition = element.getEventDefinitions().get(0);
+        if (eventDefinition instanceof MessageEventDefinition messageDefinition) {
+          var bpmnModel = bpmnParse.getBpmnModel();
+          var messageRef = messageDefinition.getMessageRef();
           if (bpmnModel.containsMessageId(messageRef)) {
-            Message message = bpmnModel.getMessage(messageRef);
+            var message = bpmnModel.getMessage(messageRef);
             messageDefinition.setMessageRef(message.getName());
             messageDefinition.setExtensionElements(message.getExtensionElements());
           }
-          element.setBehavior(bpmnParse.getActivityBehaviorFactory().createEventSubProcessMessageStartEventActivityBehavior(element, messageDefinition));
+          element.setBehavior(bpmnParse.getActivityBehaviorFactory()
+            .createEventSubProcessMessageStartEventActivityBehavior(element, messageDefinition));
 
         } else if (eventDefinition instanceof ErrorEventDefinition) {
-          element.setBehavior(bpmnParse.getActivityBehaviorFactory().createEventSubProcessErrorStartEventActivityBehavior(element));
+          element.setBehavior(bpmnParse.getActivityBehaviorFactory()
+            .createEventSubProcessErrorStartEventActivityBehavior(element));
         }
       }
 
     } else if (CollectionUtil.isEmpty(element.getEventDefinitions())) {
-      element.setBehavior(bpmnParse.getActivityBehaviorFactory().createNoneStartEventActivityBehavior(element));
+      element.setBehavior(
+        bpmnParse.getActivityBehaviorFactory().createNoneStartEventActivityBehavior(element));
     }
 
     if (element.getSubProcess() == null && (CollectionUtil.isEmpty(element.getEventDefinitions()) ||
-        bpmnParse.getCurrentProcess().getInitialFlowElement() == null)) {
+      bpmnParse.getCurrentProcess().getInitialFlowElement() == null)) {
 
       bpmnParse.getCurrentProcess().setInitialFlowElement(element);
     }
 
-      checkStartFormKey(bpmnParse.getCurrentProcessDefinition(), element);
+    checkStartFormKey(bpmnParse.getCurrentProcessDefinition(), element);
   }
 
-    private void checkStartFormKey(ProcessDefinitionEntity processDefinition, StartEvent startEvent) {
-        if (StringUtils.isNotEmpty(startEvent.getFormKey())) {
-            processDefinition.setStartFormKey(true);
-        }
+  private void checkStartFormKey(ProcessDefinitionEntity processDefinition, StartEvent startEvent) {
+    if (StringUtils.isNotEmpty(startEvent.getFormKey())) {
+      processDefinition.setStartFormKey(true);
     }
+  }
 
 }

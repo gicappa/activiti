@@ -19,41 +19,39 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 import java.util.Collections;
-import java.util.Map;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.junit.Test;
 
 public class NoneVariablesCalculatorTest {
 
-    private NoneVariablesCalculator variablesCalculator = new NoneVariablesCalculator();
+  private final NoneVariablesCalculator variablesCalculator = new NoneVariablesCalculator();
 
-    @Test
-    public void calculateOutPutVariables_should_returnEmptyMap() {
-        //given
-        MappingExecutionContext mappingExecutionContext = MappingExecutionContext
-            .buildMappingExecutionContext("procDefId", "activityId");
-        Map<String, Object> availableVariables = Collections.singletonMap("any", "any");
+  @Test
+  public void calculateOutPutVariables_should_returnEmptyMap() {
+    //given
+    var mappingExecutionContext = MappingExecutionContext
+      .buildMappingExecutionContext("procDefId", "activityId");
+    var availableVariables = Collections.<String, Object>singletonMap("any", "any");
 
-        //when
-        Map<String, Object> calculatedVariables = variablesCalculator.calculateOutPutVariables(
-            mappingExecutionContext,
-            availableVariables);
+    //when
+    var calculatedVariables = variablesCalculator.calculateOutPutVariables(
+      mappingExecutionContext, availableVariables);
 
-        //then
-        assertThat(calculatedVariables).isEmpty();
-    }
+    //then
+    assertThat(calculatedVariables).isEmpty();
+  }
 
-    @Test
-    public void calculateInputVariables_should_return_emptyMap() {
-        //given
-        DelegateExecution mock = mock(DelegateExecution.class);
+  @Test
+  public void calculateInputVariables_should_return_emptyMap() {
+    //given
+    var mock = mock(DelegateExecution.class);
 
-        //when
-        Map<String, Object> calculatedVariables = variablesCalculator
-            .calculateInputVariables(mock);
+    //when
+    var calculatedVariables = variablesCalculator
+      .calculateInputVariables(mock);
 
-        //then
-        assertThat(calculatedVariables).isEmpty();
-    }
+    //then
+    assertThat(calculatedVariables).isEmpty();
+  }
 
 }

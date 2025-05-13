@@ -15,6 +15,7 @@
  */
 package org.activiti.engine.impl.cmd;
 
+import java.io.Serial;
 import org.activiti.engine.ActivitiIllegalArgumentException;
 import org.activiti.engine.JobNotFoundException;
 import org.activiti.engine.delegate.event.ActivitiEventType;
@@ -32,9 +33,10 @@ import java.io.Serializable;
 
 public class HandleFailedJobCmd implements Command<Object>, Serializable {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
-  private static Logger log = LoggerFactory.getLogger(HandleFailedJobCmd.class);
+  private static final Logger log = LoggerFactory.getLogger(HandleFailedJobCmd.class);
 
   protected String jobId;
   protected Throwable exception;

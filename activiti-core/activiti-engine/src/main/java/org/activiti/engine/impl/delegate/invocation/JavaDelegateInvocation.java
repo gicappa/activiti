@@ -34,7 +34,7 @@ public class JavaDelegateInvocation extends DelegateInvocation {
   }
 
   protected void invoke() {
-    delegateInstance.execute((DelegateExecution) execution);
+    delegateInstance.execute(execution);
   }
 
   public Object getTarget() {

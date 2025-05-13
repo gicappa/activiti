@@ -31,10 +31,9 @@ public class FlowNodeRefParser extends BaseChildElementParser {
   }
 
   public void parseChildElement(XMLStreamReader xtr, BaseElement parentElement, BpmnModel model) throws Exception {
-    if (!(parentElement instanceof Lane))
+    if (!(parentElement instanceof Lane lane))
       return;
 
-    Lane lane = (Lane) parentElement;
     lane.getFlowReferences().add(xtr.getElementText());
   }
 }

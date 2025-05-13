@@ -15,6 +15,7 @@
  */
 package org.activiti.engine.impl;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +29,7 @@ import org.activiti.engine.runtime.ProcessInstanceQuery;
  */
 public class ProcessInstanceQueryProperty implements QueryProperty {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   private static final Map<String, ProcessInstanceQueryProperty> properties = new HashMap<String, ProcessInstanceQueryProperty>();
@@ -37,7 +39,7 @@ public class ProcessInstanceQueryProperty implements QueryProperty {
   public static final ProcessInstanceQueryProperty PROCESS_DEFINITION_ID = new ProcessInstanceQueryProperty("ProcessDefinitionId");
   public static final ProcessInstanceQueryProperty TENANT_ID = new ProcessInstanceQueryProperty("RES.TENANT_ID_");
 
-  private String name;
+  private final String name;
 
   public ProcessInstanceQueryProperty(String name) {
     this.name = name;

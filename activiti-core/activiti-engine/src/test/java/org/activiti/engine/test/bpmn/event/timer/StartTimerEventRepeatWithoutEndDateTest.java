@@ -208,8 +208,9 @@ public class StartTimerEventRepeatWithoutEndDateTest extends PluggableActivitiTe
 
   }
 
-  private void moveByMinutes(int minutes) throws Exception {
-    processEngineConfiguration.getClock().setCurrentTime(new Date(processEngineConfiguration.getClock().getCurrentTime().getTime() + ((minutes * 60l * 1000))));
+  private void moveByMinutes(int minutes) {
+    processEngineConfiguration.getClock().setCurrentTime(new Date(processEngineConfiguration.getClock().getCurrentTime().getTime() + ((minutes * 60L
+      * 1000))));
   }
 
 }

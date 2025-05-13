@@ -96,14 +96,13 @@ public class SubProcessWithExtensionsConverterTest extends AbstractConverterTest
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder(100);
-      sb.append("Localization: [");
-      sb.append("resourceBundleKeyForName=").append(resourceBundleKeyForName);
-      sb.append(", resourceBundleKeyForDescription=").append(resourceBundleKeyForDescription);
-      sb.append(", labeledEntityIdForName=").append(labeledEntityIdForName);
-      sb.append(", labeledEntityIdForDescription=").append(labeledEntityIdForDescription);
-      sb.append("]");
-      return sb.toString();
+      var sb = "Localization: ["
+        + "resourceBundleKeyForName=" + resourceBundleKeyForName
+        + ", resourceBundleKeyForDescription=" + resourceBundleKeyForDescription
+        + ", labeledEntityIdForName=" + labeledEntityIdForName
+        + ", labeledEntityIdForDescription=" + labeledEntityIdForDescription
+        + "]";
+      return sb;
     }
   }
 

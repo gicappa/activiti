@@ -47,7 +47,7 @@ public class TreeTest extends TestCase {
         context.setFunction(
             "ns",
             "f1",
-            TreeTest.class.getMethod("bar", new Class[] { int.class })
+            TreeTest.class.getMethod("bar", int.class)
         );
 
         // functions g0(), g1(int)
@@ -55,7 +55,7 @@ public class TreeTest extends TestCase {
         context.setFunction(
             "",
             "g1",
-            TreeTest.class.getMethod("bar", new Class[] { int.class })
+            TreeTest.class.getMethod("bar", int.class)
         );
 
         // variables v0, v1
@@ -107,7 +107,7 @@ public class TreeTest extends TestCase {
         try {
             bindings.getFunction(2);
             fail();
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
 
         // the same for default namespace functions g0(), g1()
         bindings = parse("${g0()}").bind(context.getFunctionMapper(), null);
@@ -118,7 +118,7 @@ public class TreeTest extends TestCase {
         try {
             bindings.getFunction(1);
             fail();
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
 
         bindings = parse("${g1(1)}").bind(context.getFunctionMapper(), null);
         assertSame(
@@ -128,7 +128,7 @@ public class TreeTest extends TestCase {
         try {
             bindings.getFunction(1);
             fail();
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
 
         bindings =
             parse("${g0()+g1(1)}").bind(context.getFunctionMapper(), null);
@@ -143,24 +143,24 @@ public class TreeTest extends TestCase {
         try {
             bindings.getFunction(2);
             fail();
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
 
         try {
             parse("${foo()}").bind(context.getFunctionMapper(), null);
             fail();
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
         try {
             parse("${g1()}").bind(context.getFunctionMapper(), null);
             fail();
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
         try {
             parse("${g1(1,2)}").bind(context.getFunctionMapper(), null);
             fail();
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
     }
 
     @Test
-    public void testBindVariables() throws Exception {
+    public void testBindVariables() {
         Bindings bindings = null;
 
         bindings = parse("${v0}").bind(null, context.getVariableMapper());
@@ -171,7 +171,7 @@ public class TreeTest extends TestCase {
         try {
             bindings.getVariable(1);
             fail();
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
 
         bindings = parse("${v1}").bind(null, context.getVariableMapper());
         assertSame(
@@ -181,7 +181,7 @@ public class TreeTest extends TestCase {
         try {
             bindings.getVariable(1);
             fail();
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
 
         bindings = parse("${v0+v1}").bind(null, context.getVariableMapper());
         assertSame(
@@ -195,14 +195,14 @@ public class TreeTest extends TestCase {
         try {
             bindings.getVariable(2);
             fail();
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
 
         bindings = parse("${foo}").bind(null, context.getVariableMapper());
         assertNull(bindings.getVariable(0));
         try {
             bindings.getVariable(1);
             fail();
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
     }
 
     @Test
@@ -220,7 +220,7 @@ public class TreeTest extends TestCase {
         try {
             bindings.getFunction(2);
             fail();
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
         assertSame(
             context.getVariableMapper().resolveVariable("v0"),
             bindings.getVariable(0)
@@ -233,6 +233,6 @@ public class TreeTest extends TestCase {
         try {
             bindings.getVariable(3);
             fail();
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
     }
 }

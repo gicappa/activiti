@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 
 public class AstBinaryTest extends TestCase {
 
-    private Bindings bindings = new Bindings(null, null, null);
+    private final Bindings bindings = new Bindings(null, null, null);
 
     AstBinary parseNode(String expression) {
         return (AstBinary) parse(expression).getRoot().getChild(0);
@@ -36,10 +36,10 @@ public class AstBinaryTest extends TestCase {
 
     @Test
     public void testEval() {
-        assertEquals(6l, parseNode("${4+2}").eval(bindings, null));
-        assertEquals(8l, parseNode("${4*2}").eval(bindings, null));
+        assertEquals(6L, parseNode("${4+2}").eval(bindings, null));
+        assertEquals(8L, parseNode("${4*2}").eval(bindings, null));
         assertEquals(2d, parseNode("${4/2}").eval(bindings, null));
-        assertEquals(0l, parseNode("${4%2}").eval(bindings, null));
+        assertEquals(0L, parseNode("${4%2}").eval(bindings, null));
 
         assertEquals(false, parseNode("${true && false}").eval(bindings, null));
 
@@ -129,7 +129,7 @@ public class AstBinaryTest extends TestCase {
     @Test
     public void testGetValue() {
         assertEquals(
-            Long.valueOf(2l),
+            Long.valueOf(2L),
             parseNode("${1+1}").getValue(bindings, null, null)
         );
         assertEquals(

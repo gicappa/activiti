@@ -32,10 +32,10 @@ import org.activiti.engine.impl.interceptor.CommandContext;
  */
 public class EntityManagerSessionImpl implements EntityManagerSession {
 
-  private EntityManagerFactory entityManagerFactory;
+  private final EntityManagerFactory entityManagerFactory;
   private EntityManager entityManager;
-  private boolean handleTransactions;
-  private boolean closeEntityManager;
+  private final boolean handleTransactions;
+  private final boolean closeEntityManager;
 
   public EntityManagerSessionImpl(EntityManagerFactory entityManagerFactory, EntityManager entityManager, boolean handleTransactions, boolean closeEntityManager) {
     this(entityManagerFactory, handleTransactions, closeEntityManager);

@@ -58,10 +58,9 @@ public class ActivitiVersion {
   }
 
   public boolean equals(Object obj) {
-    if (!(obj instanceof ActivitiVersion)) {
+    if (!(obj instanceof ActivitiVersion other)) {
       return false;
     }
-    ActivitiVersion other = (ActivitiVersion) obj;
     boolean mainVersionEqual = mainVersion.equals(other.mainVersion);
     if (!mainVersionEqual) {
       return false;

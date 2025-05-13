@@ -26,9 +26,9 @@ import java.util.List;
 
 public class ProcessSuspendedListenerDelegate implements ActivitiEventListener {
 
-    private List<ProcessRuntimeEventListener<ProcessSuspendedEvent>> processRuntimeEventListeners;
+    private final List<ProcessRuntimeEventListener<ProcessSuspendedEvent>> processRuntimeEventListeners;
 
-    private ToProcessSuspendedConverter processSuspendedConverter;
+    private final ToProcessSuspendedConverter processSuspendedConverter;
 
     public ProcessSuspendedListenerDelegate(List<ProcessRuntimeEventListener<ProcessSuspendedEvent>> listeners,
                                             ToProcessSuspendedConverter processSuspendedConverter) {

@@ -15,15 +15,13 @@
  */
 package org.activiti.editor.language.xml;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
-
 import org.activiti.bpmn.converter.SubprocessXMLConverter;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
@@ -36,33 +34,33 @@ public class SubProcessMultiDiagramConverterNoDITest extends AbstractConverterTe
 
   @Override
   protected BpmnModel readXMLFile() throws Exception {
-    InputStream xmlStream = this.getClass().getClassLoader().getResourceAsStream(getResource());
-    XMLInputFactory xif = XMLInputFactory.newInstance();
-    InputStreamReader in = new InputStreamReader(xmlStream, "UTF-8");
-    XMLStreamReader xtr = xif.createXMLStreamReader(in);
+    var xmlStream = this.getClass().getClassLoader().getResourceAsStream(getResource());
+    var xif = XMLInputFactory.newInstance();
+    var in = new InputStreamReader(xmlStream, UTF_8);
+    var xtr = xif.createXMLStreamReader(in);
     return new SubprocessXMLConverter().convertToBpmnModel(xtr);
   }
 
   @Override
   protected BpmnModel exportAndReadXMLFile(BpmnModel bpmnModel) throws Exception {
     byte[] xml = new SubprocessXMLConverter().convertToXML(bpmnModel);
-    System.out.println("xml " + new String(xml, "UTF-8"));
-    XMLInputFactory xif = XMLInputFactory.newInstance();
-    InputStreamReader in = new InputStreamReader(new ByteArrayInputStream(xml), "UTF-8");
-    XMLStreamReader xtr = xif.createXMLStreamReader(in);
+    System.out.println("xml " + new String(xml, UTF_8));
+    var xif = XMLInputFactory.newInstance();
+    var in = new InputStreamReader(new ByteArrayInputStream(xml), UTF_8);
+    var xtr = xif.createXMLStreamReader(in);
     return new SubprocessXMLConverter().convertToBpmnModel(xtr);
   }
 
   @Test
   public void convertXMLToModel() throws Exception {
-    BpmnModel bpmnModel = readXMLFile();
+    var bpmnModel = readXMLFile();
     validateModel(bpmnModel);
   }
 
   @Test
   public void convertModelToXML() throws Exception {
-    BpmnModel bpmnModel = readXMLFile();
-    BpmnModel parsedModel = exportAndReadXMLFile(bpmnModel);
+    var bpmnModel = readXMLFile();
+    var parsedModel = exportAndReadXMLFile(bpmnModel);
     validateModel(parsedModel);
     deployProcess(parsedModel);
   }
@@ -72,7 +70,7 @@ public class SubProcessMultiDiagramConverterNoDITest extends AbstractConverterTe
   }
 
   private void validateModel(BpmnModel model) {
-    FlowElement flowElement = model.getMainProcess().getFlowElement("start1");
+    var flowElement = model.getMainProcess().getFlowElement("start1");
     assertThat(flowElement).isNotNull();
     assertThat(flowElement).isInstanceOf(StartEvent.class);
     assertThat(flowElement.getId()).isEqualTo("start1");
@@ -81,7 +79,7 @@ public class SubProcessMultiDiagramConverterNoDITest extends AbstractConverterTe
     assertThat(flowElement).isNotNull();
     assertThat(flowElement).isInstanceOf(UserTask.class);
     assertThat(flowElement.getId()).isEqualTo("userTask1");
-    UserTask userTask = (UserTask) flowElement;
+    var userTask = (UserTask) flowElement;
     assertThat(userTask.getCandidateUsers().size() == 1).isTrue();
     assertThat(userTask.getCandidateGroups().size() == 1).isTrue();
 
@@ -89,7 +87,7 @@ public class SubProcessMultiDiagramConverterNoDITest extends AbstractConverterTe
     assertThat(flowElement).isNotNull();
     assertThat(flowElement).isInstanceOf(SubProcess.class);
     assertThat(flowElement.getId()).isEqualTo("subprocess1");
-    SubProcess subProcess = (SubProcess) flowElement;
+    var subProcess = (SubProcess) flowElement;
     assertThat(subProcess.getFlowElements().size() == 11).isTrue();
   }
 }

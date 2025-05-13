@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ResetExpiredJobsRunnable implements Runnable {
 
-  private static Logger log = LoggerFactory.getLogger(ResetExpiredJobsRunnable.class);
+  private static final Logger log = LoggerFactory.getLogger(ResetExpiredJobsRunnable.class);
 
   protected final AsyncExecutor asyncExecutor;
 
@@ -51,7 +51,7 @@ public class ResetExpiredJobsRunnable implements Runnable {
   }
 
   public synchronized void run() {
-    log.info("{} starting to reset expired jobs");
+    log.info("starting to reset expired jobs");
     Thread.currentThread().setName("activiti-reset-expired-jobs");
 
     while (!isInterrupted) {
@@ -66,7 +66,7 @@ public class ResetExpiredJobsRunnable implements Runnable {
           expiredJobIds.add(expiredJob.getId());
         }
 
-        if (expiredJobIds.size() > 0) {
+        if (!expiredJobIds.isEmpty()) {
           asyncExecutor.getProcessEngineConfiguration().getCommandExecutor()
             .execute(new ResetExpiredJobsCmd(expiredJobIds));
         }
@@ -75,7 +75,7 @@ public class ResetExpiredJobsRunnable implements Runnable {
         if (e instanceof ActivitiOptimisticLockingException) {
           log.debug("Optmistic lock exception while resetting locked jobs", e);
         } else {
-          log.error("exception during resetting expired jobs", e.getMessage(), e);
+          log.error("exception during resetting expired jobs {}", e.getMessage(), e);
         }
       }
 
@@ -99,7 +99,7 @@ public class ResetExpiredJobsRunnable implements Runnable {
 
     }
 
-    log.info("{} stopped resetting expired jobs");
+    log.info("stopped resetting expired jobs");
   }
 
   public void stop() {

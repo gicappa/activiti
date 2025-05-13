@@ -24,7 +24,7 @@ import java.util.Optional;
 
 public class ToTimerRetriesDecrementedConverter implements EventConverter<BPMNTimerRetriesDecrementedEvent, ActivitiEvent> {
 
-    private BPMNTimerConverter bpmnTimerConverter;
+    private final BPMNTimerConverter bpmnTimerConverter;
 
     public ToTimerRetriesDecrementedConverter(BPMNTimerConverter bpmnTimerConverter) {
         this.bpmnTimerConverter = bpmnTimerConverter;

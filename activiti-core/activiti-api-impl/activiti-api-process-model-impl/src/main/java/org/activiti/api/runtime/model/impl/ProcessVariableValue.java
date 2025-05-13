@@ -15,6 +15,7 @@
  */
 package org.activiti.api.runtime.model.impl;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -23,7 +24,9 @@ import java.util.Optional;
 
 public class ProcessVariableValue implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
+
     private String type;
     private String value;
 
@@ -77,15 +80,14 @@ public class ProcessVariableValue implements Serializable {
     }
 
     public String toJson() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("{\"type\":\"")
-               .append(type)
-               .append("\",\"value\":")
-               .append(Optional.ofNullable(value)
-                               .map(this::escape)
-                               .orElse("null"))
-               .append("}");
-        return builder.toString();
+      String builder = "{\"type\":\""
+        + type
+        + "\",\"value\":"
+        + Optional.ofNullable(value)
+        .map(this::escape)
+        .orElse("null")
+        + "}";
+        return builder;
     }
 
     @Override
@@ -136,7 +138,7 @@ public class ProcessVariableValue implements Serializable {
         * @param type field to set
         * @return builder
         */
-        public IValueStage type(String type);
+        IValueStage type(String type);
     }
 
     /**
@@ -149,7 +151,7 @@ public class ProcessVariableValue implements Serializable {
         * @param value field to set
         * @return builder
         */
-        public IBuildStage value(String value);
+        IBuildStage value(String value);
     }
 
     /**
@@ -161,7 +163,7 @@ public class ProcessVariableValue implements Serializable {
         * Builder method of the builder.
         * @return built class
         */
-        public ProcessVariableValue build();
+        ProcessVariableValue build();
     }
 
     /**

@@ -72,7 +72,7 @@ public class ThrowMessage {
         * @param name field to set
         * @return builder
         */
-        public IBuildStage name(String name);
+        IBuildStage name(String name);
     }
 
     /**
@@ -85,27 +85,27 @@ public class ThrowMessage {
         * @param payload field to set
         * @return builder
         */
-        public IBuildStage payload(Optional<Map<String, Object>> payload);
+        IBuildStage payload(Optional<Map<String, Object>> payload);
 
         /**
         * Builder method for businessKey parameter.
         * @param businessKey field to set
         * @return builder
         */
-        public IBuildStage businessKey(Optional<String> businessKey);
+        IBuildStage businessKey(Optional<String> businessKey);
 
         /**
         * Builder method for correlationKey parameter.
         * @param correlationKey field to set
         * @return builder
         */
-        public IBuildStage correlationKey(Optional<String> correlationKey);
+        IBuildStage correlationKey(Optional<String> correlationKey);
 
         /**
         * Builder method of the builder.
         * @return built class
         */
-        public ThrowMessage build();
+        ThrowMessage build();
     }
 
     /**

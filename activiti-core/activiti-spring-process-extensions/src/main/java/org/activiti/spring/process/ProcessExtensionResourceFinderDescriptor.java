@@ -23,9 +23,9 @@ import org.springframework.core.io.Resource;
 
 public class ProcessExtensionResourceFinderDescriptor implements ResourceFinderDescriptor {
 
-    private boolean checkResources;
-    private String locationPrefix;
-    private List<String> locationSuffixes;
+    private final boolean checkResources;
+    private final String locationPrefix;
+    private final List<String> locationSuffixes;
 
     public ProcessExtensionResourceFinderDescriptor(boolean checkResources,
                                                     String locationPrefix,

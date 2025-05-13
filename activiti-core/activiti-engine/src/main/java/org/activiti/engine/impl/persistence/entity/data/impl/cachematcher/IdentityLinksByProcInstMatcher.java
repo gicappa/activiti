@@ -25,7 +25,7 @@ public class IdentityLinksByProcInstMatcher extends CachedEntityMatcherAdapter<I
 
   @Override
   public boolean isRetained(IdentityLinkEntity entity, Object parameter) {
-    return entity.getProcessInstanceId() != null && entity.getProcessInstanceId().equals((String) parameter);
+    return entity.getProcessInstanceId() != null && entity.getProcessInstanceId().equals(parameter);
   }
 
 }

@@ -15,6 +15,7 @@
  */
 package org.activiti.runtime.api.event.internal;
 
+import java.util.List;
 import org.activiti.api.process.runtime.events.ProcessCandidateStarterUserAddedEvent;
 import org.activiti.api.process.runtime.events.listener.ProcessRuntimeEventListener;
 import org.activiti.engine.delegate.event.ActivitiEntityEvent;
@@ -22,34 +23,33 @@ import org.activiti.engine.delegate.event.ActivitiEvent;
 import org.activiti.engine.delegate.event.ActivitiEventListener;
 import org.activiti.runtime.api.event.impl.ToAPIProcessCandidateStarterUserAddedEventConverter;
 
-import java.util.List;
-
 public class ProcessCandidateStarterUserAddedListenerDelegate implements ActivitiEventListener {
 
-    private List<ProcessRuntimeEventListener<ProcessCandidateStarterUserAddedEvent>> listeners;
+  private final List<ProcessRuntimeEventListener<ProcessCandidateStarterUserAddedEvent>> listeners;
 
-    private ToAPIProcessCandidateStarterUserAddedEventConverter processCandidateStarterUserAddedEventConverter;
+  private final ToAPIProcessCandidateStarterUserAddedEventConverter processCandidateStarterUserAddedEventConverter;
 
-    public ProcessCandidateStarterUserAddedListenerDelegate(List<ProcessRuntimeEventListener<ProcessCandidateStarterUserAddedEvent>> listeners,
-                                                            ToAPIProcessCandidateStarterUserAddedEventConverter processCandidateStarterUserAddedEventConverter) {
-        this.listeners = listeners;
-        this.processCandidateStarterUserAddedEventConverter = processCandidateStarterUserAddedEventConverter;
+  public ProcessCandidateStarterUserAddedListenerDelegate(
+    List<ProcessRuntimeEventListener<ProcessCandidateStarterUserAddedEvent>> listeners,
+    ToAPIProcessCandidateStarterUserAddedEventConverter processCandidateStarterUserAddedEventConverter) {
+    this.listeners = listeners;
+    this.processCandidateStarterUserAddedEventConverter = processCandidateStarterUserAddedEventConverter;
+  }
+
+  @Override
+  public void onEvent(ActivitiEvent event) {
+    if (event instanceof ActivitiEntityEvent) {
+      processCandidateStarterUserAddedEventConverter.from((ActivitiEntityEvent) event)
+        .ifPresent(convertedEvent -> {
+          for (ProcessRuntimeEventListener<ProcessCandidateStarterUserAddedEvent> listener : listeners) {
+            listener.onEvent(convertedEvent);
+          }
+        });
     }
+  }
 
-    @Override
-    public void onEvent(ActivitiEvent event) {
-        if (event instanceof ActivitiEntityEvent) {
-            processCandidateStarterUserAddedEventConverter.from((ActivitiEntityEvent) event)
-                    .ifPresent(convertedEvent -> {
-                        for (ProcessRuntimeEventListener<ProcessCandidateStarterUserAddedEvent> listener : listeners ) {
-                            listener.onEvent(convertedEvent);
-                        }
-                    });
-        }
-    }
-
-    @Override
-    public boolean isFailOnException() {
-        return false;
-    }
+  @Override
+  public boolean isFailOnException() {
+    return false;
+  }
 }

@@ -15,6 +15,7 @@
  */
 package org.activiti.engine.impl.bpmn.webservice;
 
+import java.io.Serial;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.impl.bpmn.behavior.WebServiceActivityBehavior;
 import org.activiti.engine.impl.bpmn.data.AbstractDataAssociation;
@@ -22,12 +23,12 @@ import org.activiti.engine.impl.bpmn.data.FieldBaseStructureInstance;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * An implicit data input association between a source and a target. source is a variable in the current execution context and target is a property in the message
- *
-
+ * An implicit data input association between a source and a target. source is a variable in the
+ * current execution context and target is a property in the message
  */
 public class MessageImplicitDataInputAssociation extends AbstractDataAssociation {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   public MessageImplicitDataInputAssociation(String source, String target) {
@@ -37,10 +38,10 @@ public class MessageImplicitDataInputAssociation extends AbstractDataAssociation
   @Override
   public void evaluate(DelegateExecution execution) {
     if (StringUtils.isNotEmpty(this.source)) {
-      Object value = execution.getVariable(this.source);
-      MessageInstance message = (MessageInstance) execution.getVariable(WebServiceActivityBehavior.CURRENT_MESSAGE);
-      if (message.getStructureInstance() instanceof FieldBaseStructureInstance) {
-        FieldBaseStructureInstance structure = (FieldBaseStructureInstance) message.getStructureInstance();
+      var value = execution.getVariable(this.source);
+      var message = (MessageInstance) execution.getVariable(
+        WebServiceActivityBehavior.CURRENT_MESSAGE);
+      if (message.getStructureInstance() instanceof FieldBaseStructureInstance structure) {
         structure.setFieldValue(this.target, value);
       }
     }

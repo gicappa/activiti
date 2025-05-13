@@ -87,18 +87,18 @@ public class UserTaskConverterTest extends AbstractConverterTest {
 
     List<ActivitiListener> listeners = userTask.getTaskListeners();
     assertThat(listeners).hasSize(3);
-    ActivitiListener listener = (ActivitiListener) listeners.get(0);
+    ActivitiListener listener = listeners.get(0);
     assertThat(ImplementationType.IMPLEMENTATION_TYPE_CLASS.equals(listener.getImplementationType())).isTrue();
     assertThat(listener.getImplementation()).isEqualTo("org.test.TestClass");
     assertThat(listener.getEvent()).isEqualTo("create");
     assertThat(listener.getFieldExtensions()).hasSize(2);
-    assertThat(listener.getFieldExtensions().get(0).getFieldName()).isEqualTo("testField");
-    assertThat(listener.getFieldExtensions().get(0).getStringValue()).isEqualTo("test");
-    listener = (ActivitiListener) listeners.get(1);
+    assertThat(listener.getFieldExtensions().getFirst().getFieldName()).isEqualTo("testField");
+    assertThat(listener.getFieldExtensions().getFirst().getStringValue()).isEqualTo("test");
+    listener = listeners.get(1);
     assertThat(ImplementationType.IMPLEMENTATION_TYPE_EXPRESSION.equals(listener.getImplementationType())).isTrue();
     assertThat(listener.getImplementation()).isEqualTo("${someExpression}");
     assertThat(listener.getEvent()).isEqualTo("assignment");
-    listener = (ActivitiListener) listeners.get(2);
+    listener = listeners.get(2);
     assertThat(ImplementationType.IMPLEMENTATION_TYPE_DELEGATEEXPRESSION.equals(listener.getImplementationType())).isTrue();
     assertThat(listener.getImplementation()).isEqualTo("${someDelegateExpression}");
     assertThat(listener.getEvent()).isEqualTo("complete");

@@ -44,7 +44,7 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class DemoApplication {
 
-    private Logger logger = LoggerFactory.getLogger(DemoApplication.class);
+    private final Logger logger = LoggerFactory.getLogger(DemoApplication.class);
 
     private final ProcessRuntime processRuntime;
 
@@ -52,9 +52,9 @@ public class DemoApplication {
 
     private final SecurityUtil securityUtil;
 
-    private List<VariableCreatedEvent> variableCreatedEvents = new ArrayList<>();
+    private final List<VariableCreatedEvent> variableCreatedEvents = new ArrayList<>();
 
-    private List<ProcessCompletedEvent> processCompletedEvents = new ArrayList<>();
+    private final List<ProcessCompletedEvent> processCompletedEvents = new ArrayList<>();
 
     public DemoApplication(ProcessRuntime processRuntime, TaskRuntime taskRuntime, SecurityUtil securityUtil) {
         this.processRuntime = processRuntime;

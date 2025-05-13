@@ -44,7 +44,7 @@ public class HistoricActivityInstanceQueryProperty implements QueryProperty {
   public static final HistoricActivityInstanceQueryProperty DURATION = new HistoricActivityInstanceQueryProperty("DURATION_");
   public static final HistoricActivityInstanceQueryProperty TENANT_ID = new HistoricActivityInstanceQueryProperty("TENANT_ID_");
 
-  private String name;
+  private final String name;
 
   public HistoricActivityInstanceQueryProperty(String name) {
     this.name = name;

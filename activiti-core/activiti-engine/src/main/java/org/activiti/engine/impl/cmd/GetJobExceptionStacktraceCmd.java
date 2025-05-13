@@ -15,6 +15,7 @@
  */
 package org.activiti.engine.impl.cmd;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import org.activiti.engine.ActivitiIllegalArgumentException;
@@ -30,8 +31,10 @@ import org.activiti.engine.runtime.Job;
  */
 public class GetJobExceptionStacktraceCmd implements Command<String>, Serializable {
 
+  @Serial
   private static final long serialVersionUID = 1L;
-  private String jobId;
+
+  private final String jobId;
   protected JobType jobType;
 
   public GetJobExceptionStacktraceCmd(String jobId, JobType jobType) {
@@ -44,21 +47,12 @@ public class GetJobExceptionStacktraceCmd implements Command<String>, Serializab
       throw new ActivitiIllegalArgumentException("jobId is null");
     }
 
-    AbstractJobEntity job = null;
-    switch (jobType) {
-    case ASYNC:
-      job = commandContext.getJobEntityManager().findById(jobId);
-      break;
-    case TIMER:
-      job = commandContext.getTimerJobEntityManager().findById(jobId);
-      break;
-    case SUSPENDED:
-      job = commandContext.getSuspendedJobEntityManager().findById(jobId);
-      break;
-    case DEADLETTER:
-      job = commandContext.getDeadLetterJobEntityManager().findById(jobId);
-      break;
-    }
+    AbstractJobEntity job = switch (jobType) {
+      case ASYNC -> commandContext.getJobEntityManager().findById(jobId);
+      case TIMER -> commandContext.getTimerJobEntityManager().findById(jobId);
+      case SUSPENDED -> commandContext.getSuspendedJobEntityManager().findById(jobId);
+      case DEADLETTER -> commandContext.getDeadLetterJobEntityManager().findById(jobId);
+    };
 
     if (job == null) {
       throw new ActivitiObjectNotFoundException("No job found with id " + jobId, Job.class);

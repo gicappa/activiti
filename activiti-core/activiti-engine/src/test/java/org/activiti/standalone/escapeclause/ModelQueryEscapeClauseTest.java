@@ -15,8 +15,10 @@
  */
 package org.activiti.standalone.escapeclause;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.nio.charset.StandardCharsets;
 import org.activiti.engine.repository.Model;
 import org.activiti.engine.repository.ModelQuery;
 
@@ -28,7 +30,7 @@ public class ModelQueryEscapeClauseTest extends AbstractEscapeClauseTestCase {
 
   @Override
   protected void setUp() throws Exception {
-    Model model = repositoryService.newModel();
+    var model = repositoryService.newModel();
     model.setTenantId("mytenant%");
     model.setName("my model%");
     model.setKey("someKey1");
@@ -44,8 +46,8 @@ public class ModelQueryEscapeClauseTest extends AbstractEscapeClauseTestCase {
     repositoryService.saveModel(model);
     modelTwoId = model.getId();
 
-    repositoryService.addModelEditorSource(modelOneId, "bytes".getBytes("utf-8"));
-    repositoryService.addModelEditorSource(modelTwoId, "bytes".getBytes("utf-8"));
+    repositoryService.addModelEditorSource(modelOneId, "bytes".getBytes(UTF_8));
+    repositoryService.addModelEditorSource(modelTwoId, "bytes".getBytes(UTF_8));
 
     super.setUp();
   }
@@ -57,12 +59,13 @@ public class ModelQueryEscapeClauseTest extends AbstractEscapeClauseTestCase {
     repositoryService.deleteModel(modelTwoId);
   }
 
-  public void testQueryByNameLike() throws Exception {
-    ModelQuery query = repositoryService.createModelQuery().modelNameLike("%\\%%");
-    Model model = query.singleResult();
+  public void testQueryByNameLike() {
+    var query = repositoryService.createModelQuery().modelNameLike("%\\%%");
+    var model = query.singleResult();
     assertThat(model).isNotNull();
     assertThat(model.getKey()).isEqualTo("someKey1");
-    assertThat(new String(repositoryService.getModelEditorSource(model.getId()), "utf-8")).isEqualTo("bytes");
+    assertThat(new String(repositoryService.getModelEditorSource(model.getId()),
+      UTF_8)).isEqualTo("bytes");
     assertThat(query.list()).hasSize(1);
     assertThat(query.count()).isEqualTo(1);
 
@@ -70,17 +73,19 @@ public class ModelQueryEscapeClauseTest extends AbstractEscapeClauseTestCase {
     model = query.singleResult();
     assertThat(model).isNotNull();
     assertThat(model.getKey()).isEqualTo("someKey2");
-    assertThat(new String(repositoryService.getModelEditorSource(model.getId()), "utf-8")).isEqualTo("bytes");
+    assertThat(new String(repositoryService.getModelEditorSource(model.getId()),
+      UTF_8)).isEqualTo("bytes");
     assertThat(query.list()).hasSize(1);
     assertThat(query.count()).isEqualTo(1);
   }
 
   public void testQueryByCategoryLike() throws Exception {
-    ModelQuery query = repositoryService.createModelQuery().modelCategoryLike("%\\%%");
-    Model model = query.singleResult();
+    var query = repositoryService.createModelQuery().modelCategoryLike("%\\%%");
+    var model = query.singleResult();
     assertThat(model).isNotNull();
     assertThat(model.getKey()).isEqualTo("someKey1");
-    assertThat(new String(repositoryService.getModelEditorSource(model.getId()), "utf-8")).isEqualTo("bytes");
+    assertThat(new String(repositoryService.getModelEditorSource(model.getId()),
+      UTF_8)).isEqualTo("bytes");
     assertThat(query.list()).hasSize(1);
     assertThat(query.count()).isEqualTo(1);
 
@@ -88,17 +93,19 @@ public class ModelQueryEscapeClauseTest extends AbstractEscapeClauseTestCase {
     model = query.singleResult();
     assertThat(model).isNotNull();
     assertThat(model.getKey()).isEqualTo("someKey2");
-    assertThat(new String(repositoryService.getModelEditorSource(model.getId()), "utf-8")).isEqualTo("bytes");
+    assertThat(new String(repositoryService.getModelEditorSource(model.getId()),
+      UTF_8)).isEqualTo("bytes");
     assertThat(query.list()).hasSize(1);
     assertThat(query.count()).isEqualTo(1);
   }
 
-  public void testQueryByTenantIdLike() throws Exception {
-    ModelQuery query = repositoryService.createModelQuery().modelTenantIdLike("%\\%%");
-    Model model = query.singleResult();
+  public void testQueryByTenantIdLike() {
+    var query = repositoryService.createModelQuery().modelTenantIdLike("%\\%%");
+    var model = query.singleResult();
     assertThat(model).isNotNull();
     assertThat(model.getKey()).isEqualTo("someKey1");
-    assertThat(new String(repositoryService.getModelEditorSource(model.getId()), "utf-8")).isEqualTo("bytes");
+    assertThat(new String(repositoryService.getModelEditorSource(model.getId()),
+      UTF_8)).isEqualTo("bytes");
     assertThat(query.list()).hasSize(1);
     assertThat(query.count()).isEqualTo(1);
 
@@ -106,7 +113,8 @@ public class ModelQueryEscapeClauseTest extends AbstractEscapeClauseTestCase {
     model = query.singleResult();
     assertThat(model).isNotNull();
     assertThat(model.getKey()).isEqualTo("someKey2");
-    assertThat(new String(repositoryService.getModelEditorSource(model.getId()), "utf-8")).isEqualTo("bytes");
+    assertThat(new String(repositoryService.getModelEditorSource(model.getId()),
+      UTF_8)).isEqualTo("bytes");
     assertThat(query.list()).hasSize(1);
     assertThat(query.count()).isEqualTo(1);
   }

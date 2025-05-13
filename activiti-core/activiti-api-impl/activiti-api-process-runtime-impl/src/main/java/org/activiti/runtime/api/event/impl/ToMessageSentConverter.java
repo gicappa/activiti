@@ -23,7 +23,7 @@ import org.activiti.engine.delegate.event.ActivitiMessageEvent;
 
 public class ToMessageSentConverter implements EventConverter<BPMNMessageSentEvent, ActivitiMessageEvent> {
 
-    private BPMNMessageConverter bpmnMessageConverter;
+    private final BPMNMessageConverter bpmnMessageConverter;
 
     public ToMessageSentConverter(BPMNMessageConverter bpmnMessageConverter) {
         this.bpmnMessageConverter = bpmnMessageConverter;

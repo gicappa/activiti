@@ -25,7 +25,7 @@ import org.junit.Test;
 
 public class BigDecimalTypeTest {
 
-    private BigDecimalType bigDecimalType = new BigDecimalType();
+    private final BigDecimalType bigDecimalType = new BigDecimalType();
 
     @Test
     public void getTypeName_should_return_bigdecimal() {

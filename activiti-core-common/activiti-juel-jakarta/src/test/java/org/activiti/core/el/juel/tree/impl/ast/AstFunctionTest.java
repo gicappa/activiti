@@ -81,12 +81,12 @@ public class AstFunctionTest extends TestCase {
         context.setFunction(
             "ns",
             "f1",
-            getClass().getMethod("bar", new Class[] { int.class })
+            getClass().getMethod("bar", int.class)
         );
         context.setFunction(
             "ns",
             "f2",
-            getClass().getMethod("foobar", new Class[] { int.class, int.class })
+            getClass().getMethod("foobar", int.class, int.class)
         );
 
         // functions g0(), g1(int), g2(int,int)
@@ -94,18 +94,18 @@ public class AstFunctionTest extends TestCase {
         context.setFunction(
             "",
             "g1",
-            getClass().getMethod("bar", new Class[] { int.class })
+            getClass().getMethod("bar", int.class)
         );
         context.setFunction(
             "",
             "g2",
-            getClass().getMethod("foobar", new Class[] { int.class, int.class })
+            getClass().getMethod("foobar", int.class, int.class)
         );
 
         context.setFunction(
             "vararg",
             "f",
-            getClass().getMethod("foovar", new Class[] { int[].class })
+            getClass().getMethod("foovar", int[].class)
         );
         context
             .getELResolver()

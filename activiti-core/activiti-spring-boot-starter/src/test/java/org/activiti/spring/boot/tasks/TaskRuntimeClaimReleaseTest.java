@@ -92,7 +92,7 @@ public class TaskRuntimeClaimReleaseTest {
         Page<Task> tasks = taskRuntime.tasks(Pageable.of(0, 50));
 
         assertThat(tasks.getContent()).hasSize(1);
-        Task task = tasks.getContent().get(0);
+        Task task = tasks.getContent().getFirst();
 
         assertThat(task.getAssignee()).isNull();
         assertThat(task.getStatus()).isEqualTo(Task.TaskStatus.CREATED);
@@ -132,7 +132,7 @@ public class TaskRuntimeClaimReleaseTest {
         );
         assertThat(thrown)
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("You cannot release a task that is not claimed");;
+                .hasMessage("You cannot release a task that is not claimed");
     }
 
     @Test
@@ -231,7 +231,7 @@ public class TaskRuntimeClaimReleaseTest {
         //then
         assertThat(throwable)
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("You cannot release a task where you are not the assignee");;
+                .hasMessage("You cannot release a task where you are not the assignee");
     }
 
 }

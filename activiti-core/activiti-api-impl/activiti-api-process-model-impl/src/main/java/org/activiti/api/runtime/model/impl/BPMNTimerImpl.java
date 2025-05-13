@@ -55,11 +55,9 @@ public class BPMNTimerImpl extends BPMNElementImpl implements BPMNTimer {
             return false;
         BPMNTimerImpl other = (BPMNTimerImpl) obj;
         if (timerPayload == null) {
-            if (other.timerPayload != null)
-                return false;
-        } else if (!timerPayload.equals(other.timerPayload))
-            return false;
-        return true;
+          return other.timerPayload == null;
+        } else
+          return timerPayload.equals(other.timerPayload);
     }
 
     @Override

@@ -90,16 +90,15 @@ public class BPMNActivityImpl extends BPMNElementImpl implements BPMNActivity {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("BPMNActivityImpl [activityName=")
-               .append(activityName)
-               .append(", activityType=")
-               .append(activityType)
-               .append(", executionId=")
-               .append(executionId)
-               .append(", toString()=")
-               .append(super.toString())
-               .append("]");
-        return builder.toString();
+      String builder = "BPMNActivityImpl [activityName="
+        + activityName
+        + ", activityType="
+        + activityType
+        + ", executionId="
+        + executionId
+        + ", toString()="
+        + super.toString()
+        + "]";
+        return builder;
     }
 }

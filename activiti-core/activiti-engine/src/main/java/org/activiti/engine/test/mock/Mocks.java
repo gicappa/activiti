@@ -34,12 +34,12 @@ import java.util.Map;
  */
 public class Mocks {
 
-  private static ThreadLocal<Map<String, Object>> mockContainer = new ThreadLocal<Map<String, Object>>();
+  private static final ThreadLocal<Map<String, Object>> mockContainer = new ThreadLocal<>();
 
   private static Map<String, Object> getMocks() {
-    Map<String, Object> mocks = mockContainer.get();
+    var mocks = mockContainer.get();
     if (mocks == null) {
-      mocks = new HashMap<String, Object>();
+      mocks = new HashMap<>();
       Mocks.mockContainer.set(mocks);
     }
     return mocks;
@@ -72,9 +72,8 @@ public class Mocks {
    * This method resets the internal map of mock objects.
    */
   public static void reset() {
-    if (getMocks() != null) {
-      getMocks().clear();
-    }
+    getMocks();
+    getMocks().clear();
   }
 
 }

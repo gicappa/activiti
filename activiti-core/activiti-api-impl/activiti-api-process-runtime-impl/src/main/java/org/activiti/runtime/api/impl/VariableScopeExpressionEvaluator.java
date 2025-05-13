@@ -22,7 +22,7 @@ import org.activiti.engine.impl.interceptor.DelegateInterceptor;
 
 public class VariableScopeExpressionEvaluator implements ExpressionEvaluator {
 
-    private VariableScope variableScope;
+    private final VariableScope variableScope;
 
     public VariableScopeExpressionEvaluator(VariableScope variableScope) {
         this.variableScope = variableScope;

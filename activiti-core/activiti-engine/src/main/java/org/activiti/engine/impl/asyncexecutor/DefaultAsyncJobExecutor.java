@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
  */
 public class DefaultAsyncJobExecutor implements AsyncExecutor {
 
-  private static Logger log = LoggerFactory.getLogger(DefaultAsyncJobExecutor.class);
+  private static final Logger log = LoggerFactory.getLogger(DefaultAsyncJobExecutor.class);
 
   /**
    * The minimal number of threads that are kept alive in the threadpool for job execution

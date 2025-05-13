@@ -408,9 +408,8 @@ public class BpmnJsonConverter implements EditorJsonConstants,
                         GraphicInfo laneGraphicInfo = null;
 
                         FlowElement lookForElement = null;
-                        if (flowElement instanceof SequenceFlow) {
-                            SequenceFlow sequenceFlow = (SequenceFlow) flowElement;
-                            lookForElement = model.getFlowElement(sequenceFlow.getSourceRef());
+                        if (flowElement instanceof SequenceFlow sequenceFlow) {
+                          lookForElement = model.getFlowElement(sequenceFlow.getSourceRef());
                         } else {
                             lookForElement = flowElement;
                         }
@@ -670,9 +669,8 @@ public class BpmnJsonConverter implements EditorJsonConstants,
         signalDefinitionNode = BpmnJsonConverterUtil.validateIfNodeIsTextual(signalDefinitionNode);
         signalDefinitionNode = BpmnJsonConverterUtil.validateIfNodeIsTextual(signalDefinitionNode); // no idea why this needs to be done twice ..
         if (signalDefinitionNode != null) {
-            if (signalDefinitionNode instanceof ArrayNode) {
-                ArrayNode signalDefinitionArrayNode = (ArrayNode) signalDefinitionNode;
-                Iterator<JsonNode> signalDefinitionIterator = signalDefinitionArrayNode.iterator();
+            if (signalDefinitionNode instanceof ArrayNode signalDefinitionArrayNode) {
+              Iterator<JsonNode> signalDefinitionIterator = signalDefinitionArrayNode.iterator();
                 while (signalDefinitionIterator.hasNext()) {
                     JsonNode signalDefinitionJsonNode = signalDefinitionIterator.next();
                     String signalId = signalDefinitionJsonNode.get(PROPERTY_SIGNAL_DEFINITION_ID).asText();
@@ -683,7 +681,7 @@ public class BpmnJsonConverter implements EditorJsonConstants,
                         Signal signal = new Signal();
                         signal.setId(signalId);
                         signal.setName(signalName);
-                        signal.setScope((signalScope.toLowerCase().equals("processinstance")) ? Signal.SCOPE_PROCESS_INSTANCE : Signal.SCOPE_GLOBAL);
+                        signal.setScope((signalScope.equalsIgnoreCase("processinstance")) ? Signal.SCOPE_PROCESS_INSTANCE : Signal.SCOPE_GLOBAL);
                         bpmnModel.addSignal(signal);
                     }
                 }
@@ -868,9 +866,8 @@ public class BpmnJsonConverter implements EditorJsonConstants,
     private void fillSubShapes(Map<String, SubProcess> subShapesMap,
                                SubProcess subProcess) {
         for (FlowElement flowElement : subProcess.getFlowElements()) {
-            if (flowElement instanceof SubProcess) {
-                SubProcess childSubProcess = (SubProcess) flowElement;
-                subShapesMap.put(childSubProcess.getId(),
+            if (flowElement instanceof SubProcess childSubProcess) {
+              subShapesMap.put(childSubProcess.getId(),
                                  subProcess);
                 fillSubShapes(subShapesMap,
                               childSubProcess);
@@ -890,21 +887,18 @@ public class BpmnJsonConverter implements EditorJsonConstants,
 
         for (FlowElement flowElement : flowElementList) {
 
-            if (flowElement instanceof Event) {
-                Event event = (Event) flowElement;
-                if (CollectionUtils.isNotEmpty(event.getEventDefinitions())) {
+            if (flowElement instanceof Event event) {
+              if (CollectionUtils.isNotEmpty(event.getEventDefinitions())) {
                     EventDefinition eventDef = event.getEventDefinitions().get(0);
-                    if (eventDef instanceof SignalEventDefinition) {
-                        SignalEventDefinition signalEventDef = (SignalEventDefinition) eventDef;
-                        if (StringUtils.isNotEmpty(signalEventDef.getSignalRef())) {
+                    if (eventDef instanceof SignalEventDefinition signalEventDef) {
+                      if (StringUtils.isNotEmpty(signalEventDef.getSignalRef())) {
                             if (bpmnModel.getSignal(signalEventDef.getSignalRef()) == null) {
                                 bpmnModel.addSignal(new Signal(signalEventDef.getSignalRef(),
                                                                signalEventDef.getSignalRef()));
                             }
                         }
-                    } else if (eventDef instanceof MessageEventDefinition) {
-                        MessageEventDefinition messageEventDef = (MessageEventDefinition) eventDef;
-                        if (StringUtils.isNotEmpty(messageEventDef.getMessageRef())) {
+                    } else if (eventDef instanceof MessageEventDefinition messageEventDef) {
+                      if (StringUtils.isNotEmpty(messageEventDef.getMessageRef())) {
                             if (bpmnModel.getMessage(messageEventDef.getMessageRef()) == null) {
                                 bpmnModel.addMessage(new Message(messageEventDef.getMessageRef(),
                                                                  messageEventDef.getMessageRef(),
@@ -915,9 +909,8 @@ public class BpmnJsonConverter implements EditorJsonConstants,
                 }
             }
 
-            if (flowElement instanceof BoundaryEvent) {
-                BoundaryEvent boundaryEvent = (BoundaryEvent) flowElement;
-                Activity activity = retrieveAttachedRefObject(boundaryEvent.getAttachedToRefId(),
+            if (flowElement instanceof BoundaryEvent boundaryEvent) {
+              Activity activity = retrieveAttachedRefObject(boundaryEvent.getAttachedToRefId(),
                                                               parentContainer.getFlowElements());
 
                 if (activity == null) {
@@ -930,17 +923,15 @@ public class BpmnJsonConverter implements EditorJsonConstants,
                 if (flowElement.getExtensionElements().containsKey("EDITOR_FLOW_ORDER")) {
                     gatewayWithOrderList.add((Gateway) flowElement);
                 }
-            } else if (flowElement instanceof SubProcess) {
-                SubProcess subProcess = (SubProcess) flowElement;
-                postProcessElements(subProcess,
+            } else if (flowElement instanceof SubProcess subProcess) {
+              postProcessElements(subProcess,
                                     subProcess.getFlowElements(),
                                     edgeMap,
                                     bpmnModel,
                                     allFlowMap,
                                     gatewayWithOrderList);
-            } else if (flowElement instanceof SequenceFlow) {
-                SequenceFlow sequenceFlow = (SequenceFlow) flowElement;
-                FlowElement sourceFlowElement = parentContainer.getFlowElement(sequenceFlow.getSourceRef());
+            } else if (flowElement instanceof SequenceFlow sequenceFlow) {
+              FlowElement sourceFlowElement = parentContainer.getFlowElement(sequenceFlow.getSourceRef());
                 if (sourceFlowElement != null && sourceFlowElement instanceof FlowNode) {
 
                     FlowWithContainer flowWithContainer = new FlowWithContainer(sequenceFlow,
@@ -981,9 +972,8 @@ public class BpmnJsonConverter implements EditorJsonConstants,
                 if (attachedToRefId.equals(flowElement.getId())) {
                     activity = (Activity) flowElement;
                     break;
-                } else if (flowElement instanceof SubProcess) {
-                    SubProcess subProcess = (SubProcess) flowElement;
-                    Activity retrievedActivity = retrieveAttachedRefObject(attachedToRefId,
+                } else if (flowElement instanceof SubProcess subProcess) {
+                  Activity retrievedActivity = retrieveAttachedRefObject(attachedToRefId,
                                                                            subProcess.getFlowElements());
                     if (retrievedActivity != null) {
                         activity = retrievedActivity;

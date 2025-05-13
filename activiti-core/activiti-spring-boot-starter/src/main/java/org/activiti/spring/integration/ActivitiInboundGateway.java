@@ -36,14 +36,14 @@ import org.springframework.messaging.support.MessageBuilder;
  */
 public class ActivitiInboundGateway extends MessagingGatewaySupport {
 
-    private String executionId = "executionId";
-    private String processInstanceId = "processInstanceId";
-    private String processDefinitionId = "processDefinitionId";
+    private final String executionId = "executionId";
+    private final String processInstanceId = "processInstanceId";
+    private final String processDefinitionId = "processDefinitionId";
 
     private final ProcessVariableHeaderMapper headerMapper;
-    private ProcessEngine processEngine;
+    private final ProcessEngine processEngine;
 
-    private Set<String> sync = new ConcurrentSkipListSet<String>();
+    private final Set<String> sync = new ConcurrentSkipListSet<String>();
 
     public ActivitiInboundGateway(ProcessEngine processEngine, String... pvsOrHeadersToPreserve) {
         Collections.addAll(this.sync, pvsOrHeadersToPreserve);

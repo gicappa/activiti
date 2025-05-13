@@ -39,8 +39,8 @@ public class ThrowMessageDelegateExpression implements ThrowMessageDelegate {
         Object delegate = DelegateExpressionUtil.resolveDelegateExpression(delegateExpression,
                                                                            execution,
                                                                            fieldDeclarations);
-        if(ThrowMessageDelegate.class.isInstance(delegate)) {
-            return ThrowMessageDelegate.class.cast(delegate)
+        if(delegate instanceof ThrowMessageDelegate) {
+            return ((ThrowMessageDelegate) delegate)
                                              .send(execution, message);
         }
 

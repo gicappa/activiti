@@ -15,8 +15,6 @@
  */
 package org.activiti.spring;
 
-import java.util.List;
-import org.activiti.core.el.CustomFunctionProvider;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.activiti.engine.impl.cfg.SpringBeanFactoryProxyMap;
@@ -30,7 +28,6 @@ public class ProcessEngineFactoryBean implements
   FactoryBean<ProcessEngine>, DisposableBean, ApplicationContextAware {
 
   protected ProcessEngineConfigurationImpl processEngineConfiguration;
-
   protected ApplicationContext applicationContext;
   protected ProcessEngine processEngine;
 
@@ -58,9 +55,9 @@ public class ProcessEngineFactoryBean implements
 
   protected void configureExpressionManager() {
     if (processEngineConfiguration.getExpressionManager() == null && applicationContext != null) {
-      SpringExpressionManager expressionManager = new SpringExpressionManager(applicationContext,
+      var expressionManager = new SpringExpressionManager(applicationContext,
         processEngineConfiguration.getBeans());
-      List<CustomFunctionProvider> customFunctionProviders = processEngineConfiguration.getCustomFunctionProviders();
+      var customFunctionProviders = processEngineConfiguration.getCustomFunctionProviders();
       if (customFunctionProviders != null) {
         expressionManager.setCustomFunctionProviders(customFunctionProviders);
       }
@@ -69,8 +66,7 @@ public class ProcessEngineFactoryBean implements
   }
 
   protected void configureExternallyManagedTransactions() {
-    if (processEngineConfiguration instanceof SpringProcessEngineConfiguration) { // remark: any config can be injected, so we cannot have SpringConfiguration as member
-      SpringProcessEngineConfiguration engineConfiguration = (SpringProcessEngineConfiguration) processEngineConfiguration;
+    if (processEngineConfiguration instanceof SpringProcessEngineConfiguration engineConfiguration) { // remark: any config can be injected, so we cannot have SpringConfiguration as member
       if (engineConfiguration.getTransactionManager() != null) {
         processEngineConfiguration.setTransactionsExternallyManaged(true);
       }

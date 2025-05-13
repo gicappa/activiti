@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 
 class ToVariableDeletedConverterTest {
 
-    private ToVariableDeletedConverter converter = new ToVariableDeletedConverter();
+    private final ToVariableDeletedConverter converter = new ToVariableDeletedConverter();
 
     @Test
     void should_convertToVariableDeletedEvent() {

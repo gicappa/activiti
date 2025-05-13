@@ -23,7 +23,7 @@ import org.activiti.engine.delegate.event.ActivitiMessageEvent;
 
 public class ToMessageWaitingConverter implements EventConverter<BPMNMessageWaitingEvent, ActivitiMessageEvent> {
 
-    private BPMNMessageConverter bpmnMessageConverter;
+    private final BPMNMessageConverter bpmnMessageConverter;
 
     public ToMessageWaitingConverter(BPMNMessageConverter bpmnMessageConverter) {
         this.bpmnMessageConverter = bpmnMessageConverter;

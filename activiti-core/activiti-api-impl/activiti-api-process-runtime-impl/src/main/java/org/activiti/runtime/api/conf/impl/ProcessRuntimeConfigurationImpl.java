@@ -25,7 +25,7 @@ import java.util.List;
 
 public class ProcessRuntimeConfigurationImpl implements ProcessRuntimeConfiguration {
 
-    private List<ProcessRuntimeEventListener<?>> processRuntimeEventListeners;
+    private final List<ProcessRuntimeEventListener<?>> processRuntimeEventListeners;
     private final List<VariableEventListener<?>> variableEventListeners;
 
     public ProcessRuntimeConfigurationImpl(List<ProcessRuntimeEventListener<?>> processRuntimeEventListeners,

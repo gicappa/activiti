@@ -21,7 +21,7 @@ import org.activiti.api.process.model.events.ProcessDeployedEvent;
 
 public class ProcessDeployedEvents {
 
-    private List<ProcessDeployedEvent> processDeployedEvents;
+    private final List<ProcessDeployedEvent> processDeployedEvents;
 
     public ProcessDeployedEvents(List<ProcessDeployedEvent> processDeployedEvents) {
         this.processDeployedEvents = processDeployedEvents;

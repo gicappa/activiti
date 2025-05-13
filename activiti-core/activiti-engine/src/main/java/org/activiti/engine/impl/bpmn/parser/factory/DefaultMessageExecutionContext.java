@@ -93,7 +93,7 @@ public class DefaultMessageExecutionContext implements MessageExecutionContext {
 
         MessageEventSubscriptionEntity messageEvent = commandContext.getEventSubscriptionEntityManager()
                                                                     .insertMessageEvent(messageName,
-                                                                                        ExecutionEntity.class.cast(execution));
+                                                                      (ExecutionEntity) execution);
         correlationKey.ifPresent(messageEvent::setConfiguration);
 
         return messageEvent;

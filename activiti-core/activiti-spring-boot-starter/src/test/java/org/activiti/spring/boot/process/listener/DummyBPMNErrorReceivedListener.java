@@ -25,7 +25,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DummyBPMNErrorReceivedListener implements BPMNElementEventListener<BPMNErrorReceivedEvent> {
 
-    private List<BPMNErrorReceivedEvent> errorReceivedEvents = new LinkedList<>();
+    private final List<BPMNErrorReceivedEvent> errorReceivedEvents = new LinkedList<>();
 
     @Override
     public void onEvent(BPMNErrorReceivedEvent event) {

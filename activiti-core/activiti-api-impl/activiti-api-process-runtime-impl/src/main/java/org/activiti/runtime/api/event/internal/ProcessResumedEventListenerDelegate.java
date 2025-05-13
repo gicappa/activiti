@@ -26,9 +26,9 @@ import java.util.List;
 
 public class ProcessResumedEventListenerDelegate implements ActivitiEventListener {
 
-    private List<ProcessRuntimeEventListener<ProcessResumedEvent>> processRuntimeEventListeners;
+    private final List<ProcessRuntimeEventListener<ProcessResumedEvent>> processRuntimeEventListeners;
 
-    private ToProcessResumedConverter processResumedConverter;
+    private final ToProcessResumedConverter processResumedConverter;
 
     public ProcessResumedEventListenerDelegate(List<ProcessRuntimeEventListener<ProcessResumedEvent>> listeners,
                                                ToProcessResumedConverter processResumedConverter) {

@@ -15,6 +15,7 @@
  */
 package org.activiti.examples.bpmn.tasklistener;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,8 +28,10 @@ import org.activiti.engine.delegate.TaskListener;
 
 public class TaskDeleteListener implements TaskListener {
 
+  @Serial
   private static final long serialVersionUID = 1L;
-  private static List<String> messages = new ArrayList<String>();
+
+  private static final List<String> messages = new ArrayList<String>();
 
   public static List<String> getCurrentMessages() {
     return messages;

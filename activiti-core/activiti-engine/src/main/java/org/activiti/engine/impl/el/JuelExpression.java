@@ -20,6 +20,7 @@ import jakarta.el.MethodNotFoundException;
 import jakarta.el.PropertyNotFoundException;
 import jakarta.el.ValueExpression;
 import java.util.Map;
+import java.util.Objects;
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.VariableScope;
@@ -30,73 +31,72 @@ import org.activiti.engine.impl.interceptor.DelegateInterceptor;
 
 /**
  * Expression implementation backed by a JUEL {@link ValueExpression}.
- *
-
-
  */
 public class JuelExpression implements Expression {
 
-    private String expressionText;
-    private ValueExpression valueExpression;
+  private final String expressionText;
+  private final ValueExpression valueExpression;
 
-    public JuelExpression(ValueExpression valueExpression, String expressionText) {
-        this.valueExpression = valueExpression;
-        this.expressionText = expressionText;
-    }
+  public JuelExpression(ValueExpression valueExpression, String expressionText) {
+    this.valueExpression = valueExpression;
+    this.expressionText = expressionText;
+  }
 
-    @Override
-    public Object getValue(VariableScope variableScope) {
-        ELContext elContext = Context.getProcessEngineConfiguration()
-                                     .getExpressionManager()
-                                     .getElContext(variableScope);
-        return getValueFromContext(elContext, Context.getProcessEngineConfiguration().getDelegateInterceptor());
-    }
+  @Override
+  public Object getValue(VariableScope variableScope) {
+    var elContext = Objects.requireNonNull(Context.getProcessEngineConfiguration())
+      .getExpressionManager()
+      .getElContext(variableScope);
+    return getValueFromContext(elContext,
+      Context.getProcessEngineConfiguration().getDelegateInterceptor());
+  }
 
-    @Override
-    public void setValue(Object value, VariableScope variableScope) {
-        ELContext elContext = Context.getProcessEngineConfiguration()
-                                     .getExpressionManager()
-                                     .getElContext(variableScope);
-        try {
-            ExpressionSetInvocation invocation = new ExpressionSetInvocation(valueExpression, elContext, value);
-            Context.getProcessEngineConfiguration().getDelegateInterceptor().handleInvocation(invocation);
-        } catch (Exception e) {
-            throw new ActivitiException("Error while evaluating expression: " + expressionText, e);
-        }
+  @Override
+  public void setValue(Object value, VariableScope variableScope) {
+    var elContext = Objects.requireNonNull(Context.getProcessEngineConfiguration())
+      .getExpressionManager()
+      .getElContext(variableScope);
+    try {
+      ExpressionSetInvocation invocation = new ExpressionSetInvocation(valueExpression, elContext,
+        value);
+      Context.getProcessEngineConfiguration().getDelegateInterceptor().handleInvocation(invocation);
+    } catch (Exception e) {
+      throw new ActivitiException("Error while evaluating expression: " + expressionText, e);
     }
+  }
 
-    @Override
-    public String toString() {
-        if (valueExpression != null) {
-            return valueExpression.getExpressionString();
-        }
-        return super.toString();
+  @Override
+  public String toString() {
+    if (valueExpression != null) {
+      return valueExpression.getExpressionString();
     }
+    return super.toString();
+  }
 
-    @Override
-    public String getExpressionText() {
-        return expressionText;
-    }
+  @Override
+  public String getExpressionText() {
+    return expressionText;
+  }
 
-    @Override
-    public Object getValue(ExpressionManager expressionManager,
-        DelegateInterceptor delegateInterceptor, Map<String, Object> availableVariables) {
-        ELContext elContext = expressionManager.getElContext(availableVariables);
-        return getValueFromContext(elContext, delegateInterceptor);
-    }
+  @Override
+  public Object getValue(ExpressionManager expressionManager,
+    DelegateInterceptor delegateInterceptor, Map<String, Object> availableVariables) {
+    var elContext = expressionManager.getElContext(availableVariables);
+    return getValueFromContext(elContext, delegateInterceptor);
+  }
 
-    private Object getValueFromContext(ELContext elContext,
-        DelegateInterceptor delegateInterceptor) {
-        try {
-            ExpressionGetInvocation invocation = new ExpressionGetInvocation(valueExpression, elContext);
-            delegateInterceptor.handleInvocation(invocation);
-            return invocation.getInvocationResult();
-        } catch (PropertyNotFoundException pnfe) {
-            throw new ActivitiException("Unknown property used in expression: " + expressionText, pnfe);
-        } catch (MethodNotFoundException mnfe) {
-            throw new ActivitiException("Unknown method used in expression: " + expressionText, mnfe);
-        } catch (Exception ele) {
-            throw new ActivitiException("Error while evaluating expression: " + expressionText, ele);
-        }
+  private Object getValueFromContext(ELContext elContext,
+    DelegateInterceptor delegateInterceptor) {
+    try {
+      var invocation = new ExpressionGetInvocation(valueExpression, elContext);
+      delegateInterceptor.handleInvocation(invocation);
+      return invocation.getInvocationResult();
+    } catch (PropertyNotFoundException pnfe) {
+      throw new ActivitiException("Unknown property used in expression: " + expressionText, pnfe);
+    } catch (MethodNotFoundException mnfe) {
+      throw new ActivitiException("Unknown method used in expression: " + expressionText, mnfe);
+    } catch (Exception ele) {
+      throw new ActivitiException("Error while evaluating expression: " + expressionText, ele);
     }
+  }
 }

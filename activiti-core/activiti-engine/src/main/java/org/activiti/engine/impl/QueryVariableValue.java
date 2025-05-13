@@ -15,6 +15,7 @@
  */
 package org.activiti.engine.impl;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import org.activiti.engine.ActivitiIllegalArgumentException;
@@ -32,13 +33,14 @@ import org.activiti.engine.impl.variable.VariableTypes;
 
  */
 public class QueryVariableValue implements Serializable {
+  @Serial
   private static final long serialVersionUID = 1L;
-  private String name;
-  private Object value;
-  private QueryOperator operator;
+  private final String name;
+  private final Object value;
+  private final QueryOperator operator;
 
   private VariableInstanceEntity variableInstanceEntity;
-  private boolean local;
+  private final boolean local;
 
   public QueryVariableValue(String name, Object value, QueryOperator operator, boolean local) {
     this.name = name;
@@ -50,15 +52,19 @@ public class QueryVariableValue implements Serializable {
   public void initialize(VariableTypes types) {
     if (variableInstanceEntity == null) {
       VariableType type = types.findVariableType(value);
-      if (type instanceof ByteArrayType) {
-        throw new ActivitiIllegalArgumentException("Variables of type ByteArray cannot be used to query");
-      } else if (type instanceof JPAEntityVariableType && operator != QueryOperator.EQUALS) {
-        throw new ActivitiIllegalArgumentException("JPA entity variables can only be used in 'variableValueEquals'");
-      } else if (type instanceof JPAEntityListVariableType) {
-        throw new ActivitiIllegalArgumentException("Variables containing a list of JPA entities cannot be used to query");
-      } else {
-        // Type implementation determines which fields are set on the entity
-        variableInstanceEntity = Context.getCommandContext().getVariableInstanceEntityManager().create(name, type, value);
+      switch (type) {
+        case ByteArrayType ignored -> throw new ActivitiIllegalArgumentException(
+          "Variables of type ByteArray cannot be used to query");
+        case JPAEntityVariableType jpaEntityVariableType when operator != QueryOperator.EQUALS ->
+          throw new ActivitiIllegalArgumentException(
+            "JPA entity variables can only be used in 'variableValueEquals'");
+        case JPAEntityListVariableType jpaEntityListVariableType ->
+          throw new ActivitiIllegalArgumentException(
+            "Variables containing a list of JPA entities cannot be used to query");
+        case null, default ->
+          // Type implementation determines which fields are set on the entity
+          variableInstanceEntity = Context.getCommandContext().getVariableInstanceEntityManager()
+            .create(name, type, value);
       }
     }
   }
