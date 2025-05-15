@@ -33,11 +33,13 @@ import org.activiti.spring.process.variable.types.JavaObjectVariableType;
 import org.activiti.spring.process.variable.types.JsonObjectVariableType;
 import org.activiti.spring.process.variable.types.VariableType;
 import org.activiti.spring.resources.DeploymentResourceLoader;
+import org.activiti.spring.resources.ResourceFinder;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.support.ResourcePatternResolver;
 
 @AutoConfiguration
 @EnableCaching
@@ -120,4 +122,10 @@ public class ProcessExtensionsAutoConfiguration {
     ProcessExtensionService processExtensionService) {
     return new CachingProcessExtensionService(processExtensionService);
   }
+  @Bean
+  @ConditionalOnMissingBean
+  public ResourceFinder resourceFinderImpl(ResourcePatternResolver resourcePatternResolver) {
+    return new ResourceFinder(resourcePatternResolver);
+  }
+
 }
