@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.activiti.core.common.spring.security.policies.config;
+package org.activiti.core.common.spring.security.config;
 
-import org.activiti.api.process.model.payloads.GetProcessDefinitionsPayload;
-import org.activiti.api.process.model.payloads.GetProcessInstancesPayload;
 import org.activiti.api.runtime.shared.identity.UserGroupManager;
 import org.activiti.api.runtime.shared.security.PrincipalGroupsProvider;
 import org.activiti.api.runtime.shared.security.PrincipalIdentityProvider;
@@ -35,47 +33,13 @@ import org.activiti.core.common.spring.security.LocalSpringSecurityManager;
 import org.activiti.core.common.spring.security.SimpleGrantedAuthoritiesGroupsMapper;
 import org.activiti.core.common.spring.security.SimpleGrantedAuthoritiesResolver;
 import org.activiti.core.common.spring.security.SimpleGrantedAuthoritiesRolesMapper;
-import org.activiti.core.common.spring.security.policies.ProcessSecurityPoliciesManager;
-import org.activiti.core.common.spring.security.policies.ProcessSecurityPoliciesManagerImpl;
-import org.activiti.core.common.spring.security.policies.SecurityPoliciesProcessDefinitionRestrictionApplier;
-import org.activiti.core.common.spring.security.policies.SecurityPoliciesProcessInstanceRestrictionApplier;
-import org.activiti.core.common.spring.security.policies.SecurityPoliciesRestrictionApplier;
-import org.activiti.core.common.spring.security.policies.conf.SecurityPoliciesProperties;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 @AutoConfiguration
-@EnableConfigurationProperties(SecurityPoliciesProperties.class)
-public class ActivitiSpringSecurityPoliciesAutoConfiguration {
-
-  @Bean
-  @ConditionalOnMissingBean
-  public ProcessSecurityPoliciesManager processSecurityPoliciesManager(
-    SecurityManager securityManager,
-    SecurityPoliciesProperties securityPoliciesProperties,
-    SecurityPoliciesRestrictionApplier<GetProcessDefinitionsPayload> processDefinitionRestrictionApplier,
-    SecurityPoliciesRestrictionApplier<GetProcessInstancesPayload> processInstanceRestrictionApplier) {
-    return new ProcessSecurityPoliciesManagerImpl(securityManager,
-      securityPoliciesProperties,
-      processDefinitionRestrictionApplier,
-      processInstanceRestrictionApplier);
-  }
-
-  @Bean
-  @ConditionalOnMissingBean(name = "processInstanceRestrictionApplier")
-  public SecurityPoliciesRestrictionApplier<GetProcessInstancesPayload> processInstanceRestrictionApplier() {
-    return new SecurityPoliciesProcessInstanceRestrictionApplier();
-  }
-
-  @Bean
-  @ConditionalOnMissingBean(name = "processDefinitionRestrictionApplier")
-  public SecurityPoliciesRestrictionApplier<GetProcessDefinitionsPayload> processDefinitionRestrictionApplier() {
-    return new SecurityPoliciesProcessDefinitionRestrictionApplier();
-  }
-
+public class ActivitiSpringSecurityAutoConfiguration {
 
   @Bean
   @ConditionalOnMissingBean
