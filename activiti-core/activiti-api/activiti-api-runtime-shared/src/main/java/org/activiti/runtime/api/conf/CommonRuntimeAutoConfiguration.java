@@ -66,6 +66,7 @@ public class CommonRuntimeAutoConfiguration {
     public InitializingBean registerVariableUpdatedListenerDelegate(RuntimeService runtimeService,
         @Autowired(required = false) List<VariableEventListener<VariableUpdatedEvent>> listeners,
         VariableEventFilter variableEventFilter) {
+
         return () -> runtimeService.addEventListener(
             new VariableUpdatedListenerDelegate(getInitializedListeners(listeners),
                 new ToVariableUpdatedConverter(),

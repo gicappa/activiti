@@ -7,7 +7,7 @@
     <artifactId>activiti-api</artifactId>
     <version>8.7.0-SNAPSHOT</version>
   </parent>
-  <artifactId>activiti-api-task-runtime-impl</artifactId>
+  <artifactId>activiti-api-task-runtime</artifactId>
   <name>Activiti :: API :: Task Runtime Implementation</name>
   <dependencies>
 <!--
@@ -34,11 +34,11 @@
 -->
     <dependency>
       <groupId>org.activiti</groupId>
-      <artifactId>activiti-api-runtime-shared-impl</artifactId>
+      <artifactId>activiti-api-runtime-shared</artifactId>
     </dependency>
     <dependency>
       <groupId>org.activiti</groupId>
-      <artifactId>activiti-api-task-model-impl</artifactId>
+      <artifactId>activiti-api-task-model</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
