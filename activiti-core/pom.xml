@@ -215,7 +215,7 @@
   </dependencies>
   <modules>
     <module>activiti-core-dependencies</module>
-    <module>activiti-api-impl</module>
+    <module>activiti-api</module>
     <module>activiti-bpmn-model</module>
     <module>activiti-bpmn-converter</module>
     <module>activiti-process-validation</module>

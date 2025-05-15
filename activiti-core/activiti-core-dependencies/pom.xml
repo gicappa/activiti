@@ -15,7 +15,7 @@
       <!-- Activiti Modules for managed dependencies -->
       <dependency>
         <groupId>org.activiti</groupId>
-        <artifactId>activiti-api-impl</artifactId>
+        <artifactId>activiti-api</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
