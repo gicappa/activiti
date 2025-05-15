@@ -10,28 +10,6 @@
   <artifactId>activiti-api-task-runtime</artifactId>
   <name>Activiti :: API :: Task Runtime Implementation</name>
   <dependencies>
-<!--
-    <dependency>
-      <groupId>org.activiti</groupId>
-      <artifactId>activiti-api-model-shared</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.activiti</groupId>
-      <artifactId>activiti-api-model-shared-impl</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.activiti</groupId>
-      <artifactId>activiti-api-task-model</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.activiti</groupId>
-      <artifactId>activiti-api-runtime-shared</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.activiti</groupId>
-      <artifactId>activiti-api-task-runtime</artifactId>
-    </dependency>
--->
     <dependency>
       <groupId>org.activiti</groupId>
       <artifactId>activiti-api-runtime-shared</artifactId>

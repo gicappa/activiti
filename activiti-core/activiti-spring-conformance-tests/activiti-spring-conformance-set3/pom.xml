@@ -20,27 +20,27 @@
     </dependency>
     <dependency>
       <groupId>org.activiti</groupId>
-      <artifactId>activiti-api-process-runtime-impl</artifactId>
+      <artifactId>activiti-api-process-runtime</artifactId>
     </dependency>
     <dependency>
       <groupId>org.activiti</groupId>
-      <artifactId>activiti-api-task-runtime-impl</artifactId>
+      <artifactId>activiti-api-task-runtime</artifactId>
     </dependency>
     <dependency>
       <groupId>org.activiti</groupId>
-      <artifactId>activiti-api-runtime-shared-impl</artifactId>
+      <artifactId>activiti-api-runtime-shared</artifactId>
     </dependency>
     <dependency>
       <groupId>org.activiti</groupId>
-      <artifactId>activiti-api-task-model-impl</artifactId>
+      <artifactId>activiti-api-task-model</artifactId>
     </dependency>
     <dependency>
       <groupId>org.activiti</groupId>
-      <artifactId>activiti-api-process-model-impl</artifactId>
+      <artifactId>activiti-api-process-model</artifactId>
     </dependency>
     <dependency>
       <groupId>org.activiti</groupId>
-      <artifactId>activiti-api-model-shared-impl</artifactId>
+      <artifactId>activiti-api-model-shared</artifactId>
     </dependency>
     <dependency>
       <groupId>org.activiti</groupId>
