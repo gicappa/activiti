@@ -8,14 +8,9 @@
     <version>8.7.0-SNAPSHOT</version>
     <relativePath>../activiti-core-common-dependencies</relativePath>
   </parent>
-  <artifactId>activiti-spring-security-policies</artifactId>
+  <artifactId>activiti-spring-security</artifactId>
   <name>Activiti :: Spring Security Policies</name>
   <dependencies>
-    <dependency>
-      <groupId>org.activiti</groupId>
-      <artifactId>activiti-spring-security</artifactId>
-      <version>${project.version}</version>
-    </dependency>
     <dependency>
       <groupId>org.activiti</groupId>
       <artifactId>activiti-api-process-model</artifactId>
@@ -44,7 +39,6 @@
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-test</artifactId>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>

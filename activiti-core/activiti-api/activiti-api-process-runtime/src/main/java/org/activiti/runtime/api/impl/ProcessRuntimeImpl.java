@@ -56,7 +56,6 @@ import org.activiti.api.runtime.shared.query.Pageable;
 import org.activiti.api.runtime.shared.security.SecurityManager;
 import org.activiti.core.common.spring.security.policies.ActivitiForbiddenException;
 import org.activiti.core.common.spring.security.policies.ProcessSecurityPoliciesManager;
-import org.activiti.core.common.spring.security.policies.SecurityPolicyAccess;
 import org.activiti.engine.ActivitiObjectNotFoundException;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;

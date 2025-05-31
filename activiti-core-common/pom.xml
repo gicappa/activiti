@@ -13,7 +13,6 @@
   <modules>
     <module>activiti-core-common-dependencies</module>
     <module>activiti-spring-security</module>
-    <module>activiti-spring-security-policies</module>
     <module>activiti-spring-connector</module>
     <module>activiti-connector-model</module>
     <module>activiti-spring-application</module>
