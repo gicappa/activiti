@@ -17,7 +17,6 @@
     <module>activiti-connector-model</module>
     <module>activiti-spring-application</module>
     <module>activiti-core-test</module>
-    <module>activiti-common-util</module>
     <module>activiti-expression-language</module>
     <module>activiti-juel-jakarta</module>
   </modules>
