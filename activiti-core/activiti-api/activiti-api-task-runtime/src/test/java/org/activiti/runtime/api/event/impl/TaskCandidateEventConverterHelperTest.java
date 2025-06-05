@@ -83,7 +83,7 @@ public class TaskCandidateEventConverterHelperTest {
     }
 
     private IdentityLinkEntityImpl createIdentityLink(String taskId, String userId, String groupId, String type) {
-        IdentityLinkEntityImpl identityLink = new IdentityLinkEntityImpl();
+        var identityLink = new IdentityLinkEntityImpl();
         identityLink.setTaskId(taskId);
         identityLink.setUserId(userId);
         identityLink.setGroupId(groupId);

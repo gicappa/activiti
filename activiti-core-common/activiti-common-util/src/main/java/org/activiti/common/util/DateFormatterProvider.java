@@ -29,7 +29,6 @@ import java.util.Date;
 public class DateFormatterProvider {
 
   private final String dateFormatPattern;
-
   private final ZoneId zoneId = ZoneOffset.UTC;
 
   public DateFormatterProvider(String dateFormatPattern) {
@@ -45,18 +44,23 @@ public class DateFormatterProvider {
   }
 
   public Date parse(String value) throws DateTimeException {
-    DateTimeFormatter dateTimeFormatter = new DateTimeFormatterBuilder()
+
+    var dateTimeFormatter = new DateTimeFormatterBuilder()
       .appendPattern(getDateFormatPattern())
       .toFormatter()
       .withZone(getZoneId());
 
     try {
-      ZonedDateTime zonedDateTime = dateTimeFormatter.parse(value,
-        ZonedDateTime::from);
+      var zonedDateTime = dateTimeFormatter
+        .parse(value, ZonedDateTime::from);
+
       return Date.from(zonedDateTime.toInstant());
+
     } catch (DateTimeException e) {
-      LocalDate localDate = dateTimeFormatter.parse(String.valueOf(value),
-        LocalDate::from);
+
+      var localDate = dateTimeFormatter
+        .parse(String.valueOf(value), LocalDate::from);
+
       return Date.from(localDate.atStartOfDay().atZone(getZoneId()).toInstant());
     }
   }
