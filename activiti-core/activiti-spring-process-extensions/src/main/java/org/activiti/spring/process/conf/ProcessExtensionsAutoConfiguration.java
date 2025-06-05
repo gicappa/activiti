@@ -35,6 +35,7 @@ import org.activiti.spring.process.variable.types.VariableType;
 import org.activiti.spring.resources.DeploymentResourceLoader;
 import org.activiti.spring.resources.ResourceFinder;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cache.annotation.EnableCaching;
@@ -127,5 +128,14 @@ public class ProcessExtensionsAutoConfiguration {
   public ResourceFinder resourceFinderImpl(ResourcePatternResolver resourcePatternResolver) {
     return new ResourceFinder(resourcePatternResolver);
   }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public DateFormatterProvider dateFormatterProvider(
+    @Value("${spring.activiti.date-format-pattern:yyyy-MM-dd[['T']HH:mm:ss[.SSS][XXX]]}")
+    String dateFormatPattern) {
+    return new DateFormatterProvider(dateFormatPattern);
+  }
+
 
 }
